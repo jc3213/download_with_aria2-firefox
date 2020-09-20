@@ -6,7 +6,7 @@ browser.contextMenus.create({
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2firefox') {
-        downWithAria2(info.linkUrl, tab.url);
+        downWithAria2(info.linkUrl, null, tab.url);
     }
 });
 
@@ -24,14 +24,16 @@ browser.downloads.onCreated.addListener((item) => {
         }
     }
 
-    function captureAdd(item) {
+    function captureAdd(capture, item) {
         var check = captureCheck(domainFromUrl(item.referrer), item.filename.split('.').pop());
         if (capture === 2 || check) {
             browser.downloads.cancel(item.id, () => {
-                browser.downloads.erase({'id': item.id}, () => {
-                    downWithAria2(item.url, item.referrer);
-                });
-            });
+                browser.downloads.erase({ id: item.id }, () => {
+                    var lastPathSeparator = Math.max(item.filename.lastIndexOf('/'), item.filename.lastIndexOf('\\'));
+                    var itemDir = lastPathSeparator == -1 ? null : item.filename.substr(0, lastPathSeparator);
+                    downWithAria2(item.url, itemDir, item.referrer)
+                })
+            })
         }
     }
 

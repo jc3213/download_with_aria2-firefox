@@ -107,7 +107,7 @@ function showNotification(title, message) {
     });
 }
 
-function downWithAria2(url, referer, proxy) {
+function downWithAria2(url, dir, referer, proxy) {
     var domain = domainFromUrl(url);
     var proxied = localStorage.getItem('proxied') || '';
     if (proxied.includes(domain)) {
@@ -118,6 +118,9 @@ function downWithAria2(url, referer, proxy) {
             'User-Agent: ' + localStorage.getItem('useragent') || navigator.userAgent
         ],
         'all-proxy': proxy
+    }
+    if (dir) {
+        options['dir'] = dir;
     }
     if (referer) {
         browser.cookies.getAll({'url': referer}, (cookies) => {
