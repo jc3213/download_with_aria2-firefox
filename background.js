@@ -52,16 +52,11 @@ function displayActiveTaskNumber() {
     jsonRPCRequest(
         {method: 'aria2.getGlobalStat'},
         (result) => {
-            if (result.numActive !== '0') {
-                browser.browserAction.setBadgeText({text: result.numActive});
-                browser.browserAction.setBadgeBackgroundColor({color: '#3CC'});
-            }
-            else {
-                browser.browserAction.setBadgeText({text: ''});
-            }
+            browser.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
         }
     )
 }
 
+browser.browserAction.setBadgeBackgroundColor({color: '#3CC'});
 displayActiveTaskNumber();
 var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
