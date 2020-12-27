@@ -47,7 +47,7 @@ document.getElementById('aria2Check').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
-            showNotification(window['warn_aria2_version'], result.version);
+            showNotification(browser.i18n.getMessage('warn_aria2_version'), result.version);
         },
         (error, rpc) => {
             showNotification(error, rpc);
