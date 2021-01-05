@@ -6,7 +6,7 @@ window.addEventListener('message', (event) => {
 
 var modules = [
     {button: 'newTask_btn', name: 'newTask', id: 'newTaskWindow'},
-    {button: 'options_btn', name: 'options', id: 'optionsWindow'}
+    {button: 'options_btn', name: 'options', id: 'optionsWindow', onload: (event) => { event.target.contentDocument.querySelector('div.manager').style.display = 'none'; }}
 ];
 modules.forEach(module => {
     document.getElementById(module.button).addEventListener('click', (event) => {
@@ -24,8 +24,8 @@ function openModuleWindow(module) {
     var iframe = document.createElement('iframe');
     iframe.id = module.id;
     iframe.src = '/modules/' + module.name + '/index.html';
-    if (module.load) {
-        iframe.addEventListener('load', module.load);
+    if (typeof module.onload === 'function') {
+        iframe.addEventListener('load', module.onload);
     }
     document.body.appendChild(iframe);
 }
@@ -140,7 +140,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         jsonRPCRequest({method: method, gid: gid});
     }
     else if (event.target.id === 'invest_btn') {
-        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', load: (event) => event.target.contentWindow.postMessage(gid)});
+        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => event.target.contentWindow.postMessage(gid)});
     }
     else if (event.target.id === 'retry_btn') {
         jsonRPCRequest([

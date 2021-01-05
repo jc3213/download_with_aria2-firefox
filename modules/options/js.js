@@ -15,7 +15,7 @@ document.getElementById('export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
     var down = document.getElementById('download');
     down.href = URL.createObjectURL(blob);
-    down.download = 'downwitharia2_options.json';
+    down.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
     down.click();
 });
 
