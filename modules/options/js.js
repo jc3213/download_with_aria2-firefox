@@ -26,8 +26,8 @@ document.getElementById('reader').addEventListener('change', (event) => {
 });
 
 [
-    'jsonrpc'
-    'token'，
+    'jsonrpc',
+    'token',
     'output',
     'folder',
     'useragent',
@@ -78,11 +78,11 @@ document.getElementById('sizeEntry').addEventListener('change', calcFileSize);
 document.getElementById('sizeUnit').addEventListener('change', calcFileSize);
 
 function downloadFolder() {
-    if (localStorage['folder'] === '2') {
-        document.getElementById('directory').style.display = 'block';
+    if (localStorage['output'] === '2') {
+        document.getElementById('folder').style.display = 'block';
     }
     else {
-        document.getElementById('directory').style.display = 'none';
+        document.getElementById('folder').style.display = 'none';
     }
 }
 

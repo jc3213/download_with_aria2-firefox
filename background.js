@@ -20,7 +20,7 @@ browser.runtime.onInstalled.addListener((details) => {
 });
 
 browser.downloads.onCreated.addListener((item) => {
-    if (localStorage['capture'] === '0' || item.finalUrl.match(/^(blob|data)/)) {
+    if (localStorage['capture'] === '0' || item.url.match(/^(blob|data)/)) {
         return;
     }
 
@@ -41,7 +41,7 @@ browser.downloads.onCreated.addListener((item) => {
         if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
             return captureDownload();
         }
-        if (item.fileSize >= localStorage['fileSize']) {
+        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
             return captureDownload();
         }
     });
