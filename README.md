@@ -7,6 +7,5 @@
     - 1 Default (Aria2 download folder)
     - 2 Browser (Browser download folder)
     - 3 Custom (Custom folder), if custom folder is `EMPTY`, return 1
-- Firefox close popup window when `input` is triggered so you need to import options on `Add-ons Manager`
 - Cancel the download first before removing it from history to prevent downloading the file twice
 - Changed all `chrome` to `browser` for Firefox
