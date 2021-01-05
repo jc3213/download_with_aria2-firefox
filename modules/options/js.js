@@ -13,7 +13,10 @@ menuTabs.forEach(active => {
 
 document.getElementById('export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
-    browser.downloads.download({ url:URL.createObjectURL(blob), saveAs: true });
+    var down = document.getElementById('download');
+    down.href = URL.createObjectURL(blob);
+    down.download = 'downwitharia2_options.json';
+    down.click();
 });
 
 document.getElementById('import').addEventListener('click', (event) => document.getElementById('reader').click());
