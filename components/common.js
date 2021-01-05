@@ -1,5 +1,5 @@
 function jsonRPCRequest(request, success, failure) {
-    var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
+    var rpc = localStorage['jsonrpc'];
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     var xhr = new XMLHttpRequest();
     xhr.open('POST', rpc, true);
@@ -24,12 +24,11 @@ function jsonRPCRequest(request, success, failure) {
     xhr.send(JSON.stringify(json));
 
     function createJSON(request) {
-        var token = localStorage.getItem('token') || '';
         var json = {
             jsonrpc: 2.0,
             method: request.method,
             id: '',
-            params: ['token:' + token]
+            params: ['token:' + localStorage['token']]
         };
         if (request.gid) {
             json.params.push(request.gid);
@@ -71,20 +70,16 @@ function downWithAria2(session) {
     if (session.bypass) {
         return sendRPCRequest();
     }
-    var proxied = localStorage.getItem('proxied') || '';
-    if (!options['all-proxy'] && proxied.includes(session.domain)) {
-        options['all-proxy'] = localStorage.getItem('allproxy') || '';
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.domain)) {
+        options['all-proxy'] = localStorage['allproxy'];
     }
-    var folder = localStorage.getItem('folder') | 0;
-    var directory = localStorage.getItem('directory') || '';
-    if (folder === 1 && session.folder) {
+    if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
-    else if (folder === 2 && directory) {
-        options['dir'] = directory;
+    else if (localStorage['output'] === '2' && localStorage['folder']) {
+        options['dir'] = localStorage['folder'];
     }
-    var useragent = localStorage.getItem('useragent') || navigator.userAgent;
-    options['header'] = ['User-Agent: ' + useragent];
+    options['header'] = ['User-Agent: ' + localStorage['useragent']];
     if (!session.referer) {
         return sendRPCRequest();
     }
@@ -119,6 +114,20 @@ function showNotification(title, message) {
         setTimeout(() => browser.notifications.clear(id), 5000);
     });
 }
+
+function restoreSettings(json, reason) {
+    var options = JSON.parse(json);
+    Object.keys(options).forEach(key => {
+        if (reason === 'update') {
+            if (localStorage[key] === undefined) {
+                localStorage[key] = options[key];
+            }
+        }
+        else if (reason === 'install') {
+            localStorage[key] = options[key];
+        }
+    });
+};
 
 function domainFromUrl(url) {
     var host = url.split(/[\/:]+/)[1];

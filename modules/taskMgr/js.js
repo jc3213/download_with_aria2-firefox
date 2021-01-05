@@ -48,9 +48,9 @@ var taskOptions = [
     {id: 'optionUpload', name: 'max-upload-limit', value: '0'},
     {id: 'optionProxy', name: 'all-proxy', value: '' }
 ];
-taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(event.target.value, item.name, item.value)));
+taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.name, event.target.value, item.value)));
 
-function changeTaskOption(value, name, initial) {
+function changeTaskOption(name, value, initial) {
     var options = {};
     options[name] = value || initial;
     jsonRPCRequest({method: 'aria2.changeOption', gid: gid, options: options}, printTaskOption);
@@ -67,8 +67,7 @@ function printTaskOption() {
 
 document.getElementById('loadProxy').addEventListener('click', (event) => {
     if (!document.getElementById('optionProxy').disabled) {
-        var allproxy = localStorage.getItem('allproxy') || '';
-        changeTaskOption(allproxy, 'all-proxy');
+        changeTaskOption('all-proxy', localStorage['allproxy']);
     }
 });
 

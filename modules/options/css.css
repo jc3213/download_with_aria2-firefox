@@ -10,6 +10,11 @@ select {
     padding: 5px 2px;
 }
 
+.manager {
+    height: 0px;
+    text-align: right;
+}
+
 .container {
     margin-left: 5px;
 }

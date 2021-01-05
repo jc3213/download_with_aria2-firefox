@@ -11,39 +11,41 @@ menuTabs.forEach(active => {
     });
 });
 
-[
-    {id: 'jsonrpc', value: 'http://localhost:6800/jsonrpc'},
-    {id: 'token', value: ''},
-    {id: 'folder', value: 0, change: downloadFolder, onload: downloadFolder},
-    {id: 'directory', value: ''},
-    {id: 'useragent', value: navigator.userAgent},
-    {id: 'allproxy', value: ''},
-    {id: 'proxied', value: ''},
-    {id: 'capture', value: 0, change: captureFilters, onload: captureFilters},
-    {id: 'sizeEntry', value: 0, change: calcFileSize},
-    {id: 'sizeUnit', value: 2, change: calcFileSize},
-    {id: 'fileExt', value: ''},
-    {id: 'monitored', value: ''},
-    {id: 'ignored', value: ''}
-].forEach(property => {
-    var menu = document.getElementById(property.id);
-    if (property.change) {
-        menu.addEventListener('change', property.change);
-    }
-    if (property.checkbox) {
-        menu.setAttribute('checked', JSON.parse(localStorage.getItem(property.id)) || property.value);
-        menu.addEventListener('change', (event) => localStorage.setItem(property.id, event.target.checked));
-    }
-    else {
-        menu.value = localStorage.getItem(property.id) || property.value;
-        menu.addEventListener('change', (event) => localStorage.setItem(property.id, event.target.value));
-    }
-    if (typeof property.onload === 'function') {
-        property.onload();
-    }
+document.getElementById('export').addEventListener('click', (event) => {
+    var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
+    browser.downloads.download({ url:URL.createObjectURL(blob), saveAs: true });
 });
 
-document.getElementById('aria2Check').addEventListener('click', (event) => {
+document.getElementById('import').addEventListener('click', (event) => document.getElementById('reader').click());
+
+document.getElementById('reader').addEventListener('change', (event) => {
+    var reader = new FileReader();
+    reader.readAsText(event.target.files[0]);
+    reader.onload = () => restoreSettings(reader.result, 'install');
+    location.reload();
+});
+
+[
+    'jsonrpc'
+    'token'，
+    'output',
+    'folder',
+    'useragent',
+    'allproxy',
+    'proxied',
+    'capture',
+    'sizeEntry',
+    'sizeUnit',
+    'fileExt',
+    'monitored',
+    'ignored'
+].forEach(id => {
+    var menu = document.getElementById(id);
+    menu.value = localStorage[id];
+    menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
+});
+
+document.getElementById('verify').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
@@ -55,7 +57,7 @@ document.getElementById('aria2Check').addEventListener('click', (event) => {
     );
 });
 
-document.getElementById('aria2Show').addEventListener('click', (event) => {
+document.getElementById('insight').addEventListener('click', (event) => {
     if (event.target.classList.contains('checked')) {
         document.getElementById('token').setAttribute('type', 'password');
     }
@@ -65,9 +67,18 @@ document.getElementById('aria2Show').addEventListener('click', (event) => {
     event.target.classList.toggle('checked');
 });
 
+document.getElementById('output').addEventListener('change', downloadFolder);
+downloadFolder();
+
+document.getElementById('capture').addEventListener('change', captureFilters);
+captureFilters();
+
+document.getElementById('sizeEntry').addEventListener('change', calcFileSize);
+
+document.getElementById('sizeUnit').addEventListener('change', calcFileSize);
+
 function downloadFolder() {
-    var folder = document.getElementById('folder').value | 0;
-    if (folder === 2) {
+    if (localStorage['folder'] === '2') {
         document.getElementById('directory').style.display = 'block';
     }
     else {
@@ -76,8 +87,7 @@ function downloadFolder() {
 }
 
 function captureFilters() {
-    var capture = document.getElementById('capture').value | 0;
-    if (capture === 1) {
+    if (localStorage['capture'] === '1') {
         document.getElementById('captureFilters').style.display = 'block';
     }
     else {
@@ -85,11 +95,10 @@ function captureFilters() {
     }
 }
 
-function calcFileSize(event) {
-    var number = document.getElementById('sizeEntry').value | 0;
-    var unit = document.getElementById('sizeUnit').value | 0;
-    var size = number * Math.pow(1024, unit);
-    localStorage.setItem('fileSize', size);
+function calcFileSize() {
+    var number = localStorage['sizeEntry'] | 0;
+    var unit = localStorage['sizeUnit'] | 0;
+    localStorage['fileSize'] = number * Math.pow(1024, unit);
 }
 
 document.getElementById('sizeEntry').disabled = true;

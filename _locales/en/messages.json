@@ -14,6 +14,12 @@
     "option_download": {
         "message": "Download"
     },
+    "option_export": {
+        "message": "Export"
+    },
+    "option_import": {
+        "message": "Import"
+    },
     "option_default": {
         "message": "Default"
     },

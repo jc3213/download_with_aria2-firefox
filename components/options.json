@@ -1,0 +1,16 @@
+{
+    "jsonrpc": "http://localhost:6800/jsonrpc",
+    "token": "",
+    "output": "0",
+    "folder": "",
+    "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.107 Safari/537.36",
+    "allproxy": "",
+    "proxied": "",
+    "capture": "0",
+    "sizeEntry": "0",
+    "sizeUnit": "2",
+    "fileSize": "0",
+    "fileExt": "",
+    "monitored": "",
+    "ignored": ""
+}

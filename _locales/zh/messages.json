@@ -14,6 +14,12 @@
     "option_download": {
         "message": "下载"
     },
+    "option_export": {
+        "message": "导出"
+    },
+    "option_import": {
+        "message": "导入"
+    },
     "option_default": {
         "message": "禁用"
     },

@@ -6,6 +6,11 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
+        <div class="manager">
+            <span id="export" class="button" i18n>option_export</span>
+            <span id="import" class="button" i18n>option_import</span>
+            <input id="reader" type="file" accept="application/json" style="display: none;">
+        </div>
         <div class="container">
             <span id="tabBasic" class="tab checked" i18n>option_basic</span>
             <span id="tabAdvanced" class="tab" i18n>option_advanced</span>
@@ -17,7 +22,7 @@
                 <span class="title" i18n>option_jsonrpc</span>
                 <br>
                 <input id="jsonrpc" type="text">
-                <span id="aria2Check" class="button">📞</span>
+                <span id="verify" class="button">📞</span>
                 <br>
                 <span i18n>option_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
@@ -25,17 +30,17 @@
                 <span class="title" i18n>option_token</span>
                 <br>
                 <input id="token" type="password" placeholder="$$secret$$">
-                <span id="aria2Show" class="button">👁️</span>
+                <span id="insight" class="button">👁️</span>
             </div>
             <div title="option_folder_desc" i18n_title>
                 <span class="title" i18n>option_folder</span>  
-                <select id="folder">
+                <select id="output">
                     <option value="0" i18n>option_folder_default</option>
                     <option value="1" i18n>option_folder_browser</option>
                     <option value="2" i18n>option_folder_custom</option>
                 </select>
                 <br>
-                <input id="directory" type="text" placeholder="C:\Aria2 Downloads">
+                <input id="folder" type="text" placeholder="C:\Aria2 Downloads">
             </div>
         </div>
         <div id="menuAdvanced" class="container" style="display: none;">
