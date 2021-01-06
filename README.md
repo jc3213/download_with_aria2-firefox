@@ -4,8 +4,8 @@
 
 - Moved to `downloads.onCreated` event handler, but works the same as `downloads.onDeterminingFilename` on Chrome
 - Exclusive feature: Setting download folder with `3` options
-    - 1 Default (Aria2 download folder)
-    - 2 Browser (Browser download folder)
-    - 3 Custom (Custom folder), if custom folder is `EMPTY`, return 1
+    - 1 `Default` `Aria2 download folder`
+    - 2 `Browser` `Browser download folder (only for Capturing)`
+    - 3 `Custom` `Custom folder, if custom folder is “EMPTY”, return 1`
 - Cancel the download first before removing it from history to prevent downloading the file twice
 - Changed all `chrome` to `browser` for Firefox
