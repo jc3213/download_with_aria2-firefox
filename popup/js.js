@@ -63,18 +63,18 @@ function printMainFrame() {
             document.getElementById('activeQueue').innerHTML = active.map(item => printTaskInfo(item)).join('');
             document.getElementById('waitingQueue').innerHTML = waiting.map(item => printTaskInfo(item)).join('');
             document.getElementById('stoppedQueue').innerHTML = stopped.map(item => printTaskInfo(item)).join('');
-            document.getElementById('numActive').innerHTML = global.numActive;
-            document.getElementById('numWaiting').innerHTML = global.numWaiting;
-            document.getElementById('numStopped').innerHTML = global.numStopped;
-            document.getElementById('downloadSpeed').innerHTML = bytesToFileSize(global.downloadSpeed) + '/s';
-            document.getElementById('uploadSpeed').innerHTML = bytesToFileSize(global.uploadSpeed) + '/s';
+            document.getElementById('numActive').innerText = global.numActive;
+            document.getElementById('numWaiting').innerText = global.numWaiting;
+            document.getElementById('numStopped').innerText = global.numStopped;
+            document.getElementById('downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
+            document.getElementById('uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
             document.getElementById('queueTabs').style.display = 'block';
             document.getElementById('menuTop').style.display = 'block';
             document.getElementById('networkStatus').style.display = 'none';
         }, (error, rpc) => {
             document.getElementById('queueTabs').style.display = 'none';
             document.getElementById('menuTop').style.display = 'none';
-            document.getElementById('networkStatus').innerHTML = error;
+            document.getElementById('networkStatus').innerText = error;
             document.getElementById('networkStatus').style.display = 'block';
         }
     );

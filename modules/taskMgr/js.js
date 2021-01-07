@@ -23,7 +23,7 @@ function printTaskDetails() {
             }
             taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
             var complete = result.status === 'complete';
-            document.getElementById('taskName').innerHTML = taskName;
+            document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
             document.getElementById('optionDownload').disabled = complete;
             document.getElementById('optionUpload').disabled = !result.bittorrent || complete;
