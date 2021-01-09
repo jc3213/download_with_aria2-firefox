@@ -16,9 +16,9 @@ iframe {
 
 .tab, .button {
     border: 1px outset #CCC;
-    border-radius: 5px;
+    border-radius: 3px;
     cursor: pointer;
-    padding: 5px;
+    padding: 3px 5px;
     text-align: align;
 }
 
@@ -31,7 +31,7 @@ iframe {
 }
 
 .checked {
-    padding: 4px;
+    padding: 2px 4px;
     border: 2px inset #C33;
 }
 

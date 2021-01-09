@@ -20,7 +20,7 @@ input, textarea {
 }
 
 #networkBandwidth span:nth-child(2n+1) {
-    padding: 5px;
+    padding: 3px 5px;
 }
 
 #optionsWindow, #newTaskWindow, #taskMgrWindow {
