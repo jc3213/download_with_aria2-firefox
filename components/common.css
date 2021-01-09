@@ -22,10 +22,6 @@ iframe {
     text-align: align;
 }
 
-.button {
-    font-weight: bold;
-}
-
 .button:hover, .tab:hover {
     filter: opacity(60%);
 }
