@@ -37,6 +37,10 @@ body > div:nth-child(n+2) {
     overflow-y: auto;
 }
 
+#taskFiles:active {
+    filter: opacity(60%);
+}
+
 #taskFiles table {
     border-collapse: collapse;
     table-layout: fixed;
@@ -48,10 +52,6 @@ body > div:nth-child(n+2) {
     padding: 5px;
     vertical-align: middle;
     text-align: center;
-}
-
-#taskFiles tr:active {
-    filter: opacity(60%);
 }
 
 #taskFiles td:nth-child(1) {

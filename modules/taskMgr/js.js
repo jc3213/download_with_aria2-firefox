@@ -1,4 +1,5 @@
 var gid;
+var url;
 var taskManager;
 
 window.addEventListener('message', (event) => {
@@ -12,34 +13,35 @@ function printTaskDetails() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid: gid},
         (result) => {
+            var complete = result.status === 'complete';
+            var fileName = result.files[0].path.split('/').pop();
             if (result.bittorrent) {
                 var taskUrl = '';
-                if (result.bittorrent.info) {
-                    var taskName = result.bittorrent.info.name;
-                }
+                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
             }
             else {
-                taskUrl = result.files[0].uris[0].uri;
+                url = taskUrl = result.files[0].uris[0].uri;
+                taskName = fileName || taskUrl;
             }
-            taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
-            var complete = result.status === 'complete';
             document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
             document.getElementById('optionDownload').disabled = complete;
             document.getElementById('optionUpload').disabled = !result.bittorrent || complete;
             document.getElementById('optionProxy').disabled = result.bittorrent || complete;
-            var taskFiles = result.files.map(item => printFileInfo(item));
-            document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
+            document.getElementById('taskFiles').innerHTML = printFileInfo(result.files);
         }
     );
 
-    function printFileInfo(file) {
-        var fileUrl = file.uris.length > 0 ? file.uris[0].uri : '';
-        var filename = (file.path || fileUrl).split('/').pop();
-        var filePath = file.path.replace(/\//g, '\\');
-        var fileSize = bytesToFileSize(file.length);
-        var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100).toString() + '%';
-        return '<tr uri="' + fileUrl + '"><td>' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+    function printFileInfo(files) {
+        var fileInfo = '<table>';
+        files.forEach(file => {
+            var filename = (file.path || url).split('/').pop();
+            var filePath = file.path.replace(/\//g, '\\');
+            var fileSize = bytesToFileSize(file.length);
+            var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100).toString() + '%';
+            fileInfo += '<tr><td>' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+        });
+        return fileInfo + '</table>';
     }
 }
 
@@ -76,10 +78,8 @@ document.getElementById('taskName').addEventListener('click', (event) => {
 });
 
 document.getElementById('taskFiles').addEventListener('click', (event) => {
-    var uri;
-    document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) uri = item.getAttribute('uri'); });
-    if (uri) {
-        navigator.clipboard.writeText(uri);
-        showNotification(browser.i18n.getMessage('warn_url_copied'), uri);
+    if (url) {
+        navigator.clipboard.writeText(url);
+        showNotification(browser.i18n.getMessage('warn_url_copied'), url);
     }
 });
