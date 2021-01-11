@@ -72,10 +72,10 @@
         "message": "Setting server for \"all-proxy\" option"
     },
     "option_proxied": {
-        "message": "Domains over Proxy"
+        "message": "Hosts over Proxy"
     },
     "option_proxied_desc": {
-        "message": "Add \"all-proxy\" option for downloads from these domains automatically"
+        "message": "Add \"all-proxy\" option for downloads from these hosts automatically"
     },
     "option_capture": {
         "message": "Capturing"
@@ -99,16 +99,16 @@
         "message": "Capture downloads match the listed file extensions"
     },
     "option_monitored": {
-        "message": "Monitored Domains"
+        "message": "Monitored Hosts"
     },
     "option_monitored_desc": {
-        "message": "Monitoring downloads from listed domain names"
+        "message": "Monitoring downloads from listed host names"
     },
     "option_ignored": {
-        "message": "Ignored Domains"
+        "message": "Ignored Hosts"
     },
     "option_ignored_desc": {
-        "message": "Ignore downloads from listed domain names"
+        "message": "Ignore downloads from listed host names"
     },
     "popup_active_button": {
         "message": "Active"

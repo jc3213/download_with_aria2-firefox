@@ -72,10 +72,10 @@
         "message": "设置 \"all-proxy\" 选项的服务器"
     },
     "option_proxied": {
-        "message": "需代理域名"
+        "message": "需代理主机名"
     },
     "option_proxied_desc": {
-        "message": "为来自列表中的域名的下载自动添加 \"all-proxy\" 选项"
+        "message": "为来自列表中的主机名的下载添加 \"all-proxy\" 选项"
     },
     "option_capture": {
         "message": "抓取"
@@ -99,16 +99,16 @@
         "message": "抓取匹配列表中的文件后缀的下载"
     },
     "option_monitored": {
-        "message": "监视域名"
+        "message": "监视主机名"
     },
     "option_monitored_desc": {
-        "message": "监视来自列表中的域名的下载"
+        "message": "监视来自列表中的主机名的下载"
     },
     "option_ignored": {
-        "message": "忽略域名"
+        "message": "忽略主机名"
     },
     "option_ignored_desc": {
-        "message": "忽略来自列表中的域名的下载"
+        "message": "忽略来自列表中的主机名的下载"
     },
     "popup_active_button": {
         "message": "下载中"
