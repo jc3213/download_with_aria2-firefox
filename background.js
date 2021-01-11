@@ -3,7 +3,7 @@ browser.contextMenus.create({
     id: 'downwitharia2firefox',
     contexts: ['link'],
     onclick: (info, tab) => {
-        downWithAria2({url: info.linkUrl, referer: tab.url, domain: domainFromUrl(tab.url)});
+        downWithAria2({url: info.linkUrl, referer: tab.url, host: new URL(tab.url).hostname});
     }
 });
 
@@ -28,14 +28,14 @@ browser.downloads.onCreated.addListener((item) => {
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.replace(session.options.out, '');
         session.referer = item.referrer || tabs[0].url;
-        session.domain = domainFromUrl(session.referer);
+        session.host = new URL(session.referer).hostname;
         if (localStorage['capture'] === '2') {
             return captureDownload();
         }
-        if (localStorage['ignored'].includes(session.domain)) {
+        if (localStorage['ignored'].includes(session.host)) {
             return;
         }
-        if (localStorage['monitored'].includes(session.domain)) {
+        if (localStorage['monitored'].includes(session.host)) {
             return captureDownload();
         }
         if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
