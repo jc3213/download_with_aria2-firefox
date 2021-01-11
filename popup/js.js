@@ -60,9 +60,6 @@ function printMainFrame() {
             {method: 'aria2.tellStopped', index: [0, 999]}
         ],
         (global, active, waiting, stopped) => {
-            document.getElementById('activeQueue').innerHTML = active.map(item => printTaskInfo(item)).join('');
-            document.getElementById('waitingQueue').innerHTML = waiting.map(item => printTaskInfo(item)).join('');
-            document.getElementById('stoppedQueue').innerHTML = stopped.map(item => printTaskInfo(item)).join('');
             document.getElementById('numActive').innerText = global.numActive;
             document.getElementById('numWaiting').innerText = global.numWaiting;
             document.getElementById('numStopped').innerText = global.numStopped;
@@ -71,6 +68,9 @@ function printMainFrame() {
             document.getElementById('queueTabs').style.display = 'block';
             document.getElementById('menuTop').style.display = 'block';
             document.getElementById('networkStatus').style.display = 'none';
+            document.getElementById('activeQueue').innerHTML = printTaskQueue(active);
+            document.getElementById('waitingQueue').innerHTML = printTaskQueue(waiting);
+            document.getElementById('stoppedQueue').innerHTML = printTaskQueue(stopped);
         }, (error, rpc) => {
             document.getElementById('queueTabs').style.display = 'none';
             document.getElementById('menuTop').style.display = 'none';
@@ -79,46 +79,46 @@ function printMainFrame() {
         }
     );
 
-    function printTaskInfo(result) {
-        var completedLength = bytesToFileSize(result.completedLength);
-        var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
-        var totalLength = bytesToFileSize(result.totalLength);
-        var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-        var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-        var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        if (result.bittorrent) {
-            var connections = result.numSeeders + ' (' + result.connections + ')';
-            var uploadShow = 'inline-block';
-            var taskUrl = '';
-            if (result.bittorrent.info) {
-                var taskName = result.bittorrent.info.name;
+    function printTaskQueue(queue) {
+        var taskInfo = '';
+        queue.forEach(result => {
+            var completedLength = bytesToFileSize(result.completedLength);
+            var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
+            var totalLength = bytesToFileSize(result.totalLength);
+            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
+            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
+            var fileName = result.files[0].path.split('/').pop();
+            if (result.bittorrent) {
+                var taskUrl = '';
+                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
+                var connections = result.numSeeders + ' (' + result.connections + ')';
+                var uploadShow = 'inline-block';
+                var retryButton = 'none';
             }
-        }
-        else {
-            connections = result.connections;
-            uploadShow = 'none';
-            taskUrl = result.files[0].uris[0].uri;
-            if (['error', 'removed'].includes(result.status)) {
-                var retryButton = 'inline-block';
+            else {
+                taskUrl = result.files[0].uris[0].uri;
+                taskName = fileName || taskUrl;
+                connections = result.connections;
+                uploadShow = 'none';
+                retryButton = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
             }
-        }
-        taskName = taskName || result.files[0].path.split('/').pop() || taskUrl
-        retryButton = retryButton || 'none';
-        return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
-        +           '<div class="taskBody">'
-        +               '<div class="title">' + taskName + '</div>'
-        +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
-        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + uploadShow + '">⏫ ' + uploadSpeed + '</span>'
-        +           '</div>'
-        +           '<div class="taskMenu">'
-        +               '<span class="button" id="remove_btn">❌</span>'
-        +               '<span class="button" id="invest_btn">🔍</span>'
-        +               '<span class="button" id="retry_btn" style="display: ' + retryButton + '">🌌</span>'
-        +           '</div>'
-        +           '<div id="fancybar" class="' + result.status + 'Box">'
-        +               '<div id="fancybar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
-        +           '</div>'
-        +       '</div>';
+            taskInfo += '\
+            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">\
+                <div class="taskBody">\
+                    <div class="title">' + taskName + '</div>\
+                    <span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>\
+                    <span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + uploadShow + '">⏫ ' + uploadSpeed + '</span>\
+                </div><div class="taskMenu">\
+                    <span class="button" id="remove_btn">❌</span>\
+                    <span class="button" id="invest_btn">🔍</span>\
+                    <span class="button" id="retry_btn" style="display: ' + retryButton + '">🌌</span>\
+                </div><div id="fancybar" class="' + result.status + 'Box">\
+                    <div id="fancybar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>\
+                </div>\
+            </div>';
+        });
+        return taskInfo;
     }
 }
 
