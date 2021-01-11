@@ -35,13 +35,10 @@ iframe {
     border: 2px inset #C33;
 }
 
-input, textarea, select {
-    font-size: 15px;
-}
-
 input, textarea {
+    font-size: 15px;
     width: calc(100% - 15px);
-    padding: 5px;
+    padding: 3px 5px;
     resize: none;
 }
 

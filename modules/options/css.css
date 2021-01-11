@@ -1,5 +1,4 @@
 body {
-    margin: 8px;
     width: 430px;
 }
 
@@ -8,7 +7,7 @@ textarea {
 }
 
 select {
-    padding: 5px 2px;
+    padding: 4px 2px;
 }
 
 .manager {
