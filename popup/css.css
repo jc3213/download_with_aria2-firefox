@@ -52,7 +52,7 @@ input, textarea {
 .taskInfo {
     border: 1px outset #CCC;
     padding: 5px;
-    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .taskBody {
