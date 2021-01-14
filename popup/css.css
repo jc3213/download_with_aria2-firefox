@@ -49,13 +49,10 @@ input, textarea {
     overflow-y: auto;
 }
 
-#taskQueue div:nth-child(n+2) {
-    margin-top: 5px;
-}
-
 .taskInfo {
     border: 1px outset #CCC;
     padding: 5px;
+    margin-top: 5px;
 }
 
 .taskBody {
