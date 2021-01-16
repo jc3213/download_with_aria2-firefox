@@ -49,7 +49,7 @@ function jsonRPCRequest(request, success, failure) {
         var loop = url.match(/\[[^\[\]]+\]/g);
         var log = [];
         if (loop) {
-            loop.map(item => {
+            loop.forEach(item => {
                 if (item.match(/\[\d+-\d+\]/)) {
                     log.push(item);
                 }
