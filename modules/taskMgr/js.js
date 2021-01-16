@@ -25,9 +25,9 @@ function printTaskDetails() {
             }
             document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
-            document.getElementById('optionDownload').disabled = complete;
-            document.getElementById('optionUpload').disabled = !result.bittorrent || complete;
-            document.getElementById('optionProxy').disabled = result.bittorrent || complete;
+            document.getElementById('max-download-limit').disabled = complete;
+            document.getElementById('max-upload-limit').disabled = !result.bittorrent || complete;
+            document.getElementById('all-proxy').disabled = result.bittorrent || complete;
             document.getElementById('taskFiles').innerHTML = printFileInfo(result.files);
         }
     );
@@ -46,11 +46,11 @@ function printTaskDetails() {
 }
 
 var taskOptions = [
-    {id: 'optionDownload', name: 'max-download-limit', value: '0'},
-    {id: 'optionUpload', name: 'max-upload-limit', value: '0'},
-    {id: 'optionProxy', name: 'all-proxy', value: '' }
+    {id: 'max-download-limit', value: '0'},
+    {id: 'max-upload-limit', value: '0'},
+    {id: 'all-proxy', value: '' }
 ];
-taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.name, event.target.value, item.value)));
+taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.id, event.target.value, item.value)));
 
 function changeTaskOption(name, value, initial) {
     var options = {};
@@ -62,7 +62,7 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid: gid},
         (result) => {
-            taskOptions.forEach(item => { document.getElementById(item.id).value = result[item.name] || item.value; });
+            taskOptions.forEach(item => { document.getElementById(item.id).value = result[item.id] || item.value; });
         }
     );
 }

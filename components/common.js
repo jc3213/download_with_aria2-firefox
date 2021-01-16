@@ -65,19 +65,18 @@ function jsonRPCRequest(request, success, failure) {
     }
 }
 
-function downWithAria2(session) {
-    var options = session.options || {};
-    if (session.bypass) {
+function downWithAria2(session, options = {}, bypass = false) {
+    if (bypass) {
         return sendRPCRequest();
-    }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
-        options['all-proxy'] = localStorage['allproxy'];
     }
     if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
     else if (localStorage['output'] === '2' && localStorage['folder']) {
         options['dir'] = localStorage['folder'];
+    }
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
+        options['all-proxy'] = localStorage['allproxy'];
     }
     options['header'] = ['User-Agent: ' + localStorage['useragent']];
     if (!session.referer) {

@@ -104,7 +104,7 @@ function printMainFrame() {
                 retryButton = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
             }
             taskInfo += '\
-            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">\
+            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" url="' + taskUrl +'">\
                 <div class="taskBody">\
                     <div class="title">' + taskName + '</div>\
                     <span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>\
@@ -123,9 +123,10 @@ function printMainFrame() {
 }
 
 document.getElementById('taskQueue').addEventListener('click', (event) => {
-    var status;
-    var gid;
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) { gid = item.getAttribute('gid'); status = item.getAttribute('status'); } });
+    var task = event.target.parentNode.parentNode;
+    var gid = task.getAttribute('gid');
+    var status = task.getAttribute('status');
+    var url = task.getAttribute('url');
 
     if (event.target.id === 'remove_btn') {
         if (['active', 'waiting', 'paused'].includes(status)) {
@@ -144,11 +145,10 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     }
     else if (event.target.id === 'retry_btn') {
         jsonRPCRequest([
-                {method: 'aria2.getFiles', gid: gid},
                 {method: 'aria2.getOption', gid: gid}
-            ], (files, options) => {
+            ], (options) => {
                 jsonRPCRequest({method: 'aria2.removeDownloadResult', gid: gid}, () => {
-                    downWithAria2({url: files[0].uris[0].uri, options: options, bypass: true});
+                    downWithAria2({url}, options, true);
                 });
             }
         );
