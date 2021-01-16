@@ -52,8 +52,7 @@ var taskOptions = [
 ];
 taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.id, event.target.value || item.value)));
 
-function changeTaskOption(name, value) {
-    var options = {};
+function changeTaskOption(name, value, options = {}) {
     options[name] = value;
     jsonRPCRequest({method: 'aria2.changeOption', gid, options}, printTaskOption);
 }
