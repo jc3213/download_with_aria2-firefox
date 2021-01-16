@@ -151,10 +151,10 @@ function numberToTimeFormat(number) {
     if (isNaN(number) || number === Infinity) {
         return '∞';
     }
-    var days = (number / 86400 | 0);
-    var hours = (number / 3600 - days * 24 | 0);
-    var minutes = (number / 60 - days * 1440 - hours * 60 | 0);
-    var seconds = (number - days * 86400 - hours * 3600 - minutes * 60 | 0);
+    var days = number / 86400 | 0;
+    var hours = number / 3600 - days * 24 | 0;
+    var minutes = number / 60 - days * 1440 - hours * 60 | 0;
+    var seconds = number - days * 86400 - hours * 3600 - minutes * 60 | 0;
     return (days > 0 ? days + '<sub>d</sub>' : '')
     +      (hours > 0 ? hours + '<sub>h</sub>' : '')
     +      (minutes > 0 ? minutes + '<sub>m</sub>' : '')
