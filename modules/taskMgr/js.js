@@ -11,7 +11,7 @@ window.addEventListener('message', (event) => {
 
 function printTaskDetails() {
     jsonRPCRequest(
-        {method: 'aria2.tellStatus', gid: gid},
+        {method: 'aria2.tellStatus', gid},
         (result) => {
             var complete = result.status === 'complete';
             var fileName = result.files[0].path.split('/').pop();
@@ -35,7 +35,7 @@ function printTaskDetails() {
     function printFileInfo(files) {
         var fileInfo = '<table>';
         files.forEach(file => {
-            var filename = (file.path || url).split('/').pop();
+            var filename = file.path.split('/').pop();
             var filePath = file.path.replace(/\//g, '\\');
             var fileSize = bytesToFileSize(file.length);
             var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100).toString() + '%';
@@ -50,19 +50,19 @@ var taskOptions = [
     {id: 'max-upload-limit', value: '0'},
     {id: 'all-proxy', value: '' }
 ];
-taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.id, event.target.value, item.value)));
+taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.id, event.target.value || item.value)));
 
-function changeTaskOption(name, value, initial) {
+function changeTaskOption(name, value) {
     var options = {};
-    options[name] = value || initial;
-    jsonRPCRequest({method: 'aria2.changeOption', gid: gid, options: options}, printTaskOption);
+    options[name] = value;
+    jsonRPCRequest({method: 'aria2.changeOption', gid, options}, printTaskOption);
 }
 
 function printTaskOption() {
     jsonRPCRequest(
-        {method: 'aria2.getOption', gid: gid},
-        (result) => {
-            taskOptions.forEach(item => { document.getElementById(item.id).value = result[item.id] || item.value; });
+        {method: 'aria2.getOption', gid},
+        (options) => {
+            taskOptions.forEach(item => { document.getElementById(item.id).value = options[item.id] || item.value; });
         }
     );
 }
