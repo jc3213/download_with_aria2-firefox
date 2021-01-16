@@ -9,7 +9,7 @@ function jsonRPCRequest(request, success, failure) {
             var result = response[0].result;
             var error = response[0].error;
             if (result && typeof success === 'function') {
-                success(...response.map(item => item = item.result));
+                success(...response.map(item => item.result));
             }
             if (error && typeof failure === 'function') {
                 failure(error.message);
