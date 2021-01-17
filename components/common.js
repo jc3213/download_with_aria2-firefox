@@ -82,9 +82,11 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.referer) {
         return sendRPCRequest();
     }
+    options['header'].push('Referer: ' + session.referer);
+    var cookie = 'Cookie:';
     browser.cookies.getAll({url: session.referer}, (cookies) => {
-        options.header.push('Referer: ' + session.referer);
-        options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
+        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
+        options['header'].push(cookie);
         sendRPCRequest();
     });
 
