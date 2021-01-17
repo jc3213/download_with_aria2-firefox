@@ -92,7 +92,7 @@ function downWithAria2(session, options = {}, bypass = false) {
 
     function sendRPCRequest() {
         jsonRPCRequest(
-            {method: 'aria2.addUri', url: session.url, options: options},
+            {method: 'aria2.addUri', url: session.url, options},
             (result) => {
                 showNotification('Downloading', session.url);
             },
