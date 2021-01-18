@@ -141,7 +141,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         jsonRPCRequest({method, gid});
     }
     else if (event.target.id === 'invest_btn') {
-        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => event.target.contentWindow.postMessage(gid)});
+        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => event.target.contentWindow.postMessage({gid, url})});
     }
     else if (event.target.id === 'retry_btn') {
         jsonRPCRequest([

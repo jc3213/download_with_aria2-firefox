@@ -3,7 +3,8 @@ var url;
 var taskManager;
 
 window.addEventListener('message', (event) => {
-    gid = event.data;
+    gid = event.data.gid;
+    url = event.data.url;
     printTaskOption();
     printTaskDetails();
     taskManager = setInterval(printTaskDetails, 1000);
@@ -16,12 +17,10 @@ function printTaskDetails() {
             var complete = result.status === 'complete';
             var fileName = result.files[0].path.split('/').pop();
             if (result.bittorrent) {
-                var taskUrl = '';
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
             }
             else {
-                url = taskUrl = result.files[0].uris[0].uri;
-                taskName = fileName || taskUrl;
+                taskName = fileName || url;
             }
             document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
