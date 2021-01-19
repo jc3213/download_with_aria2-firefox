@@ -24,8 +24,10 @@ document.getElementById('import').addEventListener('click', (event) => document.
 document.getElementById('reader').addEventListener('change', (event) => {
     var reader = new FileReader();
     reader.readAsText(event.target.files[0]);
-    reader.onload = () => restoreSettings(reader.result, 'install');
-    location.reload();
+    reader.onload = () => {
+        restoreSettings(reader.result);
+        location.reload();
+    };
 });
 
 [
