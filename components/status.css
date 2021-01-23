@@ -1,31 +1,35 @@
 .active {
-    background-color: #33C;
+    background-color: #33c;
 }
 
 .waiting, .paused {
-    background-color: #CC3;
+    background-color: #cc3;
 }
 
 .complete {
-    background-color: #3C3;
+    background-color: #3c3;
 }
 
 .error {
-    background-color: #C33;
+    background-color: #c33;
 }
 
 .removed {
-    background-color: #C3C;
+    background-color: #c3c;
 }
 
 .active, .waiting, .paused, .error, .complete, .removed {
-    color: #FFF;
+    color: #fff;
 }
 
-.activeBox, .waitingBox, .pausedBox {
-    background-color: #3CC;
+.activeBox, .waitingBox {
+    background-color: #3cc;
+}
+
+.pausedBox {
+    background-color: #8cc;
 }
 
 .removedBox, .errorBox {
-    background-color: #CCC;
+    background-color: #ccc;
 }
