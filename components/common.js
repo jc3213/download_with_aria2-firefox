@@ -33,8 +33,8 @@ function jsonRPCRequest(request, success, failure) {
         if (request.gid) {
             json.params.push(request.gid);
         }
-        if (request.index) {
-            json.params.push(...request.index);
+        if (request.length) {
+            json.params.push(0, request.length);
         }
         if (request.url) {
             json.params.push([santilizeLoop(request.url)]);

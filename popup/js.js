@@ -56,8 +56,8 @@ function printMainFrame() {
     jsonRPCRequest([
             {method: 'aria2.getGlobalStat'},
             {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', index: [0, 999]},
-            {method: 'aria2.tellStopped', index: [0, 999]}
+            {method: 'aria2.tellWaiting', length: 999},
+            {method: 'aria2.tellStopped', length: 999}
         ],
         (global, active, waiting, stopped) => {
             document.getElementById('numActive').innerText = global.numActive;
@@ -123,12 +123,8 @@ function printMainFrame() {
 }
 
 document.getElementById('taskQueue').addEventListener('click', (event) => {
-    var task = event.target.parentNode.parentNode;
-    var gid = task.getAttribute('gid');
-    var status = task.getAttribute('status');
-    var url = task.getAttribute('url');
-
     if (event.target.id === 'remove_btn') {
+        var {gid, status} = getTaskInfo();
         if (['active', 'waiting', 'paused'].includes(status)) {
             var method = 'aria2.forceRemove';
         }
@@ -141,9 +137,11 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         jsonRPCRequest({method, gid});
     }
     else if (event.target.id === 'invest_btn') {
+        var {gid} = getTaskInfo();
         openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => event.target.contentWindow.postMessage({gid, url})});
     }
     else if (event.target.id === 'retry_btn') {
+        var {gid, url} = getTaskInfo();
         jsonRPCRequest([
                 {method: 'aria2.getOption', gid}
             ], (options) => {
@@ -154,6 +152,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         );
     }
     else if (event.target.id === 'fancybar') {
+        var {gid, status} = getTaskInfo();
         if (['active', 'waiting'].includes(status)) {
             var method = 'aria2.pause';
         }
@@ -164,6 +163,11 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
             return;
         }
         jsonRPCRequest({method, gid});
+    }
+
+    function getTaskInfo(info) {
+        document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) info = {url: item.getAttribute('url'), gid: item.getAttribute('gid'), status: item.getAttribute('status')}; });
+        return info;
     }
 });
 
