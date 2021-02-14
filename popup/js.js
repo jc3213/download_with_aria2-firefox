@@ -56,8 +56,8 @@ function printMainFrame() {
     jsonRPCRequest([
             {method: 'aria2.getGlobalStat'},
             {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', length: 999},
-            {method: 'aria2.tellStopped', length: 999}
+            {method: 'aria2.tellWaiting', index: [0, 999]},
+            {method: 'aria2.tellStopped', index: [0, 999]}
         ],
         (global, active, waiting, stopped) => {
             document.getElementById('numActive').innerText = global.numActive;
@@ -89,6 +89,7 @@ function printMainFrame() {
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
             var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
             var fileName = result.files[0].path.split('/').pop();
+            var errorMessage = result.errorCode ? ' <error style="color: #f00; font-size: 11px;">' + result.errorMessage + '</error>' : '';
             if (result.bittorrent) {
                 var taskUrl = '';
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
@@ -106,7 +107,7 @@ function printMainFrame() {
             taskInfo += '\
             <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" url="' + taskUrl +'">\
                 <div class="taskBody">\
-                    <div class="title">' + taskName + '</div>\
+                    <div class="title">' + taskName + errorMessage + '</div>\
                     <span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>\
                     <span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + uploadShow + '">⏫ ' + uploadSpeed + '</span>\
                 </div><div class="taskMenu">\
