@@ -6,7 +6,8 @@ document.getElementById('setProxy').addEventListener('click', (event) => {
 
 document.getElementById('submit_btn').addEventListener('click', (event) => {
     var referer = document.getElementById('taskReferer').value;
-    var proxy = document.getElementById('setProxy').checked ? document.getElementById('taskProxy').value : '';
+    var checked = document.getElementById('setProxy').checked;
+    var proxy = document.getElementById('taskProxy').value;
     var batch = document.getElementById('taskBatch').value;
     try {
         JSON.parse(batch).forEach(task => downloadNewTask(task));
@@ -21,7 +22,7 @@ document.getElementById('submit_btn').addEventListener('click', (event) => {
             return;
         }
         var url = task.url;
-        if (proxy) {
+        if (checked && proxy) {
             options['all-proxy'] = proxy;
         }
         if (task.filename) {
