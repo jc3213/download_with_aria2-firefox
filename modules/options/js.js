@@ -13,10 +13,10 @@ menuTabs.forEach(active => {
 
 document.getElementById('export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
-    var down = document.getElementById('download');
-    down.href = URL.createObjectURL(blob);
-    down.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
-    down.click();
+    var saver = document.getElementById('saver');
+    saver.href = URL.createObjectURL(blob);
+    saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
+    saver.click();
 });
 
 document.getElementById('import').addEventListener('click', (event) => document.getElementById('reader').click());
