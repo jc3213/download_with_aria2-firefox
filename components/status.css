@@ -22,14 +22,22 @@
     color: #fff;
 }
 
-.activeBox, .waitingBox {
-    background-color: #3cc;
+.activeBox {
+    background-color: #0cc;
+}
+
+.waitingBox {
+    background-color: #4cc;
 }
 
 .pausedBox {
     background-color: #8cc;
 }
 
-.removedBox, .errorBox {
+.removedBox {
     background-color: #ccc;
+}
+
+.errorBox {
+    background-color: #fcc;
 }
