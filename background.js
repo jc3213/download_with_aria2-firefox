@@ -8,15 +8,10 @@ browser.contextMenus.create({
 });
 
 browser.runtime.onInstalled.addListener((details) => {
-    if (details.reason === 'install' || details.previousVersion < '2.4000') {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/components/options.json', true);
-        xhr.onload = () => restoreSettings(xhr.response, details.reason);
-        xhr.send();
-        // special wrapper since preference has been changed
-        localStorage['folder'] = localStorage['directory'] || '';
-        localStorage.removeItem('directory');
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/components/options.json', true);
+    xhr.onload = () => restoreSettings(xhr.response);
+    xhr.send();
 });
 
 browser.downloads.onCreated.addListener((item) => {
