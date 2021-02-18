@@ -27,17 +27,17 @@
 }
 
 .waitingBox {
-    background-color: #4cc;
+    background-color: #488;
 }
 
 .pausedBox {
-    background-color: #8cc;
-}
-
-.removedBox {
     background-color: #ccc;
 }
 
+.removedBox {
+    background-color: #c88;
+}
+
 .errorBox {
-    background-color: #fcc;
+    background-color: #c44;
 }
