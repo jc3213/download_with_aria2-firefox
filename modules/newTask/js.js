@@ -10,7 +10,13 @@ document.getElementById('submit_btn').addEventListener('click', (event) => {
     var proxy = document.getElementById('taskProxy').value;
     var batch = document.getElementById('taskBatch').value;
     try {
-        JSON.parse(batch).forEach(task => downloadNewTask(task));
+        batch = JSON.parse(batch);
+        if (Array.isArray(batch)) {
+            batch.forEach(task => downloadNewTask(task));
+        }
+        else {
+            downloadNewTask(batch);
+        }
     }
     catch(error) {
         batch.split('\n').forEach(url => downloadNewTask({url}));
