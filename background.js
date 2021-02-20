@@ -19,10 +19,9 @@ browser.downloads.onCreated.addListener((item) => {
         return;
     }
 
-    var session = {url: item.url};
-    var out = item.filename.split(/[\/\\]+/).pop();
+    var session = {url: item.url, filename: item.filename.split(/[\/\\]+/).pop()};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.folder = item.filename.replace(out, '');
+        session.folder = item.filename.replace(session.filename, '');
         session.referer = item.referrer || tabs[0].url;
         session.host = new URL(session.referer).hostname;
         if (localStorage['capture'] === '2') {
@@ -45,7 +44,7 @@ browser.downloads.onCreated.addListener((item) => {
     function captureDownload() {
         browser.downloads.cancel(item.id, () => {
             browser.downloads.erase({id: item.id}, () => {
-                downWithAria2(session, {out});
+                downWithAria2(session);
             });
         });
     }

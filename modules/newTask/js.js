@@ -6,37 +6,19 @@ document.getElementById('setProxy').addEventListener('click', (event) => {
 
 document.getElementById('submit_btn').addEventListener('click', (event) => {
     var referer = document.getElementById('taskReferer').value;
-    var checked = document.getElementById('setProxy').checked;
-    var proxy = document.getElementById('taskProxy').value;
+    var options = {'all-proxy': document.getElementById('setProxy').checked ? document.getElementById('taskProxy').value : ''};
     var batch = document.getElementById('taskBatch').value;
     try {
         batch = JSON.parse(batch);
         if (Array.isArray(batch)) {
-            batch.forEach(task => downloadNewTask(task));
+            batch.forEach(task => downWithAria2({...task, referer}, options));
         }
         else {
-            downloadNewTask(batch);
+            downWithAria2({...batch, referer}, options);
         }
     }
     catch(error) {
-        batch.split('\n').forEach(url => downloadNewTask({url}));
+        batch.split('\n').forEach(url => downWithAria2({url, referer}, options));
     }
     parent.window.postMessage({id: 'newTaskWindow', delay: 1000});
-
-    function downloadNewTask(task, options = {}) {
-        if (!task.url) {
-            return;
-        }
-        var url = task.url;
-        if (checked && proxy) {
-            options['all-proxy'] = proxy;
-        }
-        if (task.filename) {
-            options['out'] = task.filename;
-        }
-        if (task.folder) {
-            options['dir'] = task.folder;
-        }
-        downWithAria2({url, referer}, options);
-    }
 });
