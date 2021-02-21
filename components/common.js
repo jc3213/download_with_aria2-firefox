@@ -150,11 +150,10 @@ function bytesToFileSize(bytes) {
     }
 }
 
-function numberToTimeFormat(number) {
+function numberToTimeFormat(number, time = '') {
     if (isNaN(number) || number === Infinity) {
         return '∞';
     }
-    var time = '';
     if (number > 86400) {
         var days = number / 86400 | 0;
         time += days + '<sub>d</sub>';
