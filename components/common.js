@@ -157,7 +157,7 @@ function numberToTimeFormat(number) {
     var time = '';
     if (number > 86400) {
         var days = number / 86400 | 0;
-        time += days + '<sub>d</sub';
+        time += days + '<sub>d</sub>';
         number -= days * 86400;
     }
     if (number > 3600) {
