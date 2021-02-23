@@ -24,44 +24,20 @@ function jsonRPCRequest(request, success, failure) {
     xhr.send(JSON.stringify(json));
 
     function createJSON(request) {
-        var json = {
-            jsonrpc: 2.0,
-            method: request.method,
-            id: '',
-            params: ['token:' + localStorage['token']]
-        };
+        var params = ['token:' + localStorage['token']];
         if (request.gid) {
-            json.params.push(request.gid);
+            params.push(request.gid);
         }
         if (request.index) {
-            json.params.push(...request.index);
+            params.push(...request.index);
         }
         if (request.url) {
-            json.params.push([santilizeLoop(request.url)]);
+            params.push([request.url.replace(/\[/g, '%5B').replace(/\]/g, '%5D')]);
         }
         if (request.options) {
-            json.params.push(request.options);
+            params.push(request.options);
         }
-        return json;
-    }
-
-    function santilizeLoop(url) {
-        var loop = url.match(/\[[^\[\]]+\]/g);
-        var log = [];
-        if (loop) {
-            loop.forEach(item => {
-                if (item.match(/\[\d+-\d+\]/)) {
-                    log.push(item);
-                }
-                else {
-                    url = url.replace(item, encodeURI(item));
-                }
-            });
-            if (JSON.stringify(loop) !== JSON.stringify(log)) {
-                return santilizeLoop(url);
-            }
-        }
-        return url;
+        return {jsonrpc: 2.0, method: request.method, id: '', params};
     }
 }
 
