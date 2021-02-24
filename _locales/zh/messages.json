@@ -21,7 +21,7 @@
         "message": "导入"
     },
     "option_default": {
-        "message": "禁用"
+        "message": "默认"
     },
     "option_disabled": {
         "message": "禁用"
@@ -134,47 +134,38 @@
     "popup_upload": {
         "message": "上传"
     },
-    "new_task_referer": {
+    "task_referer": {
         "message": "引用页"
     },
-    "new_task_referer_desc": {
+    "task_referer_desc": {
         "message": "为当前下载任务添加\"Referer\"及对应\"Cookies\"请求头"
     },
-    "new_task_batch": {
+    "task_batch": {
         "message": "下载链接"
     },
-    "new_task_batch_desc": {
+    "task_batch_desc": {
         "message": "需要下载的文件链接，每行一条"
     },
-    "new_task_proxy": {
-        "message": "使用代理"
-    },
-    "new_task_proxy_desc": {
-        "message": "为当前下载任务添加\"all-proxy\"选项"
-    },
-    "new_task_submit": {
-        "message": "确认"
-    },
-    "task_option_download": {
-        "message": "最大下载速度"
-    },
-    "task_option_download_desc": {
-        "message": "通过\"max-download-limit\"选项限制最大下载速度"
-    },
-    "task_option_upload": {
-        "message": "最大上传速度"
-    },
-    "task_option_upload_desc": {
-        "message": "通过\"max-upload-limit\"选项限制最大上传速度"
-    },
-    "task_option_proxy": {
+    "task_proxy": {
         "message": "代理服务器"
     },
-    "task_option_proxy_load": {
-        "message": "加载"
+    "task_proxy_desc": {
+        "message": "用于\"all-proxy\"选项的代理服务器, 仅限\"http\"或\"https\"协议"
     },
-    "task_option_proxy_desc": {
-        "message": "修改用于\"all-proxy\"选项的代理服务器, 仅限\"http\"或\"https\"协议"
+    "task_submit": {
+        "message": "确认"
+    },
+    "task_download": {
+        "message": "最大下载速度"
+    },
+    "task_download_desc": {
+        "message": "通过\"max-download-limit\"选项限制最大下载速度"
+    },
+    "task_upload": {
+        "message": "最大上传速度"
+    },
+    "task_upload_desc": {
+        "message": "通过\"max-upload-limit\"选项限制最大上传速度"
     },
     "warn_aria2_version": {
         "message": "Aria2版本"

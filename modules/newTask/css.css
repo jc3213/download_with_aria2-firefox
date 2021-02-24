@@ -10,9 +10,8 @@ body > div:nth-child(n+2) {
     height: 180px;
 }
 
-#setProxy {
-    width: 15px;
-    transform: scale(1.3);
+#taskProxy {
+    width: calc(100% - 85px);
 }
 
 #newTaskMenu {

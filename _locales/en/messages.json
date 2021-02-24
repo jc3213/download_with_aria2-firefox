@@ -134,47 +134,38 @@
     "popup_upload": {
         "message": "Upload"
     },
-    "new_task_referer": {
+    "task_referer": {
         "message": "Referer"
     },
-    "new_task_referer_desc": {
+    "task_referer_desc": {
         "message": "Add \"Referer\" and \"Cookies\" headers to this download session"
     },
-    "new_task_batch": {
+    "task_batch": {
         "message": "Download Urls"
     },
-    "new_task_batch_desc": {
+    "task_batch_desc": {
         "message": "The urls to be downloaded, one entry per line"
     },
-    "new_task_proxy": {
-        "message": "Use Proxy"
-    },
-    "new_task_proxy_desc": {
-        "message": "Add \"all-proxy\" option to this download session"
-    },
-    "new_task_submit": {
-        "message": "Submit"
-    },
-    "task_option_download": {
-        "message": "Max Download Speed"
-    },
-    "task_option_download_desc": {
-        "message": "Limit maximum download speed via \"max-download-limit\" option"
-    },
-    "task_option_upload": {
-        "message": "Max Upload Speed"
-    },
-    "task_option_upload_desc": {
-        "message": "Limit maximum upload speed via \"max-upload-limit\" option"
-    },
-    "task_option_proxy": {
+    "task_proxy": {
         "message": "Proxy Server"
     },
-    "task_option_proxy_load": {
-        "message": "Load"
+    "task_proxy_desc": {
+        "message": "Add \"all-proxy\" option to this download session"
     },
-    "task_option_proxy_desc": {
-        "message": "Change proxy server for \"all-proxy\" option, only \"http\" or \"https\" protocal"
+    "task_submit": {
+        "message": "Submit"
+    },
+    "task_download": {
+        "message": "Max Download Speed"
+    },
+    "task_download_desc": {
+        "message": "Limit maximum download speed via \"max-download-limit\" option"
+    },
+    "task_upload": {
+        "message": "Max Upload Speed"
+    },
+    "task_upload_desc": {
+        "message": "Limit maximum upload speed via \"max-upload-limit\" option"
     },
     "warn_aria2_version": {
         "message": "Aria2 Version"

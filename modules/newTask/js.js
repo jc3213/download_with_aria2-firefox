@@ -1,12 +1,10 @@
-document.getElementById('taskProxy').value = localStorage['allproxy'];
-
 document.getElementById('setProxy').addEventListener('click', (event) => {
-    document.getElementById('taskProxy').disabled = !document.getElementById('taskProxy').disabled;
+    document.getElementById('taskProxy').value = localStorage['allproxy'];
 });
 
 document.getElementById('submit_btn').addEventListener('click', (event) => {
     var referer = document.getElementById('taskReferer').value;
-    var options = {'all-proxy': document.getElementById('setProxy').checked ? document.getElementById('taskProxy').value : ''};
+    var options = {'all-proxy': document.getElementById('taskProxy').value};
     var batch = document.getElementById('taskBatch').value;
     try {
         batch = JSON.parse(batch);
