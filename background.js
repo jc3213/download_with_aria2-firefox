@@ -15,11 +15,11 @@ browser.runtime.onInstalled.addListener((details) => {
 });
 
 browser.downloads.onCreated.addListener((item) => {
-    if (localStorage['capture'] === '0' || item.url.match(/^(blob|data)/)) {
+    if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
 
-    var session = {url: item.url, filename: item.filename.split(/[\/\\]+/).pop()};
+    var session = {url: item.url, filename: item.filename.match([^\/\\]+$)[0]};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.replace(session.filename, '');
         session.referer = item.referrer || tabs[0].url;
@@ -33,7 +33,7 @@ browser.downloads.onCreated.addListener((item) => {
         if (localStorage['monitored'].includes(session.host)) {
             return captureDownload();
         }
-        if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
+        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
             return captureDownload();
         }
         if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
