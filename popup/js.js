@@ -1,4 +1,4 @@
-window.addEventListener('message', (event) => {
+addEventListener('message', (event) => {
     document.getElementById(event.data.id).style.display = 'none';
     setTimeout(() => document.getElementById(event.data.id).remove(), event.data.delay || 0);
     modules.forEach(item => { if (item.id === event.data.id) document.getElementById(item.button).classList.remove('checked'); });
@@ -58,8 +58,7 @@ function printMainFrame() {
             {method: 'aria2.tellActive'},
             {method: 'aria2.tellWaiting', index: [0, 999]},
             {method: 'aria2.tellStopped', index: [0, 999]}
-        ],
-        (global, active, waiting, stopped) => {
+        ], (global, active, waiting, stopped) => {
             document.getElementById('numActive').innerText = global.numActive;
             document.getElementById('numWaiting').innerText = global.numWaiting;
             document.getElementById('numStopped').innerText = global.numStopped;
@@ -79,16 +78,15 @@ function printMainFrame() {
         }
     );
 
-    function printTaskQueue(queue) {
-        var taskInfo = '';
+    function printTaskQueue(queue, taskInfo = '') {
         queue.forEach(result => {
             var completedLength = bytesToFileSize(result.completedLength);
             var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
             var totalLength = bytesToFileSize(result.totalLength);
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-            var fileName = result.files[0].path.split('/').pop();
+            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
+            var fileName = result.files[0].path.match(/[^\/]+$/)[0];
             var errorMessage = result.errorCode ? ' <error style="color: #f00; font-size: 11px;">' + result.errorMessage + '</error>' : '';
             if (result.bittorrent) {
                 var taskUrl = '';
