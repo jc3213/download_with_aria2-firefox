@@ -2,7 +2,7 @@ var gid;
 var url;
 var taskManager;
 
-window.addEventListener('message', (event) => {
+addEventListener('message', (event) => {
     gid = event.data.gid;
     url = event.data.url;
     printTaskOption();
@@ -15,7 +15,7 @@ function printTaskDetails() {
         {method: 'aria2.tellStatus', gid},
         (result) => {
             var complete = result.status === 'complete';
-            var fileName = result.files[0].path.split('/').pop();
+            var fileName = result.files[0].path.match(/[^\/]+$/)[0];
             if (result.bittorrent) {
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
             }
@@ -34,10 +34,10 @@ function printTaskDetails() {
     function printFileInfo(files) {
         var fileInfo = '<table>';
         files.forEach(file => {
-            var filename = file.path.split('/').pop();
+            var filename = file.path.match(/[^\/]+$/)[0];
             var filePath = file.path.replace(/\//g, '\\');
             var fileSize = bytesToFileSize(file.length);
-            var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100).toString() + '%';
+            var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
             fileInfo += '<tr><td>' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
         });
         return fileInfo + '</table>';
