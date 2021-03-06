@@ -9,10 +9,10 @@ document.getElementById('submit_btn').addEventListener('click', (event) => {
     try {
         batch = JSON.parse(batch);
         if (Array.isArray(batch)) {
-            batch.forEach(task => downWithAria2({...task, referer}, options));
+            batch.forEach(task => downWithAria2(referer ? {...task, referer} : task, options));
         }
         else {
-            downWithAria2({...batch, referer}, options);
+            downWithAria2(referer ? {...batch, referer} : batch, options);
         }
     }
     catch(error) {
