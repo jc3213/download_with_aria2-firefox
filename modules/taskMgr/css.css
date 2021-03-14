@@ -37,7 +37,7 @@ body > div:nth-child(n+2) {
     overflow-y: auto;
 }
 
-#taskFiles:active {
+#taskFiles tr:active {
     filter: opacity(60%);
 }
 
