@@ -1,5 +1,4 @@
 body {
-    margin: 8px;
     width: 430px;
 }
 
@@ -21,7 +20,7 @@ select {
 }
 
 .container div:nth-child(n+2) {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 #jsonrpc, #token {

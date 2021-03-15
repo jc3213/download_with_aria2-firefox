@@ -14,7 +14,7 @@ function printTaskDetails() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var complete = result.status === 'complete';
+            var completed = result.status === 'complete';
             var fileName = result.files[0].path.match(/[^\/]+$/)[0];
             if (result.bittorrent) {
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
@@ -24,9 +24,9 @@ function printTaskDetails() {
             }
             document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
-            document.getElementById('max-download-limit').disabled = complete;
-            document.getElementById('max-upload-limit').disabled = !result.bittorrent || complete;
-            document.getElementById('all-proxy').disabled = result.bittorrent || complete;
+            document.getElementById('max-download-limit').disabled = completed;
+            document.getElementById('max-upload-limit').disabled = !result.bittorrent || completed;
+            document.getElementById('all-proxy').disabled = completed;
             document.getElementById('taskFiles').innerHTML = printFileInfo(result.files);
         }
     );
