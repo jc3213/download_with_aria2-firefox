@@ -19,7 +19,7 @@ browser.downloads.onCreated.addListener((item) => {
         return;
     }
 
-    var session = {url: item.url, filename: item.filename.match([^\/\\]+$)[0]};
+    var session = {url: item.url, filename: item.filename.match(/[^\/\\]+$/)[0]};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.replace(session.filename, '');
         session.referer = item.referrer || tabs[0].url;
