@@ -56,8 +56,8 @@ function printMainFrame() {
     jsonRPCRequest([
             {method: 'aria2.getGlobalStat'},
             {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', index: [0, 999]},
-            {method: 'aria2.tellStopped', index: [0, 999]}
+            {method: 'aria2.tellWaiting', index: [0, 9999]},
+            {method: 'aria2.tellStopped', index: [0, 9999]}
         ], (global, active, waiting, stopped) => {
             document.getElementById('numActive').innerText = global.numActive;
             document.getElementById('numWaiting').innerText = global.numWaiting;
