@@ -15,7 +15,7 @@ function printTaskDetails() {
         {method: 'aria2.tellStatus', gid},
         (result) => {
             var completed = result.status === 'complete';
-            var fileName = result.files[0].path.match(/[^\/]+$/)[0];
+            var fileName = result.files[0].path ? result.files[0].path.match(/[^\/]+$/)[0] : '';
             if (result.bittorrent) {
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
             }
