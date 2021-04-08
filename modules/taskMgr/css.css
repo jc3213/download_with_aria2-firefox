@@ -11,32 +11,31 @@ body > div:nth-child(n+2) {
     overflow-y: hidden;
 }
 
-#taskOption > div:nth-child(-n+2) {
-    display: inline-block;
-    width: calc((100% - 15px) / 2);
-}
-
-#taskOption > div:nth-child(2) {
-    margin-left: 10px;
-}
-
-#taskOption > div:nth-child(n+3) {
+#taskOptions > div:nth-child(n+2) {
     margin-top: 10px;
 }
 
-#taskOption > div:nth-child(-n+2) input {
-    width: calc(100% - 45px);
-}
-
-#taskOption > div:nth-child(3) input {
-    width: calc(100% - 85px);
-}
-
-#taskDetails > div {
-    border: 1px #000 solid;
-    padding: 5px;
+.dual > div {
     display: inline-block;
-    width: 46.75%;
+    width: calc(50% - 8px);
+}
+
+.dual > div:nth-child(2) {
+    margin-left: 10px;
+}
+
+.dual .detail {
+    margin-left: 5px;
+    padding: 1px 5px;
+}
+
+.dual input {
+    text-align: right;
+    width: 78%;
+}
+
+#all-proxy {
+    width: calc(100% - 85px);
 }
 
 #taskUris, #taskFiles {
@@ -64,7 +63,7 @@ td {
 }
 
 #taskFiles {
-    height: 210px;
+    height: 260px;
     overflow-y: auto;
 }
 

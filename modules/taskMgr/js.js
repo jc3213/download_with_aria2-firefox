@@ -14,31 +14,25 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var completedLength = bytesToFileSize(result.completedLength);
-            var totalLength = bytesToFileSize(result.totalLength);
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
             var fileName = result.files[0].path ? result.files[0].path.match(/[^\/]+$/)[0] : '';
             var completed = result.status === 'complete';
-            document.getElementById('max-download-limit').disabled = completed;
-            document.getElementById('max-upload-limit').disabled = !result.bittorrent || completed;
-            document.getElementById('all-proxy').disabled = completed;
-            document.getElementById('taskProgress').innerText = completedLength + ' / ' + totalLength + ' (' + completeRatio + ')';
             if (result.bittorrent) {
+                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
                 document.getElementById('taskFiles').style.display = 'block';
                 document.getElementById('taskFiles').innerHTML = printTaskFiles(result.files);
-                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
-                var connections = result.numSeeders + ' / ' + result.connections;
-                downloadSpeed += ' / ' + uploadSpeed;
             }
             else {
+                taskName = fileName || task.files[0].uris[0].uri;
                 document.getElementById('taskUris').style.display = 'block';
                 document.getElementById('taskUris').innerHTML = printTaskUris(result.files[0].uris);
-                taskName = fileName || url;
-                connections = result.connections;
             }
-            document.getElementById('taskBandwidth').innerText = downloadSpeed + ' (' + connections + ')';
+            document.getElementById('download').innerText = downloadSpeed;
+            document.getElementById('max-download-limit').disabled = completed;
+            document.getElementById('upload').innerText = uploadSpeed;
+            document.getElementById('max-upload-limit').disabled = !result.bittorrent || completed;
+            document.getElementById('all-proxy').disabled = completed;
             document.getElementById('taskName').innerText = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
         }
