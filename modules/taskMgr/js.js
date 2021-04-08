@@ -1,10 +1,9 @@
 var gid;
-var url;
+var used = [];
 var taskManager;
 
 addEventListener('message', (event) => {
     gid = event.data.gid;
-    url = event.data.url;
     printTaskOption();
     printTaskManager();
     taskManager = setInterval(printTaskManager, 1000);
@@ -24,11 +23,11 @@ function printTaskManager() {
             else {
                 taskName = fileName || result.files[0].uris[0].uri;
                 document.querySelector('#taskUris').style.display = 'block';
-                document.querySelector('#taskUris > div').innerHTML = printTaskUris(result.files[0].uris);
+                document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = completed;
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
+            document.querySelector('#max-download-limit').disabled = completed;
             document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
             document.querySelector('#all-proxy').disabled = completed;
             document.querySelector('#taskName').innerText = taskName;
@@ -51,10 +50,11 @@ function printTaskManager() {
 
     function printTaskUris(uris) {
         var uriInfo = '<div><table>';
-        var uriUsed = [];
         uris.forEach(uri => {
-            if (uri.status === 'used' && !uriUsed.includes(uri.uri)) {
-                uriUsed.push(uri.uri);
+            if (!used.includes(uri.uri)) {
+                used.push(uri.uri);
+            }
+            if (uri.status === 'used') {
                 uriInfo += '<tr><td>' + uri.uri + '</td></tr>';
             }
         });
@@ -105,12 +105,4 @@ document.querySelector('#taskUris').addEventListener('click', (event) => {
         navigator.clipboard.writeText(url);
         showNotification(browser.i18n.getMessage('warn_url_copied'), url);
     }
-    else if (event.target.tagName === 'SPAN') {
-        // TODO: Add new uri to download
-    }
-});
-
-document.querySelector('#taskFiles').addEventListener('click', (event) => {
-    var fileIndex = event.target.parentNode.firstChild.innerText;
-    // TODO: Select/unselect files for bit-torrent download
 });
