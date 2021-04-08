@@ -32,25 +32,43 @@ body > div:nth-child(n+2) {
     width: calc(100% - 85px);
 }
 
-#taskFiles {
-    height: 260px;
-    overflow-y: auto;
+#taskDetails > div {
+    border: 1px #000 solid;
+    padding: 5px;
+    display: inline-block;
+    width: 46.75%;
 }
 
-#taskFiles tr:active {
-    filter: opacity(60%);
+#taskUris, #taskFiles {
+    display: none;
 }
 
-#taskFiles table {
+table {
     border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
 }
 
-#taskFiles td {
+td {
     border: 1px outset #CCC;
     padding: 5px;
     vertical-align: middle;
+}
+
+#taskUris {
+    margin-top: 15px;
+}
+
+#taskUris tr:active {
+    filter: opacity(60%);
+}
+
+#taskFiles {
+    height: 210px;
+    overflow-y: auto;
+}
+
+#taskFiles td {
     text-align: center;
 }
 
