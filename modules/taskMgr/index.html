@@ -12,12 +12,14 @@
             <div class="dual">
                 <div title="task_download_desc" i18n_title>
                     <span class="title" i18n>task_download</span>
+                    <br>
                     <span id="download" class="detail active">0 B/S</span>
                     <input id="max-download-limit" type="text">
                     B/s
                 </div>
                 <div title="task_upload_desc" i18n_title>
                     <span class="title" i18n>task_upload</span>
+                    <br>
                     <span id="upload" class="detail complete">0 B/s</span>
                     <input id="max-upload-limit" type="text">
                     B/s
@@ -29,7 +31,11 @@
                 <span id="loadProxy" class="button" i18n>option_default</span>
             </div>
         </div>
-        <div id="taskUris"></div>
+        <div id="taskUris">
+            <div></div>
+            <input type="text">
+            <span class="button" i18n>task_submit</span>
+        </div>
         <div id="taskFiles"></div>
     </body>
     <script src="/components/common.js"></script>

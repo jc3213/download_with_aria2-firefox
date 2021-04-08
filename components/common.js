@@ -94,12 +94,14 @@ function showNotification(title, message) {
         message: message || ''
     };
     browser.notifications.create(id, notification, () => {
-        setTimeout(() => browser.notifications.clear(id), 5000);
+        setTimeout(() => {
+            browser.notifications.clear(id);
+        }, 5000);
     });
 }
 
-function restoreSettings(json, update = true) {
-    var options = JSON.parse(json);
+function restoreSettings(textJSON, update = true) {
+    var options = JSON.parse(textJSON);
     Object.keys(options).forEach(key => {
         if (localStorage[key] && update) {
             return;

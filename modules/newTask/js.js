@@ -1,11 +1,11 @@
-document.getElementById('setProxy').addEventListener('click', (event) => {
-    document.getElementById('taskProxy').value = localStorage['allproxy'];
+document.querySelector('#setProxy').addEventListener('click', (event) => {
+    document.querySelector('#taskProxy').value = localStorage['allproxy'];
 });
 
-document.getElementById('submit_btn').addEventListener('click', (event) => {
-    var referer = document.getElementById('taskReferer').value;
-    var options = {'all-proxy': document.getElementById('taskProxy').value};
-    document.getElementById('taskBatch').value.split('\n').forEach(url => {
+document.querySelector('#submit_btn').addEventListener('click', (event) => {
+    var referer = document.querySelector('#taskReferer').value;
+    var options = {'all-proxy': document.querySelector('#taskProxy').value};
+    document.querySelector('#taskBatch').value.split('\n').forEach(url => {
         try {
             var session = JSON.parse(url);
             if (Array.isArray(session)) {

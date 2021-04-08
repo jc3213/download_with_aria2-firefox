@@ -10,7 +10,9 @@ browser.contextMenus.create({
 browser.runtime.onInstalled.addListener((details) => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/components/options.json', true);
-    xhr.onload = () => restoreSettings(xhr.response);
+    xhr.onload = () => {
+        restoreSettings(xhr.response);
+    };
     xhr.send();
 });
 
@@ -56,7 +58,7 @@ function displayActiveTaskNumber() {
         (result) => {
             browser.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
         }
-    )
+    );
 }
 
 browser.browserAction.setBadgeBackgroundColor({color: '#3CC'});

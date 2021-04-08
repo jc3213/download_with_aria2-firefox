@@ -25,16 +25,17 @@ body > div:nth-child(n+2) {
 }
 
 .dual .detail {
-    margin-left: 5px;
-    padding: 1px 5px;
+    width: 50%;
+    display: inline-block;
+    padding: 3px
 }
 
 .dual input {
     text-align: right;
-    width: 78%;
+    width: 25%;
 }
 
-#all-proxy {
+div > input {
     width: calc(100% - 85px);
 }
 
@@ -52,6 +53,14 @@ td {
     border: 1px outset #CCC;
     padding: 5px;
     vertical-align: middle;
+}
+
+#taskUris {
+    margin-top: 15px;
+}
+
+#taskUris div {
+    margin-bottom: 5px;
 }
 
 #taskUris tr:active {

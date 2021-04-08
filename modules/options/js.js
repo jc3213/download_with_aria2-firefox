@@ -7,21 +7,28 @@ menuTabs.forEach(active => {
     document.getElementById(active.button).addEventListener('click', (event) => {
         document.getElementById(active.button).classList.add('checked');
         document.getElementById(active.queue).style.display = 'block';
-        menuTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
+        menuTabs.forEach(item => {
+            if (item.queue !== active.queue) {
+                document.getElementById(item.queue).style.display = 'none';
+                document.getElementById(item.button).classList.remove('checked');
+            }
+        });
     });
 });
 
-document.getElementById('export').addEventListener('click', (event) => {
+document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
-    var saver = document.getElementById('saver');
+    var saver = document.querySelector('#saver');
     saver.href = URL.createObjectURL(blob);
     saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
     saver.click();
 });
 
-document.getElementById('import').addEventListener('click', (event) => document.getElementById('reader').click());
+document.querySelector('#import').addEventListener('click', (event) => {
+    document.querySelector('#reader').click();
+});
 
-document.getElementById('reader').addEventListener('change', (event) => {
+document.querySelector('#reader').addEventListener('change', (event) => {
     var reader = new FileReader();
     reader.readAsText(event.target.files[0]);
     reader.onload = () => {
@@ -47,10 +54,12 @@ document.getElementById('reader').addEventListener('change', (event) => {
 ].forEach(id => {
     var menu = document.getElementById(id);
     menu.value = localStorage[id];
-    menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
+    menu.addEventListener('change', (event) => {
+        localStorage[id] = event.target.value;
+    });
 });
 
-document.getElementById('verify').addEventListener('click', (event) => {
+document.querySelector('#verify').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
@@ -62,25 +71,25 @@ document.getElementById('verify').addEventListener('click', (event) => {
     );
 });
 
-document.getElementById('insight').addEventListener('click', (event) => {
+document.querySelector('#insight').addEventListener('click', (event) => {
     if (event.target.classList.contains('checked')) {
-        document.getElementById('token').setAttribute('type', 'password');
+        document.querySelector('#token').setAttribute('type', 'password');
     }
     else {
-        document.getElementById('token').setAttribute('type', 'text');
+        document.querySelector('#token').setAttribute('type', 'text');
     }
     event.target.classList.toggle('checked');
 });
 
-document.getElementById('output').addEventListener('change', downloadFolder);
+document.querySelector('#output').addEventListener('change', downloadFolder);
 downloadFolder();
 
-document.getElementById('capture').addEventListener('change', captureFilters);
+document.querySelector('#capture').addEventListener('change', captureFilters);
 captureFilters();
 
-document.getElementById('sizeEntry').addEventListener('change', calcFileSize);
+document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
 
-document.getElementById('sizeUnit').addEventListener('change', calcFileSize);
+document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
 
 function downloadFolder() {
     if (localStorage['output'] === '2') {
@@ -93,10 +102,10 @@ function downloadFolder() {
 
 function captureFilters() {
     if (localStorage['capture'] === '1') {
-        document.getElementById('captureFilters').style.display = 'block';
+        document.querySelector('#captureFilters').style.display = 'block';
     }
     else {
-        document.getElementById('captureFilters').style.display = 'none';
+        document.querySelector('#captureFilters').style.display = 'none';
     }
 }
 

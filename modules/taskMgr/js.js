@@ -14,27 +14,25 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
             var fileName = result.files[0].path ? result.files[0].path.match(/[^\/]+$/)[0] : '';
             var completed = result.status === 'complete';
             if (result.bittorrent) {
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
-                document.getElementById('taskFiles').style.display = 'block';
-                document.getElementById('taskFiles').innerHTML = printTaskFiles(result.files);
+                document.querySelector('#taskFiles').style.display = 'block';
+                document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
             }
             else {
-                taskName = fileName || task.files[0].uris[0].uri;
-                document.getElementById('taskUris').style.display = 'block';
-                document.getElementById('taskUris').innerHTML = printTaskUris(result.files[0].uris);
+                taskName = fileName || result.files[0].uris[0].uri;
+                document.querySelector('#taskUris').style.display = 'block';
+                document.querySelector('#taskUris > div').innerHTML = printTaskUris(result.files[0].uris);
             }
-            document.getElementById('download').innerText = downloadSpeed;
-            document.getElementById('max-download-limit').disabled = completed;
-            document.getElementById('upload').innerText = uploadSpeed;
-            document.getElementById('max-upload-limit').disabled = !result.bittorrent || completed;
-            document.getElementById('all-proxy').disabled = completed;
-            document.getElementById('taskName').innerText = taskName;
-            document.getElementById('taskName').className = 'button title ' + result.status;
+            document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
+            document.querySelector('#max-download-limit').disabled = completed;
+            document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
+            document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
+            document.querySelector('#all-proxy').disabled = completed;
+            document.querySelector('#taskName').innerText = taskName;
+            document.querySelector('#taskName').className = 'button title ' + result.status;
         }
     );
 
@@ -45,7 +43,8 @@ function printTaskManager() {
             var filePath = file.path.replace(/\//g, '\\');
             var fileSize = bytesToFileSize(file.length);
             var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
-            fileInfo += '<tr><td>' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+            var status = file.selected ? 'active' : 'error';
+            fileInfo += '<tr><td class="' + status + '">' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
         });
         return fileInfo + '</table>';
     }
@@ -68,7 +67,11 @@ var taskOptions = [
     {id: 'max-upload-limit', value: '0'},
     {id: 'all-proxy', value: '' }
 ];
-taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.id, event.target.value || item.value)));
+taskOptions.forEach(option => {
+    document.getElementById(option.id).addEventListener('change', (event) => {
+        changeTaskOption(option.id, event.target.value || option.value);
+    });
+});
 
 function changeTaskOption(name, value, options = {}) {
     options[name] = value;
@@ -79,23 +82,35 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            taskOptions.forEach(item => { document.getElementById(item.id).value = options[item.id] || item.value; });
+            taskOptions.forEach(item => {
+                document.getElementById(item.id).value = options[item.id] || item.value;
+            });
         }
     );
 }
 
-document.getElementById('loadProxy').addEventListener('click', (event) => {
-    if (!document.getElementById('all-proxy').disabled) {
+document.querySelector('#loadProxy').addEventListener('click', (event) => {
+    if (!document.querySelector('#all-proxy').disabled) {
         changeTaskOption('all-proxy', localStorage['allproxy']);
     }
 });
 
-document.getElementById('taskName').addEventListener('click', (event) => {
+document.querySelector('#taskName').addEventListener('click', (event) => {
     parent.window.postMessage({id: 'taskMgrWindow'});
 });
 
-document.getElementById('taskUris').addEventListener('click', (event) => {
-    var url = event.target.innerText;
-    navigator.clipboard.writeText(url);
-    showNotification(browser.i18n.getMessage('warn_url_copied'), url);
+document.querySelector('#taskUris').addEventListener('click', (event) => {
+    if (event.target.tagName === 'TD') {
+        var url = event.target.innerText;
+        navigator.clipboard.writeText(url);
+        showNotification(browser.i18n.getMessage('warn_url_copied'), url);
+    }
+    else if (event.target.tagName === 'SPAN') {
+        // TODO: Add new uri to download
+    }
+});
+
+document.querySelector('#taskFiles').addEventListener('click', (event) => {
+    var fileIndex = event.target.parentNode.firstChild.innerText;
+    // TODO: Select/unselect files for bit-torrent download
 });

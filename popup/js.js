@@ -1,12 +1,20 @@
 addEventListener('message', (event) => {
     document.getElementById(event.data.id).style.display = 'none';
-    setTimeout(() => document.getElementById(event.data.id).remove(), event.data.delay || 0);
-    modules.forEach(item => { if (item.id === event.data.id) document.getElementById(item.button).classList.remove('checked'); });
+    setTimeout(() => {
+        document.getElementById(event.data.id).remove()
+    }, event.data.delay || 0);
+    modules.forEach(item => {
+        if (item.id === event.data.id) {
+            document.getElementById(item.button).classList.remove('checked');
+        }
+    });
 });
 
 var modules = [
     {button: 'newTask_btn', name: 'newTask', id: 'newTaskWindow'},
-    {button: 'options_btn', name: 'options', id: 'optionsWindow', onload: (event) => { event.target.contentDocument.querySelector('div.manager').style.display = 'none'; }}
+    {button: 'options_btn', name: 'options', id: 'optionsWindow', onload: (event) => {
+        event.target.contentDocument.querySelector('div.manager').style.display = 'none';
+    }}
 ];
 modules.forEach(module => {
     document.getElementById(module.button).addEventListener('click', (event) => {
@@ -38,11 +46,20 @@ var queueTabs = [
 queueTabs.forEach(active => {
     document.getElementById(active.button).addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
-            queueTabs.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'block'; });
+            queueTabs.forEach(item => {
+                if (item.queue !== active.queue) {
+                    document.getElementById(item.queue).style.display = 'block';
+                }
+            });
         }
         else {
             document.getElementById(active.queue).style.display = 'block';
-            queueTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
+            queueTabs.forEach(item => {
+                if (item.queue !== active.queue) {
+                    document.getElementById(item.queue).style.display = 'none';
+                    document.getElementById(item.button).classList.remove('checked');
+                }
+            });
         }
         event.target.classList.toggle('checked');
     });
@@ -54,29 +71,28 @@ document.getElementById('purdge_btn').addEventListener('click', (event) => {
 
 function printMainFrame() {
     jsonRPCRequest([
-            {method: 'aria2.getGlobalStat'},
-            {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', index: [0, 9999]},
-            {method: 'aria2.tellStopped', index: [0, 9999]}
-        ], (global, active, waiting, stopped) => {
-            document.getElementById('numActive').innerText = global.numActive;
-            document.getElementById('numWaiting').innerText = global.numWaiting;
-            document.getElementById('numStopped').innerText = global.numStopped;
-            document.getElementById('downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
-            document.getElementById('uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
-            document.getElementById('queueTabs').style.display = 'block';
-            document.getElementById('menuTop').style.display = 'block';
-            document.getElementById('networkStatus').style.display = 'none';
-            document.getElementById('activeQueue').innerHTML = printTaskQueue(active);
-            document.getElementById('waitingQueue').innerHTML = printTaskQueue(waiting);
-            document.getElementById('stoppedQueue').innerHTML = printTaskQueue(stopped);
-        }, (error, rpc) => {
-            document.getElementById('queueTabs').style.display = 'none';
-            document.getElementById('menuTop').style.display = 'none';
-            document.getElementById('networkStatus').innerText = error;
-            document.getElementById('networkStatus').style.display = 'block';
-        }
-    );
+        {method: 'aria2.getGlobalStat'},
+        {method: 'aria2.tellActive'},
+        {method: 'aria2.tellWaiting', index: [0, 9999]},
+        {method: 'aria2.tellStopped', index: [0, 9999]}
+    ], (global, active, waiting, stopped) => {
+        document.getElementById('numActive').innerText = global.numActive;
+        document.getElementById('numWaiting').innerText = global.numWaiting;
+        document.getElementById('numStopped').innerText = global.numStopped;
+        document.getElementById('downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
+        document.getElementById('uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
+        document.getElementById('queueTabs').style.display = 'block';
+        document.getElementById('menuTop').style.display = 'block';
+        document.getElementById('networkStatus').style.display = 'none';
+        document.getElementById('activeQueue').innerHTML = printTaskQueue(active);
+        document.getElementById('waitingQueue').innerHTML = printTaskQueue(waiting);
+        document.getElementById('stoppedQueue').innerHTML = printTaskQueue(stopped);
+    }, (error, rpc) => {
+        document.getElementById('queueTabs').style.display = 'none';
+        document.getElementById('menuTop').style.display = 'none';
+        document.getElementById('networkStatus').innerText = error;
+        document.getElementById('networkStatus').style.display = 'block';
+    });
 
     function printTaskQueue(queue, taskInfo = '') {
         queue.forEach(result => {
@@ -137,7 +153,9 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     }
     else if (event.target.id === 'invest_btn') {
         var {gid, url} = getTaskInfo();
-        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => event.target.contentWindow.postMessage({gid, url})});
+        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => {
+            event.target.contentWindow.postMessage({gid, url});
+        }});
     }
     else if (event.target.id === 'retry_btn') {
         var {gid, url} = getTaskInfo();
@@ -165,7 +183,11 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     }
 
     function getTaskInfo(info) {
-        document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) info = {url: item.getAttribute('url'), gid: item.getAttribute('gid'), status: item.getAttribute('status')}; });
+        document.querySelectorAll('div.taskInfo').forEach(item => {
+            if (item.contains(event.target)) {
+                info = {url: item.getAttribute('url'), gid: item.getAttribute('gid'), status: item.getAttribute('status')};
+            }
+        });
         return info;
     }
 });
