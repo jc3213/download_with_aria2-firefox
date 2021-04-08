@@ -54,10 +54,6 @@ td {
     vertical-align: middle;
 }
 
-#taskUris {
-    margin-top: 15px;
-}
-
 #taskUris tr:active {
     filter: opacity(60%);
 }
