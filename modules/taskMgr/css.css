@@ -20,8 +20,8 @@ body > div:nth-child(n+2) {
     width: calc(50% - 8px);
 }
 
-.dual > div:nth-child(2) {
-    margin-left: 10px;
+.dual > div:first-child {
+    margin-right: 10px;
 }
 
 .dual .detail {
@@ -68,7 +68,7 @@ td {
 }
 
 #taskFiles {
-    height: 250px;
+    height: 260px;
     overflow-y: auto;
 }
 
