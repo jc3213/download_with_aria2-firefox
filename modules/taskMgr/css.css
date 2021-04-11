@@ -62,7 +62,7 @@ td {
     max-height: 215px;
 }
 
-#taskUris tr:active {
+#taskUris td:active, #taskFiles td:nth-child(1):active {
     filter: opacity(60%);
 }
 

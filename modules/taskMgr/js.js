@@ -42,7 +42,7 @@ function printTaskManager() {
             var filePath = file.path.replace(/\//g, '\\');
             var fileSize = bytesToFileSize(file.length);
             var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
-            var status = file.selected ? 'active' : 'error';
+            var status = file.selected === 'true' ? 'active' : 'error';
             fileInfo += '<tr><td class="' + status + '">' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
         });
         return fileInfo + '</table>';
@@ -117,5 +117,21 @@ document.querySelector('#taskAddUri > span').addEventListener('click', (event) =
                 document.querySelector('#taskAddUri > input').value = '';
             }
         );
+    }
+});
+
+document.querySelector('#taskFiles').addEventListener('click', (event) => {
+    if (event.target.className) {
+        var checked = [];
+        var unchecked = [];
+        document.querySelectorAll('td:nth-child(1)').forEach(item => {
+            if (item === event.target) {
+                item.className === 'active' ? unchecked.push(item.innerText) : checked.push(item.innerText);
+            }
+            else {
+                item.className === 'active' ? checked.push(item.innerText) : unchecked.push(item.innerText);
+            }
+        });
+        jsonRPCRequest({method: 'aria2.changeOption', gid, options: {"select-file": checked.join()}});
     }
 });
