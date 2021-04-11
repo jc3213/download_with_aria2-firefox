@@ -165,7 +165,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
             ], (files, options) => {
                 var url = [];
                 files[0].uris.forEach(uri => {
-                    if (uri.status === 'used' && !url.includes(uri.uri)) {
+                    if (!url.includes(uri.uri)) {
                         url.push(uri.uri);
                     }
                 });
