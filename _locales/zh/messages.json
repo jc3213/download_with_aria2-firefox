@@ -47,9 +47,6 @@
     "option_folder": {
         "message": "下载目录"
     },
-    "option_folder_default": {
-        "message": "默认"
-    },
     "option_folder_browser": {
         "message": "浏览器"
     },
@@ -156,21 +153,18 @@
         "message": "确认"
     },
     "task_download": {
-        "message": "最大下载速度"
+        "message": "下载速度"
     },
     "task_download_desc": {
         "message": "通过\"max-download-limit\"选项限制最大下载速度"
     },
     "task_upload": {
-        "message": "最大上传速度"
+        "message": "上传速度"
     },
     "task_upload_desc": {
         "message": "通过\"max-upload-limit\"选项限制最大上传速度"
     },
     "warn_aria2_version": {
         "message": "Aria2版本"
-    },
-    "warn_url_copied": {
-        "message": "已复制链接"
     }
 }

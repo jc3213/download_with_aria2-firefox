@@ -2,7 +2,7 @@ addEventListener('message', (event) => {
     document.getElementById(event.data.id).style.display = 'none';
     setTimeout(() => {
         document.getElementById(event.data.id).remove()
-    }, event.data.delay || 0);
+    }, event.data.delay | 0);
     modules.forEach(item => {
         if (item.id === event.data.id) {
             document.getElementById(item.button).classList.remove('checked');
@@ -119,7 +119,7 @@ function printMainFrame() {
                 retryButton = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
             }
             taskInfo += '\
-            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" url="' + taskUrl +'">\
+            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">\
                 <div class="taskBody">\
                     <div class="title">' + taskName + errorMessage + '</div>\
                     <span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>\
@@ -152,16 +152,23 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         jsonRPCRequest({method, gid});
     }
     else if (event.target.id === 'invest_btn') {
-        var {gid, url} = getTaskInfo();
+        var {gid} = getTaskInfo();
         openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => {
-            event.target.contentWindow.postMessage({gid, url});
+            event.target.contentWindow.postMessage({gid});
         }});
     }
     else if (event.target.id === 'retry_btn') {
-        var {gid, url} = getTaskInfo();
+        var {gid} = getTaskInfo();
         jsonRPCRequest([
+                {method: 'aria2.getFiles', gid},
                 {method: 'aria2.getOption', gid}
-            ], (options) => {
+            ], (files, options) => {
+                var url = [];
+                files[0].uris.forEach(uri => {
+                    if (uri.status === 'used' && !url.includes(uri.uri)) {
+                        url.push(uri.uri);
+                    }
+                });
                 jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
                     downWithAria2({url}, options, true);
                 });
@@ -185,7 +192,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     function getTaskInfo(info) {
         document.querySelectorAll('div.taskInfo').forEach(item => {
             if (item.contains(event.target)) {
-                info = {url: item.getAttribute('url'), gid: item.getAttribute('gid'), status: item.getAttribute('status')};
+                info = {gid: item.getAttribute('gid'), status: item.getAttribute('status')};
             }
         });
         return info;

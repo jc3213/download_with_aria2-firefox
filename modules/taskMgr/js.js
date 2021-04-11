@@ -1,5 +1,4 @@
 var gid;
-var used = [];
 var taskManager;
 
 addEventListener('message', (event) => {
@@ -23,6 +22,7 @@ function printTaskManager() {
             else {
                 taskName = fileName || result.files[0].uris[0].uri;
                 document.querySelector('#taskUris').style.display = 'block';
+                document.querySelector('#taskAddUri').style.display = 'block';
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
@@ -49,16 +49,17 @@ function printTaskManager() {
     }
 
     function printTaskUris(uris) {
-        var uriInfo = '<div><table>';
+        var uriInfo = '<table>';
+        var url = [];
+        var index = 1
         uris.forEach(uri => {
-            if (!used.includes(uri.uri)) {
-                used.push(uri.uri);
-            }
-            if (uri.status === 'used') {
-                uriInfo += '<tr><td>' + uri.uri + '</td></tr>';
+            if (!url.includes(uri.uri)) {
+                var status = uri.status === 'used' ? 'active' : 'waiting';
+                url.push(uri.uri);
+                uriInfo += '<tr><td class="' + status + '">' + uri.uri + '</td></tr>';
             }
         });
-        return uriInfo + '</table></div>';
+        return uriInfo + '</table>';
     }
 }
 
@@ -100,9 +101,22 @@ document.querySelector('#taskName').addEventListener('click', (event) => {
 });
 
 document.querySelector('#taskUris').addEventListener('click', (event) => {
-    if (event.target.tagName === 'TD') {
-        var url = event.target.innerText;
-        navigator.clipboard.writeText(url);
-        showNotification(browser.i18n.getMessage('warn_url_copied'), url);
+    if (event.ctrlKey) {
+        jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
+    }
+    else {
+        navigator.clipboard.writeText(event.target.innerText);
+    }
+});
+
+document.querySelector('#taskAddUri > span').addEventListener('click', (event) => {
+    var add = document.querySelector('#taskAddUri > input').value;
+    if (add.match(/^https?:\/\/.*/)) {
+        jsonRPCRequest(
+            {method: 'aria2.changeUri', gid, add},
+            (result) => {
+                document.querySelector('#taskAddUri > input').value = '';
+            }
+        );
     }
 });

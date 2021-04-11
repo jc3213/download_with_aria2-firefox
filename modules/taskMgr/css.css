@@ -6,6 +6,10 @@ body > div:nth-child(n+2) {
     margin-top: 15px;
 }
 
+div > input {
+    width: calc(100% - 55px);
+}
+
 #taskName {
     height: 45px;
     overflow-y: hidden;
@@ -25,22 +29,19 @@ body > div:nth-child(n+2) {
 }
 
 .dual .detail {
-    width: 50%;
+    width: 40%;
     display: inline-block;
     padding: 3px
 }
 
 .dual input {
     text-align: right;
-    width: 25%;
+    width: 35%;
 }
 
-div > input {
-    width: calc(100% - 85px);
-}
-
-#taskUris, #taskFiles {
+#taskUris, #taskAddUri, #taskFiles {
     display: none;
+    overflow-y: auto;
 }
 
 table {
@@ -52,28 +53,29 @@ table {
 td {
     border: 1px outset #CCC;
     padding: 5px;
+    word-break: break-word;
+    text-align: center;
     vertical-align: middle;
 }
 
 #taskUris {
-    margin-top: 15px;
-}
-
-#taskUris div {
-    margin-bottom: 5px;
+    max-height: 215px;
 }
 
 #taskUris tr:active {
     filter: opacity(60%);
 }
 
-#taskFiles {
-    height: 260px;
-    overflow-y: auto;
+#taskUris td {
+    text-align: left;
 }
 
-#taskFiles td {
-    text-align: center;
+#taskAddUri {
+    padding: 1px;
+}
+
+#taskFiles {
+    height: 260px;
 }
 
 #taskFiles td:nth-child(1) {
@@ -83,7 +85,6 @@ td {
 #taskFiles td:nth-child(2) {
     text-align: left;
     width: calc(100% - 140px);
-    word-break: break-word;
 }
 
 #taskFiles td:nth-child(3) {

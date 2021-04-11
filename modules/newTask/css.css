@@ -11,7 +11,7 @@ body > div:nth-child(n+2) {
 }
 
 #taskProxy {
-    width: calc(100% - 85px);
+    width: calc(100% - 55px);
 }
 
 #newTaskMenu {

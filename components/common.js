@@ -32,7 +32,15 @@ function jsonRPCRequest(request, success, failure) {
             params.push(...request.index);
         }
         if (request.url) {
-            params.push([request.url.replace(/\[/g, '%5B').replace(/\]/g, '%5D')]);
+            params.push(request.url);
+        }
+        if (request.add) {
+            params.shift();
+            params.push(1, [], [request.add]);
+        }
+        if (request.remove) {
+            params.shift();
+            params.push(1, [request.remove], []);
         }
         if (request.options) {
             params.push(request.options);
@@ -45,6 +53,7 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.url) {
         return;
     }
+    var url = Array.isArray(session.url) ? session.url.map(url => encodeLoopRange(url)) : [encodeLoopRange(session.url)];
     if (bypass) {
         return sendRPCRequest();
     }
@@ -74,14 +83,18 @@ function downWithAria2(session, options = {}, bypass = false) {
 
     function sendRPCRequest() {
         jsonRPCRequest(
-            {method: 'aria2.addUri', url: session.url, options},
+            {method: 'aria2.addUri', url, options},
             (result) => {
-                showNotification('Downloading', session.url);
+                showNotification('Downloading', url.join('\n'));
             },
             (error, rpc) => {
-                showNotification(error, rpc || session.url);
+                showNotification(error, rpc || url.join('\n'));
             }
         );
+    }
+
+    function encodeLoopRange(url) {
+        return url.replace(/\[/g, '%5B').replace(/\]/g, '%5D');
     }
 }
 

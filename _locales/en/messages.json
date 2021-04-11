@@ -47,9 +47,6 @@
     "option_folder": {
         "message": "Download Folder"
     },
-    "option_folder_default": {
-        "message": "Default"
-    },
     "option_folder_browser": {
         "message": "Browser"
     },
@@ -156,21 +153,18 @@
         "message": "Submit"
     },
     "task_download": {
-        "message": "Max Download Speed"
+        "message": "Download Speed"
     },
     "task_download_desc": {
         "message": "Limit maximum download speed via \"max-download-limit\" option"
     },
     "task_upload": {
-        "message": "Max Upload Speed"
+        "message": "Upload Speed"
     },
     "task_upload_desc": {
         "message": "Limit maximum upload speed via \"max-upload-limit\" option"
     },
     "warn_aria2_version": {
         "message": "Aria2 Version"
-    },
-    "warn_url_copied": {
-        "message": "URL Copied"
     }
 }

@@ -9,7 +9,12 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
         try {
             var session = JSON.parse(url);
             if (Array.isArray(session)) {
-                session.forEach(task => downWithAria2(referer ? {...task, referer} : task, options));
+                if (session[0].constructor.name === 'String') {
+                    downWithAria2({url: session, referer});
+                }
+                else {
+                    session.forEach(task => downWithAria2(referer ? {...task, referer} : task, options));
+                }
             }
             else {
                 downWithAria2(referer ? {...session, referer} : session, options);
