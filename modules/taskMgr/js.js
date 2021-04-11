@@ -51,7 +51,6 @@ function printTaskManager() {
     function printTaskUris(uris) {
         var uriInfo = '<table>';
         var url = [];
-        var index = 1
         uris.forEach(uri => {
             if (!url.includes(uri.uri)) {
                 var status = uri.status === 'used' ? 'active' : 'waiting';
