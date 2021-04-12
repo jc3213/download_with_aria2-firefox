@@ -109,29 +109,22 @@ document.querySelector('#taskUris').addEventListener('click', (event) => {
 });
 
 document.querySelector('#taskAddUri > span').addEventListener('click', (event) => {
-    var add = document.querySelector('#taskAddUri > input').value;
-    if (add.match(/^https?:\/\/.*/)) {
-        jsonRPCRequest(
-            {method: 'aria2.changeUri', gid, add},
-            (result) => {
-                document.querySelector('#taskAddUri > input').value = '';
-            }
-        );
-    }
+    jsonRPCRequest(
+        {method: 'aria2.changeUri', gid, add: document.querySelector('#taskAddUri > input').value},
+        (result) => {
+            document.querySelector('#taskAddUri > input').value = '';
+        }
+    );
 });
 
 document.querySelector('#taskFiles').addEventListener('click', (event) => {
     if (event.target.className) {
         var checked = [];
-        var unchecked = [];
         document.querySelectorAll('td:nth-child(1)').forEach(item => {
-            if (item === event.target) {
-                item.className === 'active' ? unchecked.push(item.innerText) : checked.push(item.innerText);
-            }
-            else {
-                item.className === 'active' ? checked.push(item.innerText) : unchecked.push(item.innerText);
+            if (item === event.target && item.className !== 'active' || item !== event.target && item.className === 'active') {
+                checked.push(item.innerText);
             }
         });
-        jsonRPCRequest({method: 'aria2.changeOption', gid, options: {"select-file": checked.join()}});
+        jsonRPCRequest({method: 'aria2.changeOption', gid, options: {'select-file': checked.join()}});
     }
 });
