@@ -53,8 +53,6 @@ table {
 td {
     border: 1px outset #CCC;
     padding: 5px;
-    word-break: break-word;
-    text-align: center;
     vertical-align: middle;
 }
 
@@ -64,10 +62,6 @@ td {
 
 #taskUris td:active, #taskFiles td:nth-child(1):active {
     filter: opacity(60%);
-}
-
-#taskUris td {
-    text-align: left;
 }
 
 #taskAddUri {
@@ -80,17 +74,19 @@ td {
 
 #taskFiles td:nth-child(1) {
     width: 20px;
+    text-align: center;
 }
 
 #taskFiles td:nth-child(2) {
-    text-align: left;
     width: calc(100% - 140px);
 }
 
 #taskFiles td:nth-child(3) {
     width: 70px;
+    text-align: center;
 }
 
 #taskFiles td:nth-child(4) {
     width: 50px;
+    text-align: center;
 }
