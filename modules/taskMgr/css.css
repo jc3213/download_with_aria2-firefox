@@ -53,6 +53,7 @@ table {
 td {
     border: 1px outset #CCC;
     padding: 5px;
+    word-break: break-word;
     vertical-align: middle;
 }
 
