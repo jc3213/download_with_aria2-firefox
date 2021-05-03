@@ -141,24 +141,16 @@ function bytesToFileSize(bytes) {
     }
 }
 
-function numberToTimeFormat(number, time = '') {
+function numberToTimeFormat(number) {
     if (isNaN(number) || number === Infinity) {
         return '∞';
     }
-    if (number > 86400) {
-        var days = number / 86400 | 0;
-        time += days + '<sub>d</sub>';
-        number -= days * 86400;
-    }
-    if (number > 3600) {
-        var hours = number / 3600 | 0;
-        time += hours + '<sub>h</sub>'
-        number -= hours * 3600;
-    }
-    if (number > 60) {
-        var minutes = number / 60 | 0;
-        time += minutes + '<sub>m</sub>';
-        number -= minutes * 60;
-    }
-    return time + (number | 0) + '<sub>s</sub>';
+    var days = number / 86400 | 0;
+    var hours = number / 3600 - days * 24 | 0;
+    var minutes = number / 60 - days * 1440 - hours * 60 | 0;
+    var seconds = number - days * 86400 - hours * 3600 - minutes * 60 | 0;
+    return (days > 0 ? days + '<sub>d</sub>' : '')
+    +      (hours > 0 ? hours + '<sub>h</sub>' : '')
+    +      (minutes > 0 ? minutes + '<sub>m</sub>' : '')
+    +      seconds + '<sub>s</sub>';
 }
