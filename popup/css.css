@@ -6,10 +6,6 @@ input, textarea {
     width: calc(100% - 15px);
 }
 
-#menuTop, #menuBottom {
-    text-align: right;
-}
-
 #queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
     margin-right: 10px;
 }
