@@ -13,7 +13,7 @@ addEventListener('message', (event) => {
 var modules = [
     {button: 'newTask_btn', name: 'newTask', id: 'newTaskWindow'},
     {button: 'options_btn', name: 'options', id: 'optionsWindow', onload: (event) => {
-        event.target.contentDocument.querySelector('div.manager').style.display = 'none';
+        event.target.contentDocument.querySelector('#preferences').style.display = 'none';
     }}
 ];
 modules.forEach(module => {

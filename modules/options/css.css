@@ -11,16 +11,11 @@ select {
     padding: 4px 2px;
 }
 
-.manager {
-    height: 0px;
-    text-align: right;
-}
-
 .container {
     margin-left: 5px;
 }
 
-.container div:nth-child(n+2) {
+.container > div:nth-child(n+2) {
     margin-top: 15px;
 }
 

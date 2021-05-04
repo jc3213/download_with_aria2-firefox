@@ -6,58 +6,68 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div class="manager">
-            <span id="export" class="button" i18n>option_export</span>
-            <a id="saver" style="display: none;"></a>
-            <span id="import" class="button" i18n>option_import</span>
-            <input id="reader" type="file" accept="application/json" style="display: none;">
-        </div>
-        <div class="container">
-            <span id="tabBasic" class="tab checked" i18n>option_basic</span>
-            <span id="tabAdvanced" class="tab" i18n>option_advanced</span>
-            <span id="tabDownload" class="tab" i18n>option_download</span>
+        <div class="frame">
+            <div class="container">
+                <span id="tabBasic" class="tab checked" i18n>option_basic</span>
+                <span id="tabAdvanced" class="tab" i18n>option_advanced</span>
+                <span id="tabDownload" class="tab" i18n>option_download</span>
+            </div>
+            <div id="preferences" class="offside">
+                <span id="export" class="button" i18n>option_export</span>
+                <a id="saver" style="display: none;"></a>
+                <span id="import" class="button" i18n>option_import</span>
+                <input id="reader" type="file" accept="application/json" style="display: none;">
+            </div>
         </div>
         <hr>
         <div id="menuBasic" class="container">
             <div title="option_jsonrpc_desc" i18n_title>
-                <span class="title" i18n>option_jsonrpc</span>
-                <input id="jsonrpc" type="text">
-                <span id="verify" class="button">📞</span>
+                <div class="title" i18n>option_jsonrpc</div>
+                <div>
+                    <input id="jsonrpc" type="text">
+                    <span id="verify" class="button">📞</span>
+                </div>
                 <span i18n>option_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
             <div title="option_token_desc" i18n_title>
-                <span class="title" i18n>option_token</span>
-                <input id="token" type="password" placeholder="$$secret$$">
-                <span id="insight" class="button">👁️</span>
+                <div class="title" i18n>option_token</div>
+                <div>
+                    <input id="token" type="password" placeholder="$$secret$$">
+                    <span id="insight" class="button">👁️</span>
+                </div>
             </div>
             <div title="option_folder_desc" i18n_title>
-                <span class="title" i18n>option_folder</span>  
+                <span class="title" i18n>option_folder</span>
                 <select id="output">
                     <option value="0" i18n>option_default</option>
                     <option value="1" i18n>option_folder_browser</option>
                     <option value="2" i18n>option_folder_custom</option>
                 </select>
-                <input id="folder" type="text" placeholder="C:\Aria2 Downloads">
+                <div>
+                    <input id="folder" type="text" placeholder="C:\Aria2 Downloads">
+                </div>
             </div>
         </div>
         <div id="menuAdvanced" class="container" style="display: none;">
             <div title="option_useragent_desc" i18n_title>
-                <span class="title" i18n>option_useragent</span>
+                <div class="title" i18n>option_useragent</div>
                 <textarea id="useragent"></textarea>
             </div>
             <div title="option_allproxy_desc" i18n_title>
-                <span class="title" i18n>option_allproxy</span>
-                <input id="allproxy" type="text" placeholder="http://127.0.0.1:8086">
-                <span i18n>option_protocol</span>: <u><i>http</i></u>/<u><i>https</i></u>
+                <div class="title" i18n>option_allproxy</div>
+                <div>
+                    <input id="allproxy" type="text" placeholder="http://127.0.0.1:8086">
+                    <span i18n>option_protocol</span>: <u><i>http</i></u>/<u><i>https</i></u>
+                </div>
             </div>
             <div title="option_proxied_desc" i18n_title>
-                <span class="title" i18n>option_proxied</span>
+                <div class="title" i18n>option_proxied</div>
                 <textarea id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
             </div>
         </div>
         <div id="menuDownload" class="container" style="display: none;">
             <div title="option_capture_desc" i18n_title>
-                <span class="title" i18n>option_capture</span>  
+                <span class="title" i18n>option_capture</span>
                 <select id="capture">
                     <option value="0" i18n>option_disabled</option>
                     <option value="1" i18n>option_capture_filters</option>
@@ -66,26 +76,28 @@
             </div>
             <div id="captureFilters" class="container">
                 <div title="option_filesize_desc" i18n_title>
-                    <span class="title" i18n>option_filesize</span>
-                    <input id="sizeEntry" type="number" min="0">
-                    <select id="sizeUnit">
-                        <option value="1">KB</option>
-                        <option value="2">MB</option>
-                        <option value="3">GB</option>
-                        <option value="4">TB</option>
-                    </select>
+                    <div class="title" i18n>option_filesize</div>
+                    <div>
+                        <input id="sizeEntry" type="number" min="0">
+                        <select id="sizeUnit">
+                            <option value="1">KB</option>
+                            <option value="2">MB</option>
+                            <option value="3">GB</option>
+                            <option value="4">TB</option>
+                        </select>
+                    </div>
                     <span i18n>option_disabled</span>: <u><i>0 (KB/MB/GB/TB)</i></u>
                 </div>
                 <div title="option_fileext_desc" i18n_title>
-                    <span class="title" i18n>option_fileext</span>
-                    <input id="fileExt" placeholder="zip&ensp;exe&ensp;jpg"></textarea>
+                    <div class="title" i18n>option_fileext</div>
+                    <input id="fileExt" placeholder="zip&ensp;exe&ensp;jpg">
                 </div>
                 <div title="option_monitored_desc" i18n_title>
-                    <span class="title" i18n>option_monitored</span>
+                    <div class="title" i18n>option_monitored</div>
                     <textarea id="monitored" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
                 <div title="option_ignored_desc" i18n_title>
-                    <span class="title" i18n>option_ignored</span>
+                    <div class="title" i18n>option_ignored</div>
                     <textarea id="ignored" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
             </div>

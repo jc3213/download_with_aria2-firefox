@@ -22,6 +22,18 @@ iframe {
     text-align: align;
 }
 
+.frame {
+    height: 20px;
+}
+
+.frame * {
+    height: 0px;
+}
+
+.offside {
+    text-align: right;
+}
+
 .button:hover, .tab:hover {
     filter: opacity(60%);
 }
