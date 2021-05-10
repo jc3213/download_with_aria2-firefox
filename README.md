@@ -10,4 +10,3 @@
 - Cancel the download first before removing it from history to prevent downloading the file twice
 - Changed all `chrome` usaeg to `browser` for Firefox
 - To avoid duplicated download from Firefox, while using `Capturing` function. Please check `Downloads` → `Always ask you where to save files`
-- 
