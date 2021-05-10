@@ -27,10 +27,12 @@ browser.downloads.onCreated.addListener((item) => {
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.host = new URL(session.referer).hostname;
         if (captureFilterWorker()) {
-            chrome.downloads.cancel(item.id, () => {
-                chrome.downloads.erase({id: item.id}, () => {
+            browser.downloads.cancel(item.id).then(() => {
+                browser.downloads.erase({id: item.id}, () => {
                     downWithAria2(session);
                 });
+            }, () => {
+                showNotification('File downloaded by Firefox', item.url);
             });
         }
     });
