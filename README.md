@@ -7,3 +7,4 @@
     - 3 `Custom`  - Custom folder (if custom folder is value is `""`, fall back to 1)
 - Cancel the download first before removing it from history to prevent downloading the file twice
 - Changed all `chrome` usaeg to `browser` for Firefox
+- Very small files may sometimes be downloaded by Firefox and wll not be downloaded with Aria2 to avoid duplicated download
