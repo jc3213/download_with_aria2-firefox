@@ -9,4 +9,4 @@
     - 3 `Custom`  - Custom folder (if custom folder is value is `""`, fall back to 1)
 - Cancel the download first before removing it from history to prevent downloading the file twice
 - Changed all `chrome` usaeg to `browser` for Firefox
-- To avoid duplicated download from Firefox, while using `Capturing` function. Please check `Downloads` → `Always ask you where to save files`
+- To avoid duplicated download from Firefox, while using `Capturing` feature, please select `Always ask you where to save files`
