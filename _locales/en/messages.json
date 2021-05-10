@@ -166,5 +166,8 @@
     },
     "warn_aria2_version": {
         "message": "Aria2 Version"
+    },
+    "warn_file_downloaded": {
+        "message": "File downloaded by Firefox"
     }
 }

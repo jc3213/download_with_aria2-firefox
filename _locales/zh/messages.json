@@ -166,5 +166,8 @@
     },
     "warn_aria2_version": {
         "message": "Aria2版本"
+    },
+    "warn_file_downloaded": {
+        "message": "Firefox 已完成下载"
     }
 }
