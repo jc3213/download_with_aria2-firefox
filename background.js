@@ -24,31 +24,34 @@ browser.downloads.onCreated.addListener((item) => {
     var session = {url: item.url, filename: item.filename.match(/[^\/\\]+$/)[0]};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.replace(session.filename, '');
-        session.referer = item.referrer || tabs[0].url;
+        session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.host = new URL(session.referer).hostname;
-        if (localStorage['capture'] === '2') {
-            return captureDownload();
-        }
-        if (localStorage['ignored'].includes(session.host)) {
-            return;
-        }
-        if (localStorage['monitored'].includes(session.host)) {
-            return captureDownload();
-        }
-        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
-            return captureDownload();
-        }
-        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
-            return captureDownload();
+        if (captureFilterWorker()) {
+            chrome.downloads.cancel(item.id, () => {
+                chrome.downloads.erase({id: item.id}, () => {
+                    downWithAria2(session);
+                });
+            });
         }
     });
 
-    function captureDownload() {
-        browser.downloads.cancel(item.id, () => {
-            browser.downloads.erase({id: item.id}, () => {
-                downWithAria2(session);
-            });
-        });
+    function captureFilterWorker() {
+        if (localStorage['capture'] === '2') {
+            return true;
+        }
+        if (localStorage['ignored'].includes(session.host)) {
+            return false;
+        }
+        if (localStorage['monitored'].includes(session.host)) {
+            return true;
+        }
+        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
+            return true;
+        }
+        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
+            return true;
+        }
+        return false;
     }
 });
 

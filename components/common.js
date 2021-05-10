@@ -73,11 +73,10 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.referer) {
         return sendRPCRequest();
     }
-    options['header'].push('Referer: ' + session.referer);
-    var cookie = 'Cookie:';
     browser.cookies.getAll({url: session.referer}, (cookies) => {
+        var cookie = 'Cookie:';
         cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
-        options['header'].push(cookie);
+        options['header'].push(cookie, 'Referer: ' + session.referer);
         sendRPCRequest();
     });
 
