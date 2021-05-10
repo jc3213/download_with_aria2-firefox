@@ -1,7 +1,5 @@
 ## Differences compared to [Download with Aria2 Chromium](https://github.com/jc3213/download_with_aria2-chromium)
 
-- Published on [AMO](https://addons.mozilla.org/en-US/firefox/addon/downwitharia2/)
-
 - Moved to `downloads.onCreated` event handler, which is similar to `downloads.onDeterminingFilename` on Chrome, but with some differences
 - Exclusive feature: Setting download folder with `3` options
     - 1 `Default` - Aria2 download folder
