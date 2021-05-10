@@ -36,11 +36,11 @@ browser.downloads.onCreated.addListener((item) => {
     });
 
     function captureFilterWorker() {
-        if (localStorage['capture'] === '2') {
-            return true;
-        }
         if (localStorage['ignored'].includes(session.host)) {
             return false;
+        }
+        if (localStorage['capture'] === '2') {
+            return true;
         }
         if (localStorage['monitored'].includes(session.host)) {
             return true;

@@ -72,12 +72,7 @@ document.querySelector('#verify').addEventListener('click', (event) => {
 });
 
 document.querySelector('#insight').addEventListener('click', (event) => {
-    if (event.target.classList.contains('checked')) {
-        document.querySelector('#token').setAttribute('type', 'password');
-    }
-    else {
-        document.querySelector('#token').setAttribute('type', 'text');
-    }
+    document.querySelector('#token').setAttribute('type', event.target.classList.contains('checked') ? 'password' : 'text');
     event.target.classList.toggle('checked');
 });
 
@@ -92,21 +87,12 @@ document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
 document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
 
 function downloadFolder() {
-    if (localStorage['output'] === '2') {
-        document.getElementById('folder').style.display = 'block';
-    }
-    else {
-        document.getElementById('folder').style.display = 'none';
-    }
+    document.getElementById('folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
 }
 
 function captureFilters() {
-    if (localStorage['capture'] === '1') {
-        document.querySelector('#captureFilters').style.display = 'block';
-    }
-    else {
-        document.querySelector('#captureFilters').style.display = 'none';
-    }
+    document.querySelector('#captureFilters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
+    document.querySelector('#captureIgnored').style.display = localStorage['capture'] !== '0' ? 'block' : 'none';
 }
 
 function calcFileSize() {
