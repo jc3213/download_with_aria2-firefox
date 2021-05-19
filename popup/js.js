@@ -38,30 +38,22 @@ function openModuleWindow(module) {
     document.body.appendChild(iframe);
 }
 
-var queueTabs = [
-    {button: 'active_btn', queue: 'activeQueue'},
-    {button: 'waiting_btn', queue: 'waitingQueue'},
-    {button: 'stopped_btn', queue: 'stoppedQueue'}
-];
-queueTabs.forEach(active => {
-    document.getElementById(active.button).addEventListener('click', (event) => {
-        if (event.target.classList.contains('checked')) {
-            queueTabs.forEach(item => {
-                if (item.queue !== active.queue) {
-                    document.getElementById(item.queue).style.display = 'block';
-                }
-            });
-        }
-        else {
-            document.getElementById(active.queue).style.display = 'block';
-            queueTabs.forEach(item => {
-                if (item.queue !== active.queue) {
-                    document.getElementById(item.queue).style.display = 'none';
-                    document.getElementById(item.button).classList.remove('checked');
-                }
-            });
-        }
-        event.target.classList.toggle('checked');
+document.querySelectorAll('span.tab').forEach(tab => {
+    tab.addEventListener('click', (event) => {
+        document.querySelectorAll('div[tab]').forEach(body => {
+            var tabId = body.getAttribute('tab');
+            if (tab.classList.contains('checked')) {
+                body.style.display = 'block';
+            }
+            else if (tabId === tab.id) {
+                body.style.display = 'block';
+            }
+            else {
+                body.style.display = 'none';
+                document.getElementById(tabId).classList.remove('checked');
+            }
+        });
+        tab.classList.toggle('checked');
     });
 });
 

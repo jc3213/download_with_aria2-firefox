@@ -1,16 +1,14 @@
-var menuTabs = [
-    {button: 'tabBasic', queue: 'menuBasic'},
-    {button: 'tabAdvanced', queue: 'menuAdvanced'},
-    {button: 'tabDownload', queue: 'menuDownload'}
-];
-menuTabs.forEach(active => {
-    document.getElementById(active.button).addEventListener('click', (event) => {
-        document.getElementById(active.button).classList.add('checked');
-        document.getElementById(active.queue).style.display = 'block';
-        menuTabs.forEach(item => {
-            if (item.queue !== active.queue) {
-                document.getElementById(item.queue).style.display = 'none';
-                document.getElementById(item.button).classList.remove('checked');
+document.querySelectorAll('span.tab').forEach(tab => {
+    tab.addEventListener('click', (event) => {
+        document.querySelectorAll('div[tab]').forEach(body => {
+            var tabId = body.getAttribute('tab');
+            if (tabId === tab.id) {
+                tab.classList.add('checked');
+                body.style.display = 'block';
+            }
+            else {
+                body.style.display = 'none';
+                document.getElementById(tabId).classList.remove('checked');
             }
         });
     });
@@ -37,25 +35,10 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-[
-    'jsonrpc',
-    'token',
-    'output',
-    'folder',
-    'useragent',
-    'allproxy',
-    'proxied',
-    'capture',
-    'sizeEntry',
-    'sizeUnit',
-    'fileExt',
-    'monitored',
-    'ignored'
-].forEach(id => {
-    var menu = document.getElementById(id);
-    menu.value = localStorage[id];
+document.querySelectorAll('.option > [id]').forEach(menu => {
+    menu.value = localStorage[menu.id];
     menu.addEventListener('change', (event) => {
-        localStorage[id] = event.target.value;
+        localStorage[menu.id] = event.target.value;
     });
 });
 
@@ -87,7 +70,7 @@ document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
 document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
 
 function downloadFolder() {
-    document.getElementById('folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
+    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
 }
 
 function captureFilters() {
@@ -101,5 +84,5 @@ function calcFileSize() {
     localStorage['fileSize'] = number * 1024 ** unit;
 }
 
-document.getElementById('sizeEntry').disabled = true;
-document.getElementById('sizeUnit').disabled = true;
+document.querySelector('#sizeEntry').disabled = true;
+document.querySelector('#sizeUnit').disabled = true;

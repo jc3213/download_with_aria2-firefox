@@ -62,14 +62,9 @@ function printTaskManager() {
     }
 }
 
-var taskOptions = [
-    {id: 'max-download-limit', value: '0'},
-    {id: 'max-upload-limit', value: '0'},
-    {id: 'all-proxy', value: '' }
-];
-taskOptions.forEach(option => {
-    document.getElementById(option.id).addEventListener('change', (event) => {
-        changeTaskOption(option.id, event.target.value || option.value);
+document.querySelectorAll('.option > [id]').forEach(option => {
+    option.addEventListener('change', (event) => {
+        changeTaskOption(option.id, event.target.value || option.getAttribute('default'));
     });
 });
 
@@ -82,8 +77,8 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            taskOptions.forEach(item => {
-                document.getElementById(item.id).value = options[item.id] || item.value;
+            document.querySelectorAll('.option > [id]').forEach(option => {
+                option.value = options[option.id] || option.getAttribute('default');
             });
         }
     );
