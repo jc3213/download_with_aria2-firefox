@@ -43,7 +43,9 @@
                     <option value="1" i18n>option_folder_browser</option>
                     <option value="2" i18n>option_folder_custom</option>
                 </select>
-                <input id="folder" option type="text" placeholder="C:\Aria2 Downloads">
+                <div>
+                    <input id="folder" option type="text" placeholder="C:\Aria2 Downloads">
+                </div>
             </div>
         </div>
         <div tab="tabAdvanced" class="container" style="display: none;">
@@ -62,7 +64,9 @@
             </div>
             <div title="option_proxied_desc" i18n_title>
                 <div class="title" i18n>option_proxied</div>
-                <textarea option id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                <div>
+                    <textarea option id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                </div>
             </div>
         </div>
         <div tab="tabDownload" class="container" style="display: none;">
@@ -90,17 +94,23 @@
                 </div>
                 <div title="option_fileext_desc" i18n_title>
                     <div class="title" i18n>option_fileext</div>
-                    <input id="fileExt" option placeholder="zip&ensp;exe&ensp;jpg">
+                    <div>
+                        <input id="fileExt" option placeholder="zip&ensp;exe&ensp;jpg">
+                    </div>
                 </div>
                 <div title="option_monitored_desc" i18n_title>
                     <div class="title" i18n>option_monitored</div>
-                    <textarea id="monitored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    <div>
+                        <textarea id="monitored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    </div>
                 </div>
             </div>
             <div id="captureIgnored" class="container">
                 <div title="option_ignored_desc" i18n_title>
                     <div class="title" i18n>option_ignored</div>
-                    <textarea id="ignored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    <div>
+                        <textarea id="ignored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
