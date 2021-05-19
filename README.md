@@ -3,9 +3,8 @@
 - It uses `downloads.onCreated` on Firefox, which is similar but different compares to `downloads.onDeterminingFilename` on Chromium
     - Sometimes small files (less than 10MB) will be downloaded by Firefox before they can be cancelled
     - Firefox will show notifications about them, and will not send the jsonrpc requests to Aria2
+    - Downloads will be cancelled first, then removed from `Download History`
 - Exclusive feature: Setting download folder with `3` options
     - 1 `Default` - Aria2 download folder
     - 2 `Browser` - Browser download folder (only for capturing, non-capturing downloads will fall back to 1)
     - 3 `Custom`  - Custom folder (if custom folder is value is `""`, fall back to 1)
-- Cancel the download first before removing it from history to prevent downloading the file twice
-- Changed all `chrome` usaeg to `browser` for Firefox
