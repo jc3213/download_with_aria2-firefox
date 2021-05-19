@@ -35,10 +35,10 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-document.querySelectorAll('[option]').forEach(menu => {
-    menu.value = localStorage[menu.id];
-    menu.addEventListener('change', (event) => {
-        localStorage[menu.id] = event.target.value;
+document.querySelectorAll('[option]').forEach(option => {
+    option.value = localStorage[option.id];
+    option.addEventListener('change', (event) => {
+        localStorage[option.id] = option.value;
     });
 });
 
