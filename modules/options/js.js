@@ -35,7 +35,7 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-document.querySelectorAll('.option > [id]').forEach(menu => {
+document.querySelectorAll('[option]').forEach(menu => {
     menu.value = localStorage[menu.id];
     menu.addEventListener('change', (event) => {
         localStorage[menu.id] = event.target.value;

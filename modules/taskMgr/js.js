@@ -62,9 +62,9 @@ function printTaskManager() {
     }
 }
 
-document.querySelectorAll('.option > [id]').forEach(option => {
+document.querySelectorAll('[option]').forEach(option => {
     option.addEventListener('change', (event) => {
-        changeTaskOption(option.id, event.target.value || option.getAttribute('default'));
+        changeTaskOption(option.id, event.target.value || option.getAttribute('option'));
     });
 });
 
@@ -77,8 +77,8 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            document.querySelectorAll('.option > [id]').forEach(option => {
-                option.value = options[option.id] || option.getAttribute('default');
+            document.querySelectorAll('[option]').forEach(option => {
+                option.value = options[option.id] || option.getAttribute('option');
             });
         }
     );
