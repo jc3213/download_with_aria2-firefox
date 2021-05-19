@@ -3,37 +3,39 @@ addEventListener('message', (event) => {
     setTimeout(() => {
         document.getElementById(event.data.id).remove()
     }, event.data.delay | 0);
-    modules.forEach(item => {
-        if (item.id === event.data.id) {
-            document.getElementById(item.button).classList.remove('checked');
+    document.querySelectorAll('span[module]').forEach(module => {
+        if (module.id === event.data.id) {
+            module.classList.remove('checked');
         }
     });
 });
 
-var modules = [
-    {button: 'newTask_btn', name: 'newTask', id: 'newTaskWindow'},
-    {button: 'options_btn', name: 'options', id: 'optionsWindow', onload: (event) => {
-        event.target.contentDocument.querySelector('#preferences').style.display = 'none';
-    }}
-];
-modules.forEach(module => {
-    document.getElementById(module.button).addEventListener('click', (event) => {
+document.querySelectorAll('span[module]').forEach(module => {
+    var moduleId = module.getAttribute('module');
+    var moduleSrc = module.getAttribute('window');
+    module.addEventListener('click', (event) => {
+        if (moduleId === 'optionsWindow') {
+            var moduleActive = (event) => {
+                event.target.contentDocument.querySelector('#preferences').style.display = 'none';
+            };
+        }
         if (event.target.classList.contains('checked')) {
-            document.getElementById(module.id).remove();
+            document.getElementById(moduleId).remove();
         }
         else {
-            openModuleWindow(module);
+            openModuleWindow(moduleId, moduleSrc, moduleActive);
         }
-        event.target.classList.toggle('checked');
+        module.classList.toggle('checked');
     });
 });
 
-function openModuleWindow(module) {
+function openModuleWindow(id, src, onload) {
+    console.log(id, src, onload);
     var iframe = document.createElement('iframe');
-    iframe.id = module.id;
-    iframe.src = '/modules/' + module.name + '/index.html';
-    if (typeof module.onload === 'function') {
-        iframe.addEventListener('load', module.onload);
+    iframe.id = id;
+    iframe.src = src;
+    if (typeof onload === 'function') {
+        iframe.addEventListener('load', onload);
     }
     document.body.appendChild(iframe);
 }
@@ -145,9 +147,9 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     }
     else if (event.target.id === 'invest_btn') {
         var {gid} = getTaskInfo();
-        openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', onload: (event) => {
+        openModuleWindow('taskMgrWindow', '/modules/taskMgr/index.html', (event) => {
             event.target.contentWindow.postMessage({gid});
-        }});
+        });
     }
     else if (event.target.id === 'retry_btn') {
         var {gid} = getTaskInfo();
