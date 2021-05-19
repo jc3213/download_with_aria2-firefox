@@ -1,7 +1,7 @@
 ## Differences compared to [Download with Aria2 Chromium](https://github.com/jc3213/download_with_aria2-chromium)
 
-- Firefox uses `downloads.onCreated` API, which is similar but different with `downloads.onDeterminingFilename` on Chrome
-    - Sometimes small files (less than 10MB) will be downloaded by Firefox before they are cancelled
+- It uses `downloads.onCreated` on Firefox, which is similar but different compares to `downloads.onDeterminingFilename` on Chromium
+    - Sometimes small files (less than 10MB) will be downloaded by Firefox before they can be cancelled
     - Firefox will show notifications about them, and will not send the jsonrpc requests to Aria2
 - Exclusive feature: Setting download folder with `3` options
     - 1 `Default` - Aria2 download folder
