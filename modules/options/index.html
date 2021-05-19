@@ -38,16 +38,12 @@
             </div>
             <div title="option_folder_desc" i18n_title>
                 <span class="title" i18n>option_folder</span>
-                <span>
-                    <select id="output" option>
-                        <option value="0" i18n>option_default</option>
-                        <option value="1" i18n>option_folder_browser</option>
-                        <option value="2" i18n>option_folder_custom</option>
-                    </select>
-                </span>
-                <div class="option">
-                    <input id="folder" option type="text" placeholder="C:\Aria2 Downloads">
-                </div>
+                <select id="output" option>
+                    <option value="0" i18n>option_default</option>
+                    <option value="1" i18n>option_folder_browser</option>
+                    <option value="2" i18n>option_folder_custom</option>
+                </select>
+                <input id="folder" option type="text" placeholder="C:\Aria2 Downloads">
             </div>
         </div>
         <div tab="tabAdvanced" class="container" style="display: none;">
@@ -66,21 +62,17 @@
             </div>
             <div title="option_proxied_desc" i18n_title>
                 <div class="title" i18n>option_proxied</div>
-                <div>
-                    <textarea option id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
-                </div>
+                <textarea option id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
             </div>
         </div>
         <div tab="tabDownload" class="container" style="display: none;">
             <div title="option_capture_desc" i18n_title>
                 <span class="title" i18n>option_capture</span>
-                <span>
-                    <select option id="capture">
-                        <option value="0" i18n>option_disabled</option>
-                        <option value="1" i18n>option_capture_filters</option>
-                        <option value="2" i18n>option_always</option>
-                    </select>
-                </span>
+                <select option id="capture">
+                    <option value="0" i18n>option_disabled</option>
+                    <option value="1" i18n>option_capture_filters</option>
+                    <option value="2" i18n>option_always</option>
+                </select>
             </div>
             <div id="captureFilters" class="container">
                 <div title="option_filesize_desc" i18n_title>
@@ -98,23 +90,17 @@
                 </div>
                 <div title="option_fileext_desc" i18n_title>
                     <div class="title" i18n>option_fileext</div>
-                    <div>
-                        <input id="fileExt" option placeholder="zip&ensp;exe&ensp;jpg">
-                    </div>
+                    <input id="fileExt" option placeholder="zip&ensp;exe&ensp;jpg">
                 </div>
                 <div title="option_monitored_desc" i18n_title>
                     <div class="title" i18n>option_monitored</div>
-                    <div>
-                        <textarea id="monitored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
-                    </div>
+                    <textarea id="monitored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
             </div>
             <div id="captureIgnored" class="container">
                 <div title="option_ignored_desc" i18n_title>
                     <div class="title" i18n>option_ignored</div>
-                    <div>
-                        <textarea id="ignored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
-                    </div>
+                    <textarea id="ignored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
             </div>
         </div>
