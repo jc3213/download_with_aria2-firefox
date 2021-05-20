@@ -24,5 +24,9 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
             downWithAria2({url, referer}, options);
         }
     });
-    parent.window.postMessage({id: 'newTaskWindow', delay: 1000});
+    parent.document.querySelector('#newTaskWindow').style.display = 'none';
+    parent.document.querySelector('#newTask_btn').classList.remove('checked');
+    setTimeout(() => {
+        parent.document.querySelector('#newTaskWindow').remove();
+    }, 1000);
 });

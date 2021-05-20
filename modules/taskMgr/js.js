@@ -91,7 +91,7 @@ document.querySelector('#loadProxy').addEventListener('click', (event) => {
 });
 
 document.querySelector('#taskName').addEventListener('click', (event) => {
-    parent.window.postMessage({id: 'taskMgrWindow'});
+    parent.document.querySelector('#taskMgrWindow').remove();
 });
 
 document.querySelector('#taskUris').addEventListener('click', (event) => {

@@ -7,16 +7,3 @@ function openModuleWindow(id, src, onload) {
     }
     document.body.appendChild(iframe);
 }
-
-function closeModuleWindow(id, timeout) {
-    document.getElementById(id).style.display = 'none';
-    setTimeout(() => {
-        document.getElementById(id).remove();
-    }, timeout | 0);
-    document.querySelectorAll('span[module]').forEach(button => {
-        if (button.getAttribute('module') === id) {
-            console.log(button)
-            button.classList.remove('checked');
-        }
-    });
-}
