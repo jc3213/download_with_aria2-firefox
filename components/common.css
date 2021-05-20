@@ -4,11 +4,6 @@ body {
     user-select: none;
 }
 
-iframe {
-    background-color: #FFF;
-    border: none;
-}
-
 .title {
     font-weight: bold;
     word-break: break-word;

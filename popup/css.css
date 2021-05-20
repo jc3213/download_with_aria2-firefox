@@ -18,27 +18,6 @@ input, textarea {
     padding: 3px 5px;
 }
 
-#optionsWindow, #newTaskWindow, #taskMgrWindow {
-    position: absolute;
-    width: 100%;
-    left: 0px;
-}
-
-#optionsWindow {
-    top: 0px;
-    height: calc(100% - 40px);
-}
-
-#taskMgrWindow {
-    top: -5px;
-    height: calc(100% - 35px);
-}
-
-#newTaskWindow {
-    top: 40px;
-    height: calc(100% - 80px);
-}
-
 #taskQueue {
     height: 410px;
     overflow-y: auto;

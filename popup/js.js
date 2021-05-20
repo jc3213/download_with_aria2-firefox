@@ -1,13 +1,5 @@
 addEventListener('message', (event) => {
-    document.getElementById(event.data.id).style.display = 'none';
-    setTimeout(() => {
-        document.getElementById(event.data.id).remove()
-    }, event.data.delay | 0);
-    document.querySelectorAll('span[module]').forEach(module => {
-        if (module.id === event.data.id) {
-            module.classList.remove('checked');
-        }
-    });
+    closeModuleWindow(event.data.id, event.data.delay);
 });
 
 document.querySelectorAll('span[module]').forEach(module => {
@@ -28,17 +20,6 @@ document.querySelectorAll('span[module]').forEach(module => {
         module.classList.toggle('checked');
     });
 });
-
-function openModuleWindow(id, src, onload) {
-    console.log(id, src, onload);
-    var iframe = document.createElement('iframe');
-    iframe.id = id;
-    iframe.src = src;
-    if (typeof onload === 'function') {
-        iframe.addEventListener('load', onload);
-    }
-    document.body.appendChild(iframe);
-}
 
 document.querySelectorAll('span.tab').forEach(tab => {
     tab.addEventListener('click', (event) => {
