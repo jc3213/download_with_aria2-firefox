@@ -1,7 +1,3 @@
-addEventListener('message', (event) => {
-    closeModuleWindow(event.data.id, event.data.delay);
-});
-
 document.querySelectorAll('span[module]').forEach(module => {
     var moduleId = module.getAttribute('module');
     var moduleSrc = module.getAttribute('window');
@@ -129,7 +125,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     else if (event.target.id === 'invest_btn') {
         var {gid} = getTaskInfo();
         openModuleWindow('taskMgrWindow', '/modules/taskMgr/index.html', (event) => {
-            event.target.contentWindow.postMessage({gid});
+            event.target.contentWindow.postMessage(gid);
         });
     }
     else if (event.target.id === 'retry_btn') {

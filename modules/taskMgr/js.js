@@ -2,7 +2,7 @@ var gid;
 var taskManager;
 
 addEventListener('message', (event) => {
-    gid = event.data.gid;
+    gid = event.data;
     printTaskOption();
     printTaskManager();
     taskManager = setInterval(printTaskManager, 1000);
