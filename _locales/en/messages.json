@@ -198,16 +198,16 @@
         "message": "Set the interval time between retries (SEC)"
     },
     "aria2_http_split": {
-        "message": "Sections"
+        "message": "Download Sections"
     },
     "aria2_http_split_desc": {
-        "message": "Set the maximum sections of each download"
+        "message": "Set the maximum download sections of each download"
     },
     "aria2_http_size": {
         "message": "Section Size"
     },
     "aria2_http_size_desc": {
-        "message": "Set the minimum size of each section"
+        "message": "Set the minimum size of each download section"
     },
     "aria2_bt_port": {
         "message": "Listening Port"
@@ -238,6 +238,12 @@
     },
     "aria2_bt_seed_desc": {
         "message": "Set the share time of each torrent (MIN)"
+    },
+    "aria2_adv_dir": {
+        "message": "Download Directory"
+    },
+    "aria2_adv_dir_desc": {
+        "message": "Set the directory where the files are saved"
     },
     "aria2_adv_cache": {
         "message": "Disk Cache"
