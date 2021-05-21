@@ -63,12 +63,6 @@ function calcFileSize() {
     localStorage['fileSize'] = number * 1024 ** unit;
 }
 
-document.querySelector('#output').addEventListener('change', downloadFolder);
-downloadFolder();
-
-function downloadFolder() {
-    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
-}
-
+// Disable options that are not available
 document.querySelector('#sizeEntry').disabled = true;
 document.querySelector('#sizeUnit').disabled = true;
