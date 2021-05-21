@@ -9,9 +9,14 @@ iframe {
     left: 0px;
 }
 
-#optionsWindow, #aria2Global {
+#optionsWindow {
     top: 0px;
     height: calc(100% - 40px);
+}
+
+#aria2Global {
+    top: 0px;
+    height: 100%;
 }
 
 #taskMgrWindow {
