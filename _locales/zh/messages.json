@@ -3,7 +3,7 @@
         "message": "通过 Aria2 下载"
     },
     "extension_description": {
-        "message": "基于 Chromium 浏览器的 Aria2 下载管理器"
+        "message": "基于 Firefox 浏览器的 Aria2 下载管理器"
     },
     "common_default": {
         "message": "默认"

@@ -3,7 +3,7 @@
         "message": "Download with Aria2"
     },
     "extension_description": {
-        "message": "The Aria2 Download Manager for Chromium"
+        "message": "The Aria2 Download Manager for Firefox"
     },
     "common_default": {
         "message": "Default"
