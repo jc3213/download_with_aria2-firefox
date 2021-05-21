@@ -53,10 +53,10 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.url) {
         return;
     }
-    var url = Array.isArray(session.url) ? session.url.map(url => encodeLoopRange(url)) : [encodeLoopRange(session.url)];
     if (bypass) {
         return sendRPCRequest();
     }
+    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
     }
@@ -90,10 +90,6 @@ function downWithAria2(session, options = {}, bypass = false) {
                 showNotification(error, rpc || url.join('\n'));
             }
         );
-    }
-
-    function encodeLoopRange(url) {
-        return url.replace(/\[/g, '%5B').replace(/\]/g, '%5D');
     }
 }
 
