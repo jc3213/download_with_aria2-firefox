@@ -239,11 +239,11 @@
     "aria2_bt_seed_desc": {
         "message": "设置每个 BT 任务的分享时间 (分)"
     },
-    "aria2_adv_dir": {
-        "message": "下载文件夹"
+    "aria2_adv_cache": {
+        "message": "磁盘缓存"
     },
-    "aria2_adv_dir_desc": {
-        "message": "设置用于保存下载文件的文件夹"
+    "aria2_adv_cache_desc": {
+        "message": "设置缓存以减少对磁盘的读写"
     },
     "aria2_max_task": {
         "message": "最大任务数"

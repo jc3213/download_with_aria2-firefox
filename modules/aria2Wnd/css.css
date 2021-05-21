@@ -23,7 +23,7 @@ textarea {
     color: #fff;
 }
 
-#min-split-size {
+#min-split-size, #disk-cache {
     width: calc(100% - 150px);
 }
 
