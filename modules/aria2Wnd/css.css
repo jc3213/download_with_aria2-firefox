@@ -16,8 +16,7 @@ textarea {
 
 .caution {
     display: inline-block;
-    position: absolute;
-    right: 20px;
+    margin-left: 10px;
     width: 100px;
     padding: 3px;
     background-color: #c4c;

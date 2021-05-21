@@ -1,9 +1,6 @@
-var height;
-
 addEventListener('message', (event) => {
     printGlobalOptions();
     document.querySelector('#aria2Ver').innerText = event.data;
-    height = parent.document.body.offsetHeight;
     parent.document.body.style.height = document.body.offsetHeight + 'px';
 });
 
@@ -14,7 +11,7 @@ document.querySelector('body > div.frame > div.container').addEventListener('cli
 });
 
 document.querySelector('#aria2Exit').addEventListener('click', (event) => {
-    parent.document.body.style.height = height + 'px';
+    parent.document.body.style.height = 'max-content';
     parent.document.querySelector('#aria2Global').remove();
 });
 
