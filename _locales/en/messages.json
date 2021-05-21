@@ -14,6 +14,12 @@
     "common_disabled": {
         "message": "Disabled"
     },
+    "warn_download": {
+        "message": "Aria2 Download"
+    },
+    "warn_firefox": {
+        "message": "Firefox Download"
+    },
     "option_basic": {
         "message": "Basic"
     },

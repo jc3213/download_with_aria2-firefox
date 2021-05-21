@@ -32,7 +32,7 @@ browser.downloads.onCreated.addListener((item) => {
                     downWithAria2(session);
                 });
             }, () => {
-                showNotification(browser.i18n.getMessage('warn_file_downloaded'), item.url);
+                showNotification(browser.i18n.getMessage('warn_firefox'), item.url);
             });
         }
     });
