@@ -3,7 +3,16 @@
         "message": "通过 Aria2 下载"
     },
     "extension_description": {
-        "message": "基于 Firefox 浏览器的 Aria2 下载管理器"
+        "message": "基于 Chromium 浏览器的 Aria2 下载管理器"
+    },
+    "common_default": {
+        "message": "默认"
+    },
+    "common_sample": {
+        "message": "样例"
+    },
+    "common_disabled": {
+        "message": "禁用"
     },
     "option_basic": {
         "message": "基础"
@@ -19,12 +28,6 @@
     },
     "option_import": {
         "message": "导入"
-    },
-    "option_default": {
-        "message": "默认"
-    },
-    "option_disabled": {
-        "message": "禁用"
     },
     "option_always": {
         "message": "总是"
@@ -164,10 +167,94 @@
     "task_upload_desc": {
         "message": "通过\"max-upload-limit\"选项限制最大上传速度"
     },
-    "warn_aria2_version": {
-        "message": "Aria2版本"
+    "aria2_http": {
+        "message": "HTTP/FTP"
     },
-    "warn_file_downloaded": {
-        "message": "Firefox 已完成下载"
+    "aria2_bittorrent": {
+        "message": "BitTorrent"
+    },
+    "aria2_advanced": {
+        "message": "高级"
+    },
+    "aria2_back": {
+        "message": "返回"
+    },
+    "aria2_http_retry": {
+        "message": "重试次数"
+    },
+    "aria2_http_retry_desc": {
+        "message": "设置最大重试次数"
+    },
+    "aria2_http_wait": {
+        "message": "重试间隔"
+    },
+    "aria2_http_wait_desc": {
+        "message": "设置两次重试之间的间隔 (秒)"
+    },
+    "aria2_http_split": {
+        "message": "线程数"
+    },
+    "aria2_http_split_desc": {
+        "message": "设置每个任务的最大线程数量"
+    },
+    "aria2_http_size": {
+        "message": "线程容量"
+    },
+    "aria2_http_size_desc": {
+        "message": "设置每个线程的最小容量"
+    },
+    "aria2_bt_port": {
+        "message": "监听端口"
+    },
+    "aria2_bt_port_desc": {
+        "message": "设置与 DHT 以及 UDP 服务器交互的端口"
+    },
+    "aria2_bt_peers": {
+        "message": "最大连接数"
+    },
+    "aria2_bt_peers_desc": {
+        "message": "设置每个 BT 任务的最大连接数"
+    },
+    "aria2_bt_remove": {
+        "message": "删除未选定文件"
+    },
+    "aria2_bt_remove_desc": {
+        "message": "当 BT 任务完成后删除未被选定的文件"
+    },
+    "aria2_bt_ratio": {
+        "message": "分享率"
+    },
+    "aria2_bt_ratio_desc": {
+        "message": "设置每个 BT 任务的分享率"
+    },
+    "aria2_bt_seed": {
+        "message": "分享时间"
+    },
+    "aria2_bt_seed_desc": {
+        "message": "设置每个 BT 任务的分享时间 (分)"
+    },
+    "aria2_adv_dir": {
+        "message": "下载文件夹"
+    },
+    "aria2_adv_dir_desc": {
+        "message": "设置用于保存下载文件的文件夹"
+    },
+    "aria2_max_task": {
+        "message": "最大任务数"
+    },
+    "aria2_max_task_desc": {
+        "message": "设置可同时进行的最大任务数"
+    },
+    "aria2_max_download": {
+        "message": "全局下载速度"
+    },
+    "aria2_max_download_desc": {
+        "message": "设置所有进行中的任务所能达到的最大下载速度"
+    },
+    "aria2_max_upload": {
+        "message": "全局上传速度"
+    },
+    "aria2_max_upload_desc": {
+        "message": "设置所有进行中的任务所能达到的最大上传速度"
     }
 }

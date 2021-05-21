@@ -3,7 +3,16 @@
         "message": "Download with Aria2"
     },
     "extension_description": {
-        "message": "The Aria2 Download Manager for Firefox"
+        "message": "The Aria2 Download Manager for Chromium"
+    },
+    "common_default": {
+        "message": "Default"
+    },
+    "common_sample": {
+        "message": "Sample"
+    },
+    "common_disabled": {
+        "message": "Disabled"
     },
     "option_basic": {
         "message": "Basic"
@@ -19,12 +28,6 @@
     },
     "option_import": {
         "message": "Import"
-    },
-    "option_default": {
-        "message": "Default"
-    },
-    "option_disabled": {
-        "message": "Disabled"
     },
     "option_always": {
         "message": "Always"
@@ -63,7 +66,7 @@
         "message": "Customize user agent to bypass the restrictions of some websites"
     },
     "option_allproxy": {
-        "message": "All Proxy"
+        "message": "Proxy Server"
     },
     "option_allproxy_desc": {
         "message": "Setting server for \"all-proxy\" option"
@@ -164,10 +167,94 @@
     "task_upload_desc": {
         "message": "Limit maximum upload speed via \"max-upload-limit\" option"
     },
-    "warn_aria2_version": {
-        "message": "Aria2 Version"
+    "aria2_http": {
+        "message": "HTTP/FTP"
     },
-    "warn_file_downloaded": {
-        "message": "File downloaded by Firefox"
+    "aria2_bittorrent": {
+        "message": "BitTorrent"
+    },
+    "aria2_advanced": {
+        "message": "Advanced"
+    },
+    "aria2_back": {
+        "message": "Back"
+    },
+    "aria2_http_retry": {
+        "message": "Max Retries"
+    },
+    "aria2_http_retry_desc": {
+        "message": "Set maximum number of retries"
+    },
+    "aria2_http_wait": {
+        "message": "Retry Interval"
+    },
+    "aria2_http_wait_desc": {
+        "message": "Set the interval time between retries (SEC)"
+    },
+    "aria2_http_split": {
+        "message": "Sections"
+    },
+    "aria2_http_split_desc": {
+        "message": "Set the maximum sections of each download"
+    },
+    "aria2_http_size": {
+        "message": "Section Size"
+    },
+    "aria2_http_size_desc": {
+        "message": "Set the minimum size of each section"
+    },
+    "aria2_bt_port": {
+        "message": "Listening Port"
+    },
+    "aria2_bt_port_desc": {
+        "message": "Set the listening port for DHT and UDP tracker"
+    },
+    "aria2_bt_peers": {
+        "message": "Max Peers"
+    },
+    "aria2_bt_peers_desc": {
+        "message": "Set the maximum peers of each torrent"
+    },
+    "aria2_bt_remove": {
+        "message": "Remove Unselected Files"
+    },
+    "aria2_bt_remove_desc": {
+        "message": "Remove the unselected files when bittorrent is completed"
+    },
+    "aria2_bt_ratio": {
+        "message": "Seeding Ratio"
+    },
+    "aria2_bt_ratio_desc": {
+        "message": "Set the share ratio of each torrent"
+    },
+    "aria2_bt_seed": {
+        "message": "Seeding Time"
+    },
+    "aria2_bt_seed_desc": {
+        "message": "Set the share time of each torrent (MIN)"
+    },
+    "aria2_adv_dir": {
+        "message": "Download Directory"
+    },
+    "aria2_adv_dir_desc": {
+        "message": "Set the directory where the files are saved"
+    },
+    "aria2_max_task": {
+        "message": "Max Concurrent Tasks"
+    },
+    "aria2_max_task_desc": {
+        "message": "Set the maximum number of concurrent tasks"
+    },
+    "aria2_max_download": {
+        "message": "Global Download Speed"
+    },
+    "aria2_max_download_desc": {
+        "message": "Set the maximum download speed for all concurrent tasks"
+    },
+    "aria2_max_upload": {
+        "message": "Global Upload Speed"
+    },
+    "aria2_max_upload_desc": {
+        "message": "Set the maximum upload speed for all concurrent tasks"
     }
 }

@@ -1,19 +1,3 @@
-document.querySelectorAll('span.tab').forEach(tab => {
-    tab.addEventListener('click', (event) => {
-        document.querySelectorAll('div[tab]').forEach(body => {
-            var tabId = body.getAttribute('tab');
-            if (tabId === tab.id) {
-                tab.classList.add('checked');
-                body.style.display = 'block';
-            }
-            else {
-                body.style.display = 'none';
-                document.getElementById(tabId).classList.remove('checked');
-            }
-        });
-    });
-});
-
 document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
     var saver = document.querySelector('#saver');
@@ -46,7 +30,9 @@ document.querySelector('#verify').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
-            showNotification(browser.i18n.getMessage('warn_aria2_version'), result.version);
+            openModuleWindow('aria2Global', '/modules/aria2Wnd/index.html', (event) => {
+                event.target.contentWindow.postMessage(result.version);
+            });
         },
         (error, rpc) => {
             showNotification(error, rpc);
@@ -59,19 +45,12 @@ document.querySelector('#insight').addEventListener('click', (event) => {
     event.target.classList.toggle('checked');
 });
 
-document.querySelector('#output').addEventListener('change', downloadFolder);
-downloadFolder();
-
 document.querySelector('#capture').addEventListener('change', captureFilters);
 captureFilters();
 
 document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
 
 document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
-
-function downloadFolder() {
-    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
-}
 
 function captureFilters() {
     document.querySelector('#captureFilters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
@@ -82,6 +61,13 @@ function calcFileSize() {
     var number = localStorage['sizeEntry'] | 0;
     var unit = localStorage['sizeUnit'] | 0;
     localStorage['fileSize'] = number * 1024 ** unit;
+}
+
+document.querySelector('#output').addEventListener('change', downloadFolder);
+downloadFolder();
+
+function downloadFolder() {
+    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
 }
 
 document.querySelector('#sizeEntry').disabled = true;

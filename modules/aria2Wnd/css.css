@@ -1,0 +1,33 @@
+body {
+    width: 430px;
+}
+
+textarea {
+    height: 180px;
+}
+
+.container {
+    margin-left: 5px;
+}
+
+.container > div:nth-child(n+2) {
+    margin-top: 15px;
+}
+
+.caution {
+    display: inline-block;
+    position: absolute;
+    right: 20px;
+    width: 100px;
+    padding: 3px;
+    background-color: #c4c;
+    color: #fff;
+}
+
+#min-split-size {
+    width: calc(100% - 150px);
+}
+
+#max-overall-download-limit, #max-overall-upload-limit {
+    width: calc(100% - 165px);
+}

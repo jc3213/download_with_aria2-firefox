@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="/components/common.css">
+        <link rel="stylesheet" href="/modules/modules.css">
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
@@ -25,9 +26,9 @@
                 <div class="title" i18n>option_jsonrpc</div>
                 <div>
                     <input id="jsonrpc" option type="text">
-                    <span id="verify" class="button">📞</span>
+                    <span id="verify" class="button">⚙️</span>
                 </div>
-                <span i18n>option_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
+                <span i18n>common_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
             <div title="option_token_desc" i18n_title>
                 <div class="title" i18n>option_token</div>
@@ -73,7 +74,7 @@
             <div title="option_capture_desc" i18n_title>
                 <span class="title" i18n>option_capture</span>
                 <select option id="capture">
-                    <option value="0" i18n>option_disabled</option>
+                    <option value="0" i18n>common_disabled</option>
                     <option value="1" i18n>option_capture_filters</option>
                     <option value="2" i18n>option_always</option>
                 </select>
@@ -90,7 +91,7 @@
                             <option value="4">TB</option>
                         </select>
                     </div>
-                    <span i18n>option_disabled</span>: <u><i>0 (KB/MB/GB/TB)</i></u>
+                    <span i18n>common_disabled</span>: <u><i>0 (KB/MB/GB/TB)</i></u>
                 </div>
                 <div title="option_fileext_desc" i18n_title>
                     <div class="title" i18n>option_fileext</div>
@@ -117,5 +118,7 @@
     </body>
     <script src="/components/common.js"></script>
     <script src="/components/i18n.js"></script>
+    <script src="/modules/modules.js"></script>
+    <script src="/modules/tabs.js"></script>
     <script src="js.js"></script>
 </html>
