@@ -1,9 +1,6 @@
 iframe {
     background-color: #FFF;
     border: none;
-}
-
-#optionsWindow, #newTaskWindow, #taskMgrWindow, #aria2Global {
     position: absolute;
     width: 100%;
     left: 0px;
