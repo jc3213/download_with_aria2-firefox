@@ -53,10 +53,10 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.url) {
         return;
     }
+    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (bypass) {
         return sendRPCRequest();
     }
-    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
     }
