@@ -38,7 +38,7 @@ function printTaskManager() {
     function printTaskFiles(files) {
         var fileInfo = '<table>';
         files.forEach(file => {
-            var filename = file.path.match(/[^\/]+$/)[0];
+            var filename = file.path.slice(file.path.lastIndexOf('/') + 1);
             var filePath = file.path.replace(/\//g, '\\');
             var fileSize = bytesToFileSize(file.length);
             var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
