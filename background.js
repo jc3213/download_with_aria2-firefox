@@ -23,7 +23,7 @@ browser.downloads.onCreated.addListener((item) => {
 
     var session = {url: item.url, filename: item.filename.match(/[^\/\\]+$/)[0]};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.folder = item.filename.replace(session.filename, '');
+        session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.host = new URL(session.referer).hostname;
         if (captureFilterWorker()) {
