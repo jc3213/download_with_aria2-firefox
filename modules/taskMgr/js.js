@@ -12,7 +12,7 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var fileName = result.files[0].path ? result.files[0].path.match(/[^\/]+$/)[0] : '';
+            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             var completed = result.status === 'complete';
             if (result.bittorrent) {
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;

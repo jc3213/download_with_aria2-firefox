@@ -73,7 +73,7 @@ function printMainFrame() {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
             var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
-            var fileName = result.files[0].path ? result.files[0].path.match(/[^\/]+$/)[0] : '';
+            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             var errorMessage = result.errorCode ? ' <error style="color: #f00; font-size: 11px;">' + result.errorMessage + '</error>' : '';
             if (result.bittorrent) {
                 var taskUrl = '';
