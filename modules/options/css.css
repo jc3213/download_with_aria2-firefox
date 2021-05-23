@@ -7,10 +7,6 @@ textarea {
     height: 180px;
 }
 
-select {
-    padding: 4px 2px;
-}
-
 .container {
     margin-left: 5px;
 }
@@ -24,7 +20,7 @@ select {
 }
 
 #sizeEntry {
-    width: calc(100% - 70px);
+    width: calc(100% - 75px);
 }
 
 #useragent {

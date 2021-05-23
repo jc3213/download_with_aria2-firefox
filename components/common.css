@@ -53,6 +53,11 @@ textarea {
     word-break: break-word;
 }
 
+select, option {
+    font-size: 15px;
+    padding: 3px;
+}
+
 option:checked {
     font-weight: bold;
     color: #F00;
