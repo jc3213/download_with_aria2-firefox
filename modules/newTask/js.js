@@ -1,10 +1,22 @@
+jsonRPCRequest(
+    {method: 'aria2.getGlobalOption'},
+    (global) => {
+        document.querySelectorAll('[option]').forEach(option => {
+            option.value = global[option.id] || '';
+        });
+    }
+);
+
 document.querySelector('#setProxy').addEventListener('click', (event) => {
-    document.querySelector('#taskProxy').value = localStorage['allproxy'];
+    document.querySelector('#all-proxy').value = localStorage['allproxy'];
 });
 
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#taskReferer').value;
-    var options = {'all-proxy': document.querySelector('#taskProxy').value};
+    var options = {};
+    document.querySelectorAll('[option]').forEach(option => {
+        options[option.id] = option.value;
+    });
     document.querySelector('#taskBatch').value.split('\n').forEach(url => {
         try {
             var session = JSON.parse(url);

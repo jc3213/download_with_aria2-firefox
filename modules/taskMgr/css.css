@@ -10,24 +10,6 @@ div > input {
     width: calc(100% - 55px);
 }
 
-#taskName {
-    height: 45px;
-    overflow-y: hidden;
-}
-
-#taskOptions > div:nth-child(n+2) {
-    margin-top: 10px;
-}
-
-.dual > div {
-    display: inline-block;
-    width: calc(50% - 8px);
-}
-
-.dual > div:first-child {
-    margin-right: 10px;
-}
-
 .dual .detail {
     width: 40%;
     display: inline-block;
@@ -37,6 +19,15 @@ div > input {
 .dual input {
     text-align: right;
     width: 35%;
+}
+
+#taskName {
+    height: 45px;
+    overflow-y: hidden;
+}
+
+#taskOptions > div:nth-child(n+2) {
+    margin-top: 10px;
 }
 
 #taskUris, #taskAddUri, #taskFiles {

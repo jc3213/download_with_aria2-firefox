@@ -7,10 +7,10 @@ body > div:nth-child(n+2) {
 }
 
 #taskBatch {
-    height: 180px;
+    height: 140px;
 }
 
-#taskProxy {
+#all-proxy {
     width: calc(100% - 55px);
 }
 

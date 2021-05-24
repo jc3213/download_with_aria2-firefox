@@ -29,6 +29,15 @@ body {
     text-align: right;
 }
 
+.dual > div {
+    display: inline-block;
+    width: calc(50% - 8px);
+}
+
+.dual > div:first-child {
+    margin-right: 10px;
+}
+
 .button:hover, .tab:hover {
     filter: opacity(60%);
 }
