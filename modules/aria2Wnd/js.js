@@ -26,12 +26,12 @@ document.querySelectorAll('[aria2]').forEach(aria2 => {
 function printGlobalOptions() {
     jsonRPCRequest(
         {method: 'aria2.getGlobalOption'},
-        (options) => {
+        (global) => {
             document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = options[aria2.id] || aria2.getAttribute('aria2');
+                aria2.value = global[aria2.id] || '';
                 var caution = aria2.getAttribute('caution');
                 if (caution) {
-                    document.getElementById(caution).innerText = bytesToFileSize(options[aria2.id]);
+                    document.getElementById(caution).innerText = bytesToFileSize(global[aria2.id]);
                 }
             });
         }
