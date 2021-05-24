@@ -21,7 +21,7 @@ browser.downloads.onCreated.addListener((item) => {
         return;
     }
 
-    var session = {url: item.url, filename: /[^\/\\]+$/.exec(item.filename)[0]};
+    var session = {url: item.url, filename: getFileName(item.filename)};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
@@ -54,6 +54,11 @@ browser.downloads.onCreated.addListener((item) => {
             return true;
         }
         return false;
+    }
+
+    function getFileName(uri) {
+        var index = uri.lastIndexOf('\\') === -1 ? uri.lastIndexOf('/') : uri.lastIndexOf('\\');
+        return uri.slice(index + 1);
     }
 });
 
