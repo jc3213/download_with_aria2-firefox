@@ -10,13 +10,13 @@ div > input {
     width: calc(100% - 55px);
 }
 
-.dual .detail {
+.double .detail {
     width: 40%;
     display: inline-block;
     padding: 3px
 }
 
-.dual input {
+.double input {
     text-align: right;
     width: 35%;
 }

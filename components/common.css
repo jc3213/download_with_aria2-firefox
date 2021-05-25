@@ -29,12 +29,12 @@ body {
     text-align: right;
 }
 
-.dual > div {
+.double > * {
     display: inline-block;
     width: calc(50% - 8px);
 }
 
-.dual > div:first-child {
+.double > *:first-child {
     margin-right: 10px;
 }
 
