@@ -62,9 +62,9 @@ function printTaskManager() {
     }
 }
 
-document.querySelectorAll('[option]').forEach(option => {
-    option.addEventListener('change', (event) => {
-        changeTaskOption(option.id, event.target.value || option.getAttribute('option'));
+document.querySelectorAll('[aria2]').forEach(aria2 => {
+    aria2.addEventListener('change', (event) => {
+        changeTaskOption(aria2.id, aria2.value || aria2.getAttribute('aria2'));
     });
 });
 
@@ -77,8 +77,8 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            document.querySelectorAll('[option]').forEach(option => {
-                option.value = options[option.id] || option.getAttribute('option');
+            document.querySelectorAll('[aria2]').forEach(aria2 => {
+                aria2.value = aria2.hasAttribute('size') ? bytesToFileSize(options[aria2.id]).slice(0, -1).replace(' ', '') : options[aria2.id] || aria2.getAttribute('option');
             });
         }
     );

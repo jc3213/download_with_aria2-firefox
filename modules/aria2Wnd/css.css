@@ -2,10 +2,6 @@ body {
     width: 430px;
 }
 
-textarea {
-    height: 180px;
-}
-
 .container {
     margin-left: 5px;
 }
@@ -14,23 +10,10 @@ textarea {
     margin-top: 15px;
 }
 
+input[speed] {
+    width: calc(100% - 40px);
+}
+
 select[aria2] {
     width: 100%;
-}
-
-.caution {
-    display: inline-block;
-    margin-left: 10px;
-    width: 100px;
-    padding: 3px;
-    background-color: #c4c;
-    color: #fff;
-}
-
-#min-split-size, #disk-cache {
-    width: calc(100% - 150px);
-}
-
-#max-overall-download-limit, #max-overall-upload-limit {
-    width: calc(100% - 165px);
 }

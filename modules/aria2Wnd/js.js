@@ -28,11 +28,7 @@ function printGlobalOptions() {
         {method: 'aria2.getGlobalOption'},
         (global) => {
             document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = global[aria2.id] || '';
-                var caution = aria2.getAttribute('caution');
-                if (caution) {
-                    document.getElementById(caution).innerText = bytesToFileSize(global[aria2.id]);
-                }
+                aria2.value = aria2.hasAttribute('size') ? bytesToFileSize(global[aria2.id]).slice(0, -1).replace(' ', '') : global[aria2.id] || '';
             });
         }
     );

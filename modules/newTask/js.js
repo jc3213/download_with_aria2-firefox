@@ -1,8 +1,8 @@
 jsonRPCRequest(
     {method: 'aria2.getGlobalOption'},
     (global) => {
-        document.querySelectorAll('[option]').forEach(option => {
-            option.value = global[option.id] || '';
+        document.querySelectorAll('[aria2]').forEach(aria2 => {
+            aria2.value = global[aria2.id] || '';
         });
     }
 );
@@ -14,7 +14,7 @@ document.querySelector('#setProxy').addEventListener('click', (event) => {
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#taskReferer').value;
     var options = {};
-    document.querySelectorAll('[option]').forEach(option => {
+    document.querySelectorAll('[option], [aria2]').forEach(option => {
         options[option.id] = option.value;
     });
     document.querySelector('#taskBatch').value.split('\n').forEach(url => {

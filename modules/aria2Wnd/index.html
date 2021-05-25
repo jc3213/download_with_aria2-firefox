@@ -43,9 +43,7 @@
             <div title="aria2_http_size_desc" i18n_title>
                 <div class="title" i18n>aria2_http_size</div>
                 <div>
-                    <input id="min-split-size" aria2 caution="splitSize" type="text">
-                    B
-                    <span id="splitSize" class="caution"></span>
+                    <input id="min-split-size" aria2 size type="text">
                 </div>
                 <span i18n>common_default</span>: <u><i>20M</i></u>
             </div>
@@ -101,9 +99,7 @@
             <div title="aria2_adv_cache_desc" i18n_title>
                 <div class="title" i18n>aria2_adv_cache</div>
                 <div>
-                    <input id="disk-cache" aria2 caution="diskCache" type="text">
-                    B
-                    <span id="diskCache" class="caution"></span>
+                    <input id="disk-cache" aria2 size type="text">
                 </div>
                 <span i18n>common_default</span>: <u><i>16M</i></u>
             </div>
@@ -117,18 +113,16 @@
             <div title="aria2_max_download_desc" i18n_title>
                 <div class="title" i18n>aria2_max_download</div>
                 <div>
-                    <input id="max-overall-download-limit" aria2 caution="maxDownload" type="text">
+                    <input id="max-overall-download-limit" aria2 size speed type="text">
                     B/s
-                    <span class="caution"><span id="maxDownload"></span>/s</span>
                 </div>
                 <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>
             <div title="aria2_max_upload_desc" i18n_title>
                 <div class="title" i18n>aria2_max_upload</div>
                 <div>
-                    <input id="max-overall-upload-limit" aria2 caution="maxUpload" type="text">
+                    <input id="max-overall-upload-limit" aria2 size speed type="text">
                     B/s
-                    <span class="caution"><span id="maxUpload"></span>/s</span>
                 </div>
                 <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>
