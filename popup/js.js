@@ -36,7 +36,7 @@ document.querySelectorAll('span.tab').forEach(tab => {
     });
 });
 
-document.getElementById('purdge_btn').addEventListener('click', (event) => {
+document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({method: 'aria2.purgeDownloadResult'});
 });
 
@@ -47,22 +47,22 @@ function printMainFrame() {
         {method: 'aria2.tellWaiting', index: [0, 9999]},
         {method: 'aria2.tellStopped', index: [0, 9999]}
     ], (global, active, waiting, stopped) => {
-        document.getElementById('numActive').innerText = global.numActive;
-        document.getElementById('numWaiting').innerText = global.numWaiting;
-        document.getElementById('numStopped').innerText = global.numStopped;
-        document.getElementById('downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
-        document.getElementById('uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
-        document.getElementById('queueTabs').style.display = 'block';
-        document.getElementById('menuTop').style.display = 'block';
-        document.getElementById('networkStatus').style.display = 'none';
-        document.getElementById('activeQueue').innerHTML = printTaskQueue(active);
-        document.getElementById('waitingQueue').innerHTML = printTaskQueue(waiting);
-        document.getElementById('stoppedQueue').innerHTML = printTaskQueue(stopped);
+        document.querySelector('#numActive').innerText = global.numActive;
+        document.querySelector('#numWaiting').innerText = global.numWaiting;
+        document.querySelector('#numStopped').innerText = global.numStopped;
+        document.querySelector('#downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
+        document.querySelector('#uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
+        document.querySelector('#queueTabs').style.display = 'block';
+        document.querySelector('#menuTop').style.display = 'block';
+        document.querySelector('#networkStatus').style.display = 'none';
+        document.querySelector('#activeQueue').innerHTML = printTaskQueue(active);
+        document.querySelector('#waitingQueue').innerHTML = printTaskQueue(waiting);
+        document.querySelector('#stoppedQueue').innerHTML = printTaskQueue(stopped);
     }, (error, rpc) => {
-        document.getElementById('queueTabs').style.display = 'none';
-        document.getElementById('menuTop').style.display = 'none';
-        document.getElementById('networkStatus').innerText = error;
-        document.getElementById('networkStatus').style.display = 'block';
+        document.querySelector('#queueTabs').style.display = 'none';
+        document.querySelector('#menuTop').style.display = 'none';
+        document.querySelector('#networkStatus').innerText = error;
+        document.querySelector('#networkStatus').style.display = 'block';
     });
 
     function printTaskQueue(queue, taskInfo = '') {
@@ -108,7 +108,7 @@ function printMainFrame() {
     }
 }
 
-document.getElementById('taskQueue').addEventListener('click', (event) => {
+document.querySelector('#taskQueue').addEventListener('click', (event) => {
     if (event.target.id === 'remove_btn') {
         var {gid, status} = getTaskInfo();
         if (['active', 'waiting', 'paused'].includes(status)) {
