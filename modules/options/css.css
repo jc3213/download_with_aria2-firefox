@@ -2,10 +2,6 @@ body {
     width: 430px;
 }
 
-textarea {
-    height: 180px;
-}
-
 #jsonrpc, #token {
     width: calc(100% - 50px);
 }
@@ -14,6 +10,3 @@ textarea {
     width: calc(100% - 70px);
 }
 
-#useragent {
-    height: 55px;
-}
