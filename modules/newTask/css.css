@@ -3,8 +3,12 @@
     overflow-y: auto;
 }
 
+#taskBatch {
+    height: 200px;
+}
+
 #all-proxy {
-    width: calc(100% - 55px);
+    width: calc(100% - 50px);
 }
 
 #newTaskMenu {
