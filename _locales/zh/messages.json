@@ -17,6 +17,9 @@
     "common_advanced": {
         "message": "高级"
     },
+    "common_back": {
+        "message": "返回"
+    },
     "warn_download": {
         "message": "Aria2 开始下载"
     },
@@ -178,9 +181,6 @@
     },
     "aria2_bittorrent": {
         "message": "BitTorrent"
-    },
-    "aria2_back": {
-        "message": "返回"
     },
     "aria2_http_retry": {
         "message": "重试次数"

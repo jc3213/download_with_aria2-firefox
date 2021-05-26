@@ -17,6 +17,9 @@
     "common_advanced": {
         "message": "Advanced"
     },
+    "common_back": {
+        "message": "Back"
+    },
     "warn_download": {
         "message": "Aria2 Download"
     },
@@ -178,9 +181,6 @@
     },
     "aria2_bittorrent": {
         "message": "BitTorrent"
-    },
-    "aria2_back": {
-        "message": "Back"
     },
     "aria2_http_retry": {
         "message": "Max Retries"
