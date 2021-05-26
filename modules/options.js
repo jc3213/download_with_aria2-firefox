@@ -3,7 +3,7 @@ function printGlobalOptions() {
         {method: 'aria2.getGlobalOption'},
         (global) => {
             document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = aria2.hasAttribute('size') ? bytesToFileSize(global[aria2.id]).slice(0, -1).replace(' ', '') : global[aria2.id] || '';
+                aria2.value = aria2.hasAttribute('calc') ? bytesToFileSize(global[aria2.id]).slice(0, -1).replace(' ', '') : global[aria2.id] || '';
             });
         }
     );
@@ -19,7 +19,7 @@ function printTaskOptions(gid) {
         {method: 'aria2.getOption', gid},
         (options) => {
             document.querySelectorAll('[task]').forEach(task => {
-                task.value = task.hasAttribute('size') ? bytesToFileSize(options[task.id]).slice(0, -1).replace(' ', '') : options[task.id] || '';
+                task.value = task.hasAttribute('calc') ? bytesToFileSize(options[task.id]).slice(0, -1).replace(' ', '') : options[task.id] || '';
             });
         }
     );

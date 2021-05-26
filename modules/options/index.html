@@ -26,7 +26,7 @@
             <div title="option_jsonrpc_desc" i18n_title>
                 <div class="title" i18n>option_jsonrpc</div>
                 <div>
-                    <input id="jsonrpc" option type="text">
+                    <input id="jsonrpc" local type="text">
                     <span id="verify" class="button">⚙️</span>
                 </div>
                 <span i18n>common_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
@@ -34,19 +34,19 @@
             <div title="option_token_desc" i18n_title>
                 <div class="title" i18n>option_token</div>
                 <div>
-                    <input id="token" option type="password" placeholder="$$secret$$">
+                    <input id="token" local type="password" placeholder="$$secret$$">
                     <span id="insight" class="button">👁️</span>
                 </div>
             </div>
             <div title="option_folder_desc" i18n_title>
                 <span class="title" i18n>option_folder</span>
-                <select id="output" option>
+                <select id="output" local>
                     <option value="0" i18n>common_default</option>
                     <option value="1" i18n>option_folder_browser</option>
                     <option value="2" i18n>option_folder_custom</option>
                 </select>
                 <div>
-                    <input id="folder" option type="text" placeholder="C:\Aria2 Downloads">
+                    <input id="folder" local type="text" placeholder="C:\Aria2 Downloads">
                 </div>
             </div>
         </div>
@@ -54,27 +54,27 @@
             <div title="option_useragent_desc" i18n_title>
                 <div class="title" i18n>option_useragent</div>
                 <div>
-                    <textarea id="useragent" option></textarea>
+                    <textarea id="useragent" local></textarea>
                 </div>
             </div>
             <div title="option_allproxy_desc" i18n_title>
                 <div class="title" i18n>option_allproxy</div>
                 <div>
-                    <input id="allproxy" option type="text" placeholder="http://127.0.0.1:8086">
+                    <input id="allproxy" local type="text" placeholder="http://127.0.0.1:8086">
                     <span i18n>option_protocol</span>: <u><i>http</i></u>/<u><i>https</i></u>
                 </div>
             </div>
             <div title="option_proxied_desc" i18n_title>
                 <div class="title" i18n>option_proxied</div>
                 <div>
-                    <textarea option id="proxied" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    <textarea id="proxied" local placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
             </div>
         </div>
         <div tab="tabDownload" class="container" style="display: none;">
             <div title="option_capture_desc" i18n_title>
                 <span class="title" i18n>option_capture</span>
-                <select option id="capture">
+                <select id="capture" local>
                     <option value="0" i18n>common_disabled</option>
                     <option value="1" i18n>option_capture_filters</option>
                     <option value="2" i18n>option_always</option>
@@ -84,8 +84,8 @@
                 <div title="option_filesize_desc" i18n_title>
                     <div class="title" i18n>option_filesize</div>
                     <div>
-                        <input option id="sizeEntry" type="number" min="0">
-                        <select option id="sizeUnit">
+                        <input id="sizeEntry" local type="number" min="0">
+                        <select id="sizeUnit" local>
                             <option value="1">KB</option>
                             <option value="2">MB</option>
                             <option value="3">GB</option>
@@ -97,13 +97,13 @@
                 <div title="option_fileext_desc" i18n_title>
                     <div class="title" i18n>option_fileext</div>
                     <div>
-                        <input id="fileExt" option placeholder="zip&ensp;exe&ensp;jpg">
+                        <input id="fileExt" local placeholder="zip&ensp;exe&ensp;jpg">
                     </div>
                 </div>
                 <div title="option_monitored_desc" i18n_title>
                     <div class="title" i18n>option_monitored</div>
                     <div>
-                        <textarea id="monitored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                        <textarea id="monitored" local placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div title="option_ignored_desc" i18n_title>
                     <div class="title" i18n>option_ignored</div>
                     <div>
-                        <textarea id="ignored" option placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                        <textarea id="ignored" local placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                     </div>
                 </div>
             </div>
