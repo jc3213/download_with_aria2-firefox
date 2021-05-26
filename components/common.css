@@ -42,6 +42,15 @@ body {
     border: 2px inset #C33;
 }
 
+.double > * {
+    display: inline-block;
+    width: 48%;
+}
+
+.double > *:first-child {
+    margin-right: 10px;
+}
+
 input, textarea {
     font-size: 15px;
     width: calc(100% - 15px);

@@ -10,15 +10,6 @@ div > input {
     width: calc(100% - 55px);
 }
 
-.double > * {
-    display: inline-block;
-    width: 48%;
-}
-
-.double > *:first-child {
-    margin-right: 10px;
-}
-
 .double .detail {
     width: 40%;
     display: inline-block;
