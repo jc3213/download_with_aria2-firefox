@@ -1,11 +1,10 @@
-jsonRPCRequest(
-    {method: 'aria2.getGlobalOption'},
-    (global) => {
-        document.querySelectorAll('[aria2]').forEach(aria2 => {
-            aria2.value = global[aria2.id] || '';
-        });
-    }
-);
+printGlobalOptions();
+
+document.querySelector('#advanced_btn').addEventListener('click', (event) => {
+    document.querySelector('#main').style.display = document.querySelector('#main').style.display === 'none' ? 'block' : 'none';
+    document.querySelector('#advanced').style.display = document.querySelector('#advanced').style.display === 'none' ? 'block' : 'none';
+    event.target.classList.toggle('checked');
+});
 
 document.querySelector('#setProxy').addEventListener('click', (event) => {
     document.querySelector('#all-proxy').value = localStorage['allproxy'];

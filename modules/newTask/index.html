@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div class="container">
+        <div id="main" class="container">
             <div title="task_referer_desc" i18n_title>
                 <div class="title" i18n>task_referer</div>
                 <div>
@@ -20,19 +20,35 @@
                     <textarea id="taskBatch"></textarea>
                 </div>
             </div>
-            <div class="double">
-                <div title="aria2_http_split_desc" i18n_title>
-                    <div class="title" i18n>aria2_http_split</div>
-                    <div>
-                        <input id="split" aria2 type="text">
-                    </div>
+            <div title="aria2_adv_dir_desc" i18n_title>
+                <div class="title" i18n>aria2_adv_dir</div>
+                <div>
+                    <input id="dir" aria2 type="text">
                 </div>
-                <div title="aria2_adv_dir_desc" i18n_title>
-                    <div class="title" i18n>aria2_adv_dir</div>
-                    <div>
-                        <input id="dir" aria2 type="text">
-                    </div>
+            </div>
+        </div>
+        <div id="advanced" class="container" style="display: none;">
+            <div title="aria2_http_split_desc" i18n_title>
+                <div class="title" i18n>aria2_http_split</div>
+                <div>
+                    <input id="split" aria2 type="text">
                 </div>
+            </div>
+            <div title="aria2_http_size_desc" i18n_title>
+                <div class="title" i18n>aria2_http_size</div>
+                <div>
+                    <label class="suffix">B</label>
+                    <input id="min-split-size" aria2 size type="text">
+                </div>
+                <span i18n>common_default</span>: <u><i>20M</i></u>
+            </div>
+            <div title="task_download_desc" i18n_title>
+                <div class="title" i18n>task_download</div>
+                <div>
+                    <label class="suffix">B/s</label>
+                    <input id="max-download-limit" aria2 size type="text">
+                </div>
+                <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>
             <div title="task_proxy_desc" i18n_title>
                 <div class="title" i18n>task_proxy</div>
@@ -45,9 +61,11 @@
         <hr>
         <div id="newTaskMenu" class="menuContainer">
             <span id="submit_btn" class="button" i18n>task_submit</span>
+            <span id="advanced_btn" class="button" i18n>common_advanced</span>
         </div>
     </body>
     <script src="/components/common.js"></script>
     <script src="/components/i18n.js"></script>
+    <script src="/modules/options.js"></script>
     <script src="js.js"></script>
 </html>

@@ -3,7 +3,7 @@ var taskManager;
 
 addEventListener('message', (event) => {
     gid = event.data;
-    printTaskOption();
+    printTaskOptions(gid);
     printTaskManager();
     taskManager = setInterval(printTaskManager, 1000);
 })
@@ -62,31 +62,15 @@ function printTaskManager() {
     }
 }
 
-document.querySelectorAll('[aria2]').forEach(aria2 => {
+document.querySelectorAll('[task]').forEach(aria2 => {
     aria2.addEventListener('change', (event) => {
-        changeTaskOption(aria2.id, aria2.value || '');
+        changeTaskOptions(gid, aria2.id, aria2.value || '');
     });
 });
 
-function changeTaskOption(name, value, options = {}) {
-    options[name] = value;
-    jsonRPCRequest({method: 'aria2.changeOption', gid, options}, printTaskOption);
-}
-
-function printTaskOption() {
-    jsonRPCRequest(
-        {method: 'aria2.getOption', gid},
-        (options) => {
-            document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = aria2.hasAttribute('size') ? bytesToFileSize(options[aria2.id]).slice(0, -1).replace(' ', '') : options[aria2.id] || aria2.getAttribute('option');
-            });
-        }
-    );
-}
-
 document.querySelector('#loadProxy').addEventListener('click', (event) => {
     if (!document.querySelector('#all-proxy').disabled) {
-        changeTaskOption('all-proxy', localStorage['allproxy']);
+        changeTaskOptions(gid, 'all-proxy', localStorage['allproxy']);
     }
 });
 
@@ -120,6 +104,6 @@ document.querySelector('#taskFiles').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
-        jsonRPCRequest({method: 'aria2.changeOption', gid, options: {'select-file': checked.join()}});
+        changeTaskOptions(gid, 'select-file', checked.join());
     }
 });

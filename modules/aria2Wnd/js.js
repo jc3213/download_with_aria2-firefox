@@ -17,19 +17,6 @@ document.querySelector('#aria2Exit').addEventListener('click', (event) => {
 
 document.querySelectorAll('[aria2]').forEach(aria2 => {
     aria2.addEventListener('change', (event) => {
-        var options = {};
-        options[aria2.id] = aria2.value;
-        jsonRPCRequest({method: 'aria2.changeGlobalOption', options}, printGlobalOptions);
+        changeGlobalOptions(aria2.id, aria2.value);
     });
 });
-
-function printGlobalOptions() {
-    jsonRPCRequest(
-        {method: 'aria2.getGlobalOption'},
-        (global) => {
-            document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = aria2.hasAttribute('size') ? bytesToFileSize(global[aria2.id]).slice(0, -1).replace(' ', '') : global[aria2.id] || '';
-            });
-        }
-    );
-}

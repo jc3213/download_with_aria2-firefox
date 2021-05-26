@@ -15,7 +15,7 @@
                     <div class="title" i18n>task_download</div>
                     <div>
                         <span id="download" class="detail active">0 B/S</span>
-                        <input id="max-download-limit" aria2 size type="text">
+                        <input id="max-download-limit" task size type="text">
                         B/s
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="title" i18n>task_upload</div>
                     <div>
                         <span id="upload" class="detail complete">0 B/s</span>
-                        <input id="max-upload-limit" aria2 size type="text">
+                        <input id="max-upload-limit" task size type="text">
                         B/s
                     </div>
                 </div>
@@ -31,7 +31,7 @@
             <div title="task_proxy_desc" i18n_title>
                 <div class="title" i18n>task_proxy</div>
                 <div>
-                    <input id="all-proxy" aria2 type="text">
+                    <input id="all-proxy" task type="text">
                     <span id="loadProxy" class="button">📷</span>
                 </div>
             </div>
@@ -45,5 +45,6 @@
     </body>
     <script src="/components/common.js"></script>
     <script src="/components/i18n.js"></script>
+    <script src="/modules/options.js"></script>
     <script src="js.js"></script>
 </html>
