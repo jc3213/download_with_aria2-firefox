@@ -17,6 +17,6 @@ document.querySelector('#aria2Exit').addEventListener('click', (event) => {
 
 document.querySelectorAll('[aria2]').forEach(aria2 => {
     aria2.addEventListener('change', (event) => {
-        changeGlobalOptions(aria2.id, aria2.value);
+        changeGlobalOption(aria2.id, aria2.value);
     });
 });

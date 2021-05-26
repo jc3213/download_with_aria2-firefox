@@ -64,13 +64,13 @@ function printTaskManager() {
 
 document.querySelectorAll('[task]').forEach(aria2 => {
     aria2.addEventListener('change', (event) => {
-        changeTaskOptions(gid, aria2.id, aria2.value || '');
+        changeTaskOption(gid, aria2.id, aria2.value || '');
     });
 });
 
 document.querySelector('#loadProxy').addEventListener('click', (event) => {
     if (!document.querySelector('#all-proxy').disabled) {
-        changeTaskOptions(gid, 'all-proxy', localStorage['allproxy']);
+        changeTaskOption(gid, 'all-proxy', localStorage['allproxy']);
     }
 });
 
@@ -104,6 +104,6 @@ document.querySelector('#taskFiles').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
-        changeTaskOptions(gid, 'select-file', checked.join());
+        changeTaskOption(gid, 'select-file', checked.join());
     }
 });
