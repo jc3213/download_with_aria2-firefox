@@ -1,0 +1,46 @@
+body {
+    width: 430px;
+}
+
+[tab] {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.container > *:nth-child(n+2) {
+    margin-top: 15px;
+}
+
+.double > * {
+    display: inline-block;
+    width: 48%;
+}
+
+.double > *:first-child {
+    margin-right: 10px;
+}
+
+.suffix {
+    position: absolute;
+    right: 12px;
+    padding: 3px;
+}
+
+input, textarea, select, option {
+    font-size: 15px;
+    padding: 3px;
+}
+
+input, textarea {
+    width: calc(100% - 10px);
+    resize: none;
+}
+
+textarea {
+    word-break: break-word;
+}
+
+option:checked {
+    font-weight: bold;
+    color: #F00;
+}

@@ -1,5 +1,4 @@
 body {
-    margin: 8px;
     width: 430px;
 }
 
@@ -7,20 +6,12 @@ textarea {
     height: 180px;
 }
 
-.container {
-    margin-left: 5px;
-}
-
-.container > div:nth-child(n+2) {
-    margin-top: 15px;
-}
-
 #jsonrpc, #token {
-    width: calc(100% - 55px);
+    width: calc(100% - 50px);
 }
 
 #sizeEntry {
-    width: calc(100% - 75px);
+    width: calc(100% - 70px);
 }
 
 #useragent {

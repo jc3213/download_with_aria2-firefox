@@ -3,40 +3,43 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="/components/common.css">
+        <link rel="stylesheet" href="/modules/common.css">
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div title="task_referer_desc" i18n_title>
-            <div class="title" i18n>task_referer</div>
-            <div>
-                <input id="taskReferer" type="text">
-            </div>
-        </div>
-        <div title="task_batch_desc" i18n_title>
-            <div class="title" i18n>task_batch</div>
-            <div>
-                <textarea id="taskBatch"></textarea>
-            </div>
-        </div>
-        <div class="double">
-            <div title="aria2_http_split_desc" i18n_title>
-                <div class="title" i18n>aria2_http_split</div>
+        <div class="container">
+            <div title="task_referer_desc" i18n_title>
+                <div class="title" i18n>task_referer</div>
                 <div>
-                    <input id="split" aria2 type="text">
+                    <input id="taskReferer" type="text">
                 </div>
             </div>
-            <div title="aria2_adv_dir_desc" i18n_title>
-                <div class="title" i18n>aria2_adv_dir</div>
+            <div title="task_batch_desc" i18n_title>
+                <div class="title" i18n>task_batch</div>
                 <div>
-                    <input id="dir" aria2 type="text">
+                    <textarea id="taskBatch"></textarea>
                 </div>
             </div>
-        </div>
-        <div title="task_proxy_desc" i18n_title>
-            <div class="title" i18n>task_proxy</div>
-            <div>
-                <input id="all-proxy" option type="text">
-                <span id="setProxy" class="button">📷</span>
+            <div class="double">
+                <div title="aria2_http_split_desc" i18n_title>
+                    <div class="title" i18n>aria2_http_split</div>
+                    <div>
+                        <input id="split" aria2 type="text">
+                    </div>
+                </div>
+                <div title="aria2_adv_dir_desc" i18n_title>
+                    <div class="title" i18n>aria2_adv_dir</div>
+                    <div>
+                        <input id="dir" aria2 type="text">
+                    </div>
+                </div>
+            </div>
+            <div title="task_proxy_desc" i18n_title>
+                <div class="title" i18n>task_proxy</div>
+                <div>
+                    <input id="all-proxy" option type="text">
+                    <span id="setProxy" class="button">📷</span>
+                </div>
             </div>
         </div>
         <hr>

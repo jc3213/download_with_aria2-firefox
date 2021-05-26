@@ -1,11 +1,3 @@
-body {
-    width: 440px;
-}
-
-body > div:nth-child(n+2) {
-    margin-top: 15px;
-}
-
 #taskBatch {
     height: 140px;
 }

@@ -1,15 +1,3 @@
-body {
-    width: 440px;
-}
-
-body > div:nth-child(n+2) {
-    margin-top: 15px;
-}
-
-div > input {
-    width: calc(100% - 55px);
-}
-
 .double .detail {
     width: 40%;
     display: inline-block;
@@ -19,6 +7,10 @@ div > input {
 .double input {
     text-align: right;
     width: 35%;
+}
+
+#all-proxy {
+    width: calc(100% - 55px);
 }
 
 #taskName {
