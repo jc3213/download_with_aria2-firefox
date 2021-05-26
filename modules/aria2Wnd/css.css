@@ -16,6 +16,6 @@ body {
     padding: 3px;
 }
 
-select {
+select[aria2] {
     width: 100%;
 }

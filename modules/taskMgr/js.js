@@ -64,7 +64,7 @@ function printTaskManager() {
 
 document.querySelectorAll('[aria2]').forEach(aria2 => {
     aria2.addEventListener('change', (event) => {
-        changeTaskOption(aria2.id, aria2.value || aria2.getAttribute('aria2'));
+        changeTaskOption(aria2.id, aria2.value || '');
     });
 });
 
