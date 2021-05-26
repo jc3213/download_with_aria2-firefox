@@ -9,7 +9,7 @@
     width: 35%;
 }
 
-#all-proxy {
+#all-proxy, #taskAddUri input {
     width: calc(100% - 55px);
 }
 
