@@ -28,12 +28,16 @@ body {
 
 input, textarea, select, option {
     font-size: 15px;
-    padding: 3px;
 }
 
 input, textarea {
-    width: calc(100% - 10px);
+    width: calc(100% - 15px);
+    padding: 3px 5px;
     resize: none;
+}
+
+select, option {
+    padding: 3px;
 }
 
 textarea {
