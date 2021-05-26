@@ -43,6 +43,7 @@
             <div title="aria2_http_size_desc" i18n_title>
                 <div class="title" i18n>aria2_http_size</div>
                 <div>
+                    <label class="suffix">B</label>
                     <input id="min-split-size" aria2 size type="text">
                 </div>
                 <span i18n>common_default</span>: <u><i>20M</i></u>
@@ -99,6 +100,7 @@
             <div title="aria2_adv_cache_desc" i18n_title>
                 <div class="title" i18n>aria2_adv_cache</div>
                 <div>
+                    <label class="suffix">B</label>
                     <input id="disk-cache" aria2 size type="text">
                 </div>
                 <span i18n>common_default</span>: <u><i>16M</i></u>
@@ -113,16 +115,16 @@
             <div title="aria2_max_download_desc" i18n_title>
                 <div class="title" i18n>aria2_max_download</div>
                 <div>
-                    <input id="max-overall-download-limit" aria2 size speed type="text">
-                    B/s
+                    <label class="suffix">B/s</label>
+                    <input id="max-overall-download-limit" aria2 size type="text">
                 </div>
                 <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>
             <div title="aria2_max_upload_desc" i18n_title>
                 <div class="title" i18n>aria2_max_upload</div>
                 <div>
-                    <input id="max-overall-upload-limit" aria2 size speed type="text">
-                    B/s
+                    <label class="suffix">B/s</label>
+                    <input id="max-overall-upload-limit" aria2 size type="text">
                 </div>
                 <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>

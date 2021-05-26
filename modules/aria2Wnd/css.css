@@ -10,10 +10,12 @@ body {
     margin-top: 15px;
 }
 
-input[speed] {
-    width: calc(100% - 40px);
+.suffix {
+    position: absolute;
+    right: 24px;
+    padding: 3px;
 }
 
-select[aria2] {
+select {
     width: 100%;
 }

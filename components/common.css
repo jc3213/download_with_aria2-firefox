@@ -29,15 +29,6 @@ body {
     text-align: right;
 }
 
-.double > * {
-    display: inline-block;
-    width: calc(50% - 8px);
-}
-
-.double > *:first-child {
-    margin-right: 10px;
-}
-
 .button:hover, .tab:hover {
     filter: opacity(60%);
 }
@@ -49,6 +40,15 @@ body {
 .checked {
     padding: 2px 4px;
     border: 2px inset #C33;
+}
+
+.double > * {
+    display: inline-block;
+    width: 48%;
+}
+
+.double > *:first-child {
+    margin-right: 10px;
 }
 
 input, textarea {
