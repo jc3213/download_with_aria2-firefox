@@ -30,8 +30,10 @@
     right: 16px;
 }
 
-#title {
+#name {
+    padding: 5px;
     height: 45px;
+    overflow-y: auto;
 }
 
 [swap] {
