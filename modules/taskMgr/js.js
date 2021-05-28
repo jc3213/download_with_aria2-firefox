@@ -1,5 +1,5 @@
 var gid;
-var logic;
+var logic = 0;
 var taskManager;
 
 addEventListener('message', (event) => {
@@ -72,13 +72,12 @@ function printTaskManager() {
     }
 
     function printTaskDetails(type) {
-        if (logic) {
-            return;
+        if (logic !== 1) {
+            document.querySelectorAll('[http], [bt]').forEach(option => {
+                option.style.display = option.hasAttribute(type) ? 'block' : 'none';
+            });
+            logic = 1;
         }
-        document.querySelectorAll('[http], [bt]').forEach(option => {
-            option.style.display = option.hasAttribute(type) ? 'block' : 'none';
-        });
-        logic = 'done';
     }
 }
 
