@@ -1,11 +1,3 @@
-body {
-    width: 440px;
-}
-
-input, textarea {
-    width: calc(100% - 15px);
-}
-
 #queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
     margin-right: 10px;
 }

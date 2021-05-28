@@ -1,7 +1,3 @@
-body {
-    width: 430px;
-}
-
 [tab], [card]{
     height: 400px;
     overflow-y: auto;
