@@ -30,13 +30,12 @@
     right: 16px;
 }
 
-[swap] {
-    padding: 3px
-}
-
 #title {
     height: 45px;
-    overflow-y: hidden;
+}
+
+[swap] {
+    padding: 3px
 }
 
 #all-proxy, #taskAddUri input {

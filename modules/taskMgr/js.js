@@ -18,7 +18,6 @@ function printTaskManager() {
             var totalLength = bytesToFileSize(result.totalLength);
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
             var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             if (result.bittorrent) {
                 var taskUrl = '';
@@ -32,17 +31,15 @@ function printTaskManager() {
                 document.querySelector('#http').style.display = 'block';
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
-            document.querySelector('#title').className = result.status + 'Box title';
             document.querySelector('#name').innerText = taskName;
             document.querySelector('#name').className = result.status;
-            document.querySelector('#name').style.width = completeRatio;
             document.querySelector('#local').innerText = completedLength;
             document.querySelector('#remote').innerText = completedLength;
-            document.querySelector('#time').innerText = estimatedTime;
+            document.querySelector('#time').innerHTML = estimatedTime;
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            //document.querySelector('#max-download-limit').disabled = completed;
-            //document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
+            document.querySelector('#max-download-limit').disabled = completed;
+            document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
             document.querySelector('#all-proxy').disabled = completed;
         }
     );
