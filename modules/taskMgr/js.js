@@ -12,26 +12,38 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             var completed = result.status === 'complete';
+            var completedLength = bytesToFileSize(result.completedLength);
+            var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
+            var totalLength = bytesToFileSize(result.totalLength);
+            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
+            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
+            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             if (result.bittorrent) {
+                var taskUrl = '';
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
-                document.querySelector('#taskFiles').style.display = 'block';
+                document.querySelector('#bt').style.display = 'block';
                 document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
             }
             else {
-                taskName = fileName || result.files[0].uris[0].uri;
-                document.querySelector('#taskUris').style.display = 'block';
-                document.querySelector('#taskAddUri').style.display = 'block';
+                taskUrl = result.files[0].uris[0].uri;
+                taskName = fileName || taskUrl;
+                document.querySelector('#http').style.display = 'block';
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
+            document.querySelector('#title').className = result.status + 'Box title';
+            document.querySelector('#name').innerText = taskName;
+            document.querySelector('#name').className = result.status;
+            document.querySelector('#name').style.width = completeRatio;
+            document.querySelector('#local').innerText = completedLength;
+            document.querySelector('#remote').innerText = completedLength;
+            document.querySelector('#time').innerText = estimatedTime;
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = completed;
-            document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
+            //document.querySelector('#max-download-limit').disabled = completed;
+            //document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
             document.querySelector('#all-proxy').disabled = completed;
-            document.querySelector('#taskName').innerText = taskName;
-            document.querySelector('#taskName').className = 'button title ' + result.status;
         }
     );
 
@@ -68,13 +80,22 @@ document.querySelectorAll('[task]').forEach(aria2 => {
     });
 });
 
-document.querySelector('#loadProxy').addEventListener('click', (event) => {
-    if (!document.querySelector('#all-proxy').disabled) {
-        changeTaskOption(gid, 'all-proxy', localStorage['allproxy']);
-    }
+document.querySelectorAll('[swap]').forEach(swap => {
+    var input = document.getElementById(swap.getAttribute('swap'));
+    swap.addEventListener('click', (event) => {
+        swap.style.display = 'none';
+        input.parentNode.style.display = 'block';
+        input.focus();
+    });
+    input.addEventListener('keydown', (event) => {
+        if (event.keyCode === 13) {
+            input.parentNode.style.display = 'none';
+            swap.style.display = 'block';
+        }
+    });
 });
 
-document.querySelector('#taskName').addEventListener('click', (event) => {
+document.querySelector('#back_btn').addEventListener('click', (event) => {
     parent.document.querySelector('#taskMgrWindow').remove();
 });
 

@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div id="main" class="container">
+        <div card class="container">
             <div title="task_referer_desc" i18n_title>
                 <div class="title" i18n>task_referer</div>
                 <div>
@@ -24,11 +24,11 @@
                 <div class="title" i18n>task_proxy</div>
                 <div>
                     <input id="all-proxy" option type="text">
-                    <span id="setProxy" class="button">📷</span>
+                    <span id='allproxy' load="all-proxy" class="button">📷</span>
                 </div>
             </div>
         </div>
-        <div id="advanced" class="container" style="display: none;">
+        <div card class="container" style="display: none;">
             <div title="aria2_adv_dir_desc" i18n_title>
                 <div class="title" i18n>aria2_adv_dir</div>
                 <div>
@@ -61,13 +61,14 @@
             </div>
         </div>
         <hr>
-        <div id="newTaskMenu" class="menuContainer">
+        <div class="submenu">
             <span id="submit_btn" class="button" i18n>task_submit</span>
-            <span id="advanced_btn" class="button" i18n>common_advanced</span>
+            <span id="card_btn" class="button" i18n>common_advanced</span>
         </div>
     </body>
     <script src="/components/common.js"></script>
     <script src="/components/i18n.js"></script>
     <script src="/modules/options.js"></script>
+    <script src="/modules/card.js"></script>
     <script src="js.js"></script>
 </html>

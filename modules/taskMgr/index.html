@@ -7,44 +7,63 @@
         <link rel="stylesheet" href="/modules/common.css">
         <link rel="stylesheet" href="css.css">
     </head>
-    <body class="container">
-        <div id="taskName"></div>
-        <div id="taskOptions">
+    <body>
+        <div card class="container">
+            <div id="title">
+                <div id="name"></div>
+            </div>
+            <div class="triple">
+                <div>🖥️ <span id="local"></span></div>
+                <div>📦 <span id="remote"></span></div>
+                <div>⏲️ <span id="time"></span></div>
+            </div>
             <div class="double">
                 <div title="task_download_desc" i18n_title>
                     <div class="title" i18n>task_download</div>
-                    <div>
-                        <span id="download" class="detail active">0 B/S</span>
+                    <div style="display: none;">
+                        <div class="suffix">B/s</div>
                         <input id="max-download-limit" task calc type="text">
-                        B/s
                     </div>
+                    <div id="download" swap="max-download-limit" class="active"></div>
                 </div>
                 <div title="task_upload_desc" i18n_title>
                     <div class="title" i18n>task_upload</div>
-                    <div>
-                        <span id="upload" class="detail complete">0 B/s</span>
+                    <div style="display: none;">
+                        <div class="suffix">B/s</div>
                         <input id="max-upload-limit" task calc type="text">
-                        B/s
                     </div>
+                    <div id="upload" swap="max-upload-limit" class="complete"></div>
                 </div>
             </div>
             <div title="task_proxy_desc" i18n_title>
                 <div class="title" i18n>task_proxy</div>
                 <div>
                     <input id="all-proxy" task type="text">
-                    <span id="loadProxy" class="button">📷</span>
+                    <span id='allproxy' load="all-proxy" class="button">📷</span>
                 </div>
             </div>
         </div>
-        <div id="taskUris"></div>
-        <div id="taskAddUri">
-            <input type="text">
-            <span class="button">➕</span>
+        <div card style="display: none;">
+            <div id="http" class="container" style="display: none;">
+                <div id="taskAddUri">
+                    <input type="text">
+                    <span class="button">➕</span>
+                </div>
+                <div id="taskUris"></div>
+            </div>
+            <div id="bt" style="display: none;">
+                <div id="taskFiles"></div>
+            </div>
         </div>
-        <div id="taskFiles"></div>
+        <hr>
+        <div class="submenu">
+            <span id="back_btn" class="button" i18n>common_back</span>
+            <span id="card_btn" class="button" i18n>common_advanced</span>
+        </div>
     </body>
     <script src="/components/common.js"></script>
     <script src="/components/i18n.js"></script>
     <script src="/modules/options.js"></script>
+    <script src="/modules/card.js"></script>
     <script src="js.js"></script>
 </html>

@@ -34,3 +34,9 @@ function changeTaskOption(gid, name, value, options = {}) {
         }
     );
 }
+
+document.querySelectorAll('[load]').forEach(load => {
+    load.addEventListener('click', (event) => {
+        document.getElementById(load.getAttribute('load')).value = localStorage[load.id];
+    });
+});

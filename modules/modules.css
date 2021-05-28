@@ -6,7 +6,7 @@ iframe {
     left: 0px;
 }
 
-#optionsWindow {
+#optionsWindow, #taskMgrWindow {
     top: 0px;
     height: calc(100% - 40px);
 }
@@ -14,11 +14,6 @@ iframe {
 #aria2Global {
     top: 0px;
     height: 100%;
-}
-
-#taskMgrWindow {
-    top: -5px;
-    height: calc(100% - 35px);
 }
 
 #newTaskWindow {

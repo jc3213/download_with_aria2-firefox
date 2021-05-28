@@ -2,7 +2,7 @@ body {
     width: 430px;
 }
 
-[tab] {
+[tab], [card]{
     height: 400px;
     overflow-y: auto;
 }
@@ -11,19 +11,14 @@ body {
     margin-top: 15px;
 }
 
-.double > * {
-    display: inline-block;
-    width: 48%;
-}
-
-.double > *:first-child {
-    margin-right: 10px;
-}
-
 .suffix {
     position: absolute;
     right: 12px;
     padding: 3px;
+}
+
+.submenu {
+    text-align: center;
 }
 
 input, textarea, select, option {

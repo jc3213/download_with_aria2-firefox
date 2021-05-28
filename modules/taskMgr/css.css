@@ -1,29 +1,47 @@
-.double .detail {
-    width: 40%;
+.double > *:nth-child(2), .triple > *:nth-child(n+2) {
+    margin-left: 10px;
+}
+
+.double > *, .triple > * {
     display: inline-block;
+}
+
+.double > * {
+    width: 48%;
+}
+
+.triple > * {
+    width: 31%;
+}
+
+.triple span {
+    display: inline-block;
+    width: 81%;
+    text-align: center;
+}
+
+.double > *:first-child .suffix {
+    right: 236px;
+}
+
+.double > *:last-child .suffix {
+    right: 16px;
+}
+
+[swap] {
     padding: 3px
 }
 
-.double input {
-    text-align: right;
-    width: 35%;
-}
-
-#all-proxy {
-    width: calc(100% - 55px);
-}
-
-#taskName {
+#title {
     height: 45px;
     overflow-y: hidden;
 }
 
-#taskOptions > div:nth-child(n+2) {
-    margin-top: 10px;
+#all-proxy, #taskAddUri input {
+    width: calc(100% - 55px);
 }
 
-#taskUris, #taskAddUri, #taskFiles {
-    display: none;
+#taskUris, #taskFiles {
     overflow-y: auto;
 }
 
@@ -40,20 +58,12 @@ td {
     vertical-align: middle;
 }
 
-#taskUris {
-    max-height: 215px;
-}
-
-#taskUris td:active, #taskFiles td:nth-child(1):active {
-    filter: opacity(60%);
-}
-
 #taskAddUri {
     padding: 1px;
 }
 
-#taskFiles {
-    height: 260px;
+#taskUris td:active, #taskFiles td:nth-child(1):active {
+    filter: opacity(60%);
 }
 
 #taskFiles td:nth-child(1) {
