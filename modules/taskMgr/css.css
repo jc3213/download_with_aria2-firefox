@@ -40,6 +40,11 @@
     padding: 3px
 }
 
+select[task] {
+    width: 100%;
+}
+
+
 #all-proxy, #taskAddUri input {
     width: calc(100% - 55px);
 }

@@ -1,4 +1,5 @@
 var gid;
+var logic;
 var taskManager;
 
 addEventListener('message', (event) => {
@@ -22,13 +23,13 @@ function printTaskManager() {
             if (result.bittorrent) {
                 var taskUrl = '';
                 var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
-                document.querySelector('#bt').style.display = 'block';
+                printTaskDetails('bt');
                 document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
             }
             else {
                 taskUrl = result.files[0].uris[0].uri;
                 taskName = fileName || taskUrl;
-                document.querySelector('#http').style.display = 'block';
+                printTaskDetails('http');
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
             document.querySelector('#name').innerText = taskName;
@@ -68,6 +69,16 @@ function printTaskManager() {
             }
         });
         return uriInfo + '</table>';
+    }
+
+    function printTaskDetails(type) {
+        if (logic) {
+            return;
+        }
+        document.querySelectorAll('[http], [bt]').forEach(option => {
+            option.style.display = option.hasAttribute(type) ? 'block' : 'none';
+        });
+        logic = 'done';
     }
 }
 
