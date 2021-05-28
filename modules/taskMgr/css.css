@@ -15,8 +15,10 @@
 }
 
 .triple span {
+    margin-left: 4px;
+    border: 1px ridge #ccc;
     display: inline-block;
-    width: 81%;
+    width: 80%;
     text-align: center;
 }
 
