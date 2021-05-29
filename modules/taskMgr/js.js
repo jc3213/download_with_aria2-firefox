@@ -13,35 +13,24 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
-            var completed = result.status === 'complete';
-            var completedLength = bytesToFileSize(result.completedLength);
-            var totalLength = bytesToFileSize(result.totalLength);
-            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
             if (result.bittorrent) {
-                var taskUrl = '';
-                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
                 printTaskDetails('bt');
                 document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
             }
             else {
-                taskUrl = result.files[0].uris[0].uri;
-                taskName = fileName || taskUrl;
                 printTaskDetails('http');
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
-            document.querySelector('#name').innerText = taskName;
+            document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
             document.querySelector('#name').className = result.status + ' button';
-            document.querySelector('#local').innerText = completedLength;
-            document.querySelector('#ratio').innerText = completeRatio;
-            document.querySelector('#remote').innerText = completedLength;
+            document.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
+            document.querySelector('#ratio').innerText = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
+            document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = completed;
-            document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
-            document.querySelector('#all-proxy').disabled = completed;
+            document.querySelector('#max-download-limit').disabled = result.status === 'complete';
+            document.querySelector('#max-upload-limit').disabled = result.status === 'complete' || !result.bittorrent;
+            document.querySelector('#all-proxy').disabled = result.status === 'complete';
         }
     );
 
@@ -90,9 +79,11 @@ document.querySelectorAll('[task]').forEach(aria2 => {
 document.querySelectorAll('[swap]').forEach(swap => {
     var input = document.getElementById(swap.getAttribute('swap'));
     swap.addEventListener('click', (event) => {
-        swap.style.display = 'none';
-        input.parentNode.style.display = 'block';
-        input.focus();
+        if (!input.disabled) {
+            swap.style.display = 'none';
+            input.parentNode.style.display = 'block';
+            input.focus();
+        }
     });
     input.addEventListener('keydown', (event) => {
         if (event.keyCode === 13) {
