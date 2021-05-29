@@ -156,7 +156,6 @@ function pauseOrUnpauseTask(gid, status) {
     else {
         return;
     }
-console.log(gid, status);
     jsonRPCRequest({method, gid});
 }
 
