@@ -1,8 +1,3 @@
-.container {
-    height: 360px;
-    overflow-y: auto;
-}
-
 #all-proxy {
     width: calc(100% - 50px);
 }
