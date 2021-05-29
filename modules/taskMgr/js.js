@@ -15,8 +15,8 @@ function printTaskManager() {
         (result) => {
             var completed = result.status === 'complete';
             var completedLength = bytesToFileSize(result.completedLength);
-            var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
             var totalLength = bytesToFileSize(result.totalLength);
+            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
             var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
@@ -35,8 +35,8 @@ function printTaskManager() {
             document.querySelector('#name').innerText = taskName;
             document.querySelector('#name').className = result.status;
             document.querySelector('#local').innerText = completedLength;
+            document.querySelector('#ratio').innerText = completeRatio;
             document.querySelector('#remote').innerText = completedLength;
-            document.querySelector('#time').innerHTML = estimatedTime;
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
             document.querySelector('#max-download-limit').disabled = completed;

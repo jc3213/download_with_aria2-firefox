@@ -8,12 +8,16 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
+        <div class="overlay">
+            <span id="back_btn" class="button">❌</span>
+            <span id="card_btn" class="button">⚙️</span>
+        </div>
+        <div id="name"></div>
         <div card class="container">
-            <div id="name"></div>
             <div class="triple">
                 <div>🖥️<span id="local"></span></div>
+                <div>🛰️<span id="ratio"></span></div>
                 <div>📦<span id="remote"></span></div>
-                <div>⏲️<span id="time"></span></div>
             </div>
             <div class="double">
                 <div title="task_download_desc" i18n_title>
@@ -95,11 +99,6 @@
             <div bt>
                 <div id="taskFiles"></div>
             </div>
-        </div>
-        <hr>
-        <div class="submenu">
-            <span id="back_btn" class="button" i18n>common_back</span>
-            <span id="card_btn" class="button" i18n>common_advanced</span>
         </div>
     </body>
     <script src="/components/common.js"></script>

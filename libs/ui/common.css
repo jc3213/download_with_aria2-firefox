@@ -1,4 +1,4 @@
-[tab], [card]{
+[tab], [card] {
     height: 400px;
     overflow-y: auto;
 }
@@ -29,6 +29,10 @@ input, textarea {
 
 textarea {
     word-break: break-word;
+}
+
+select[aria2], select[task] {
+    width: 100%;
 }
 
 option:checked {

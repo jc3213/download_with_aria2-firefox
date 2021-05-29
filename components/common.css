@@ -11,7 +11,7 @@ body {
 }
 
 .tab, .button {
-    border: 1px outset #CCC;
+    border: 1px outset #ccc;
     border-radius: 3px;
     cursor: pointer;
     padding: 3px 5px;
