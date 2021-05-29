@@ -61,8 +61,8 @@
     height: 360px;
 }
 
-#all-proxy, #taskAddUri input {
-    width: calc(100% - 55px);
+#all-proxy {
+    width: calc(100% - 50px);
 }
 
 #taskUris, #taskFiles {
@@ -82,8 +82,13 @@ td {
     vertical-align: middle;
 }
 
-#taskAddUri {
-    padding: 1px;
+#taskAddUri input {
+    width: calc(100% - 45px);
+}
+
+#taskAddUri .button {
+    font-size: 12px;
+    padding: 5px;
 }
 
 #taskUris td:active, #taskFiles td:nth-child(1):active {

@@ -14,7 +14,10 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     var reader = new FileReader();
     reader.readAsText(event.target.files[0]);
     reader.onload = () => {
-        restoreSettings(reader.result, false);
+        var options = JSON.parse(reader.result);
+        Object.keys(options).forEach(key => {
+            localStorage[key] = options[key];
+        });
         location.reload();
     };
 });
