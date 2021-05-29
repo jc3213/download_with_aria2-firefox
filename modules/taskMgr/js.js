@@ -13,6 +13,7 @@ function printTaskManager() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid},
         (result) => {
+            var completed = result.status === 'complete';
             if (result.bittorrent) {
                 printTaskDetails('bt');
                 document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
@@ -28,9 +29,9 @@ function printTaskManager() {
             document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = result.status === 'complete';
-            document.querySelector('#max-upload-limit').disabled = result.status === 'complete' || !result.bittorrent;
-            document.querySelector('#all-proxy').disabled = result.status === 'complete';
+            document.querySelector('#max-download-limit').disabled = result.status === completed;
+            document.querySelector('#max-upload-limit').disabled = result.status === completed || !result.bittorrent;
+            document.querySelector('#all-proxy').disabled = result.status === completed;
         }
     );
 
