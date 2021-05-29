@@ -29,9 +29,9 @@ function printTaskManager() {
             document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = result.status === completed;
-            document.querySelector('#max-upload-limit').disabled = result.status === completed || !result.bittorrent;
-            document.querySelector('#all-proxy').disabled = result.status === completed;
+            document.querySelector('#max-download-limit').disabled = completed;
+            document.querySelector('#max-upload-limit').disabled = completed || !result.bittorrent;
+            document.querySelector('#all-proxy').disabled = completed;
         }
     );
 
