@@ -8,7 +8,7 @@ document.querySelectorAll('div[card]').forEach((card, index, array) => {
             toggleCardView(wheel === 3 && index !== limit, index + 1);
         }
         else {
-            wheel = wheel <= 0 ? whell - 1 : -1;
+            wheel = wheel <= 0 ? wheel - 1 : -1;
             toggleCardView(wheel === -3 && index !== 0, index - 1);
         }
     });
