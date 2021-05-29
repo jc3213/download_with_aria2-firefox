@@ -33,7 +33,7 @@ function printTaskManager() {
                 document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
             }
             document.querySelector('#name').innerText = taskName;
-            document.querySelector('#name').className = result.status;
+            document.querySelector('#name').className = result.status + ' button';
             document.querySelector('#local').innerText = completedLength;
             document.querySelector('#ratio').innerText = completeRatio;
             document.querySelector('#remote').innerText = completedLength;
@@ -102,7 +102,7 @@ document.querySelectorAll('[swap]').forEach(swap => {
     });
 });
 
-document.querySelector('#back_btn').addEventListener('click', (event) => {
+document.querySelector('#name').addEventListener('click', (event) => {
     parent.document.querySelector('#taskMgrWindow').remove();
 });
 

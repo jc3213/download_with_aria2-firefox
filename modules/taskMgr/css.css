@@ -30,35 +30,15 @@
     right: 16px;
 }
 
-.overlay {
-    background-color: #fff;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 24px;
-    z-index: 9999;
-}
-
-.overlay .button {
-    display: block;
-    font-size: 11px;
-    padding: 3px;
-}
-
 #name {
     padding: 0px;
     height: 46px;
-    width: 94%;
     overflow-y: auto;
     margin-bottom: 15px;
 }
 
 [swap] {
     padding: 3px;
-}
-
-[card] {
-    height: 360px;
 }
 
 #all-proxy {
