@@ -4,21 +4,11 @@ document.querySelectorAll('div[card]').forEach((card, index, array) => {
     card.style.display = index === 0 ? 'block' : 'none';
     card.addEventListener('wheel', (event) => {
         if (event.deltaY > 0) {
-            if (wheel >= 0) {
-                wheel ++;
-            }
-            else {
-                wheel = 1;
-            }
+            wheel = wheel >= 0 ? wheel + 1 : 1;
             toggleCardView(wheel === 3 && index !== limit, index + 1);
         }
         else {
-            if (wheel <= 0) {
-                wheel --;
-            }
-            else {
-                wheel = -1;
-            }
+            wheel = wheel <= 0 ? whell - 1 : -1;
             toggleCardView(wheel === -3 && index !== 0, index - 1);
         }
     });
