@@ -77,6 +77,7 @@ function printTaskInfo(result, queue) {
         task = appendTaskInfo(result);
     }
     task.status = result.status;
+    task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     task.querySelector('#clock').innerHTML = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
     task.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
@@ -86,7 +87,7 @@ function printTaskInfo(result, queue) {
     task.querySelector('#fancybar').className = result.status + 'Box';
     task.querySelector('#ratio').innerText = task.querySelector('#ratio').style.width = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
     task.querySelector('#ratio').className = result.status;
-    task.querySelector('#retry_btn').style.display = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
+    task.querySelector('#retry_btn').style.display = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
     queue.appendChild(task);
 }
 
@@ -94,7 +95,6 @@ function appendTaskInfo(result) {
     var task = document.querySelector('template').content.cloneNode(true).querySelector('div.detail');
     task.id = result.gid;
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
-    task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
@@ -109,16 +109,14 @@ function removeTaskFromQueue(gid, status) {
     }
     else if (['complete', 'error', 'removed'].includes(status)) {
         method = 'aria2.removeDownloadResult';
+        var clear = (result) => {
+            document.getElementById(gid).remove();
+        };
     }
     else {
         return;
     }
-    jsonRPCRequest(
-        {method, gid},
-        (result) => {
-            document.getElementById(gid).remove();
-        }
-    );
+    jsonRPCRequest({method, gid}, clear);
 }
 
 function openTaskMgrWindow(gid) {
