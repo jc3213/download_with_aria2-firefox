@@ -37,7 +37,12 @@ document.querySelectorAll('span.tab').forEach(tab => {
 });
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
-    jsonRPCRequest({method: 'aria2.purgeDownloadResult'});
+    jsonRPCRequest(
+        {method: 'aria2.purgeDownloadResult'},
+        (result) => {
+            document.querySelector('#stoppedQueue').innerHTML = '';
+        }
+    );
 });
 
 function printMainFrame() {
@@ -55,120 +60,105 @@ function printMainFrame() {
         document.querySelector('#queueTabs').style.display = 'block';
         document.querySelector('#menuTop').style.display = 'block';
         document.querySelector('#networkStatus').style.display = 'none';
-        document.querySelector('#activeQueue').innerHTML = printTaskQueue(active);
-        document.querySelector('#waitingQueue').innerHTML = printTaskQueue(waiting);
-        document.querySelector('#stoppedQueue').innerHTML = printTaskQueue(stopped);
+        active.forEach(active => printTaskInfo(active, document.querySelector('#activeQueue')));
+        waiting.forEach(active => printTaskInfo(active, document.querySelector('#waitingQueue')))
+        stopped.forEach(active => printTaskInfo(active, document.querySelector('#stoppedQueue')))
     }, (error, rpc) => {
         document.querySelector('#queueTabs').style.display = 'none';
         document.querySelector('#menuTop').style.display = 'none';
         document.querySelector('#networkStatus').innerText = error;
         document.querySelector('#networkStatus').style.display = 'block';
     });
-
-    function printTaskQueue(queue, taskInfo = '') {
-        queue.forEach(result => {
-            var completedLength = bytesToFileSize(result.completedLength);
-            var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
-            var totalLength = bytesToFileSize(result.totalLength);
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
-            var fileName = result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1);
-            var errorMessage = result.errorCode ? ' <error style="color: #f00; font-size: 11px;">' + result.errorMessage + '</error>' : '';
-            if (result.bittorrent) {
-                var taskUrl = '';
-                var taskName = result.bittorrent.info ? result.bittorrent.info.name : fileName;
-                var connections = result.numSeeders + ' (' + result.connections + ')';
-                var uploadShow = 'inline-block';
-                var retryButton = 'none';
-            }
-            else {
-                taskUrl = result.files[0].uris[0].uri;
-                taskName = fileName || taskUrl;
-                connections = result.connections;
-                uploadShow = 'none';
-                retryButton = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
-            }
-            taskInfo += '\
-            <div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">\
-                <div class="taskBody">\
-                    <div class="title">' + taskName + errorMessage + '</div>\
-                    <span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>\
-                    <span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + uploadShow + '">⏫ ' + uploadSpeed + '</span>\
-                </div><div class="taskMenu">\
-                    <span class="button" id="remove_btn">❌</span>\
-                    <span class="button" id="invest_btn">🔍</span>\
-                    <span class="button" id="retry_btn" style="display: ' + retryButton + '">🌌</span>\
-                </div><div id="fancybar" class="' + result.status + 'Box">\
-                    <div id="fancybar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>\
-                </div>\
-            </div>';
-        });
-        return taskInfo;
-    }
 }
 
-document.querySelector('#taskQueue').addEventListener('click', (event) => {
-    if (event.target.id === 'remove_btn') {
-        var {gid, status} = getTaskInfo();
-        if (['active', 'waiting', 'paused'].includes(status)) {
-            var method = 'aria2.forceRemove';
-        }
-        else if (['complete', 'error', 'removed'].includes(status)) {
-            method = 'aria2.removeDownloadResult';
-        }
-        else {
-            return;
-        }
-        jsonRPCRequest({method, gid});
+function printTaskInfo(result, queue) {
+    var task = document.getElementById(result.gid);
+    if (!task) {
+        task = appendTaskInfo(result);
     }
-    else if (event.target.id === 'invest_btn') {
-        var {gid} = getTaskInfo();
-        openModuleWindow('taskMgrWindow', '/modules/taskMgr/index.html', (event) => {
-            event.target.contentWindow.postMessage(gid);
-        });
-    }
-    else if (event.target.id === 'retry_btn') {
-        var {gid} = getTaskInfo();
-        jsonRPCRequest([
-                {method: 'aria2.getFiles', gid},
-                {method: 'aria2.getOption', gid}
-            ], (files, options) => {
-                var url = [];
-                files[0].uris.forEach(uri => {
-                    if (!url.includes(uri.uri)) {
-                        url.push(uri.uri);
-                    }
-                });
-                jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
-                    downWithAria2({url}, options, true);
-                });
-            }
-        );
-    }
-    else if (event.target.id === 'fancybar') {
-        var {gid, status} = getTaskInfo();
-        if (['active', 'waiting'].includes(status)) {
-            var method = 'aria2.pause';
-        }
-        else if (status === 'paused') {
-            method = 'aria2.unpause';
-        }
-        else {
-            return;
-        }
-        jsonRPCRequest({method, gid});
-    }
+    task.status = result.status;
+    task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
+    task.querySelector('#clock').innerHTML = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
+    task.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
+    task.querySelector('#connect').innerText = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
+    task.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
+    task.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
+    task.querySelector('#fancybar').className = result.status + 'Box';
+    task.querySelector('#ratio').innerText = task.querySelector('#ratio').style.width = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
+    task.querySelector('#ratio').className = result.status;
+    task.querySelector('#retry_btn').style.display = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
+    queue.appendChild(task);
+}
 
-    function getTaskInfo(info) {
-        document.querySelectorAll('div.taskInfo').forEach(item => {
-            if (item.contains(event.target)) {
-                info = {gid: item.getAttribute('gid'), status: item.getAttribute('status')};
-            }
-        });
-        return info;
+function appendTaskInfo(result) {
+    var task = document.querySelector('template').content.cloneNode(true).querySelector('div.detail');
+    task.id = result.gid;
+    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
+    task.querySelector('#error').innerText = result.errorMessage || '';
+    task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
+    task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
+    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
+    task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
+    task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
+    return task;
+}
+
+function removeTaskFromQueue(gid, status) {
+    if (['active', 'waiting', 'paused'].includes(status)) {
+        var method = 'aria2.forceRemove';
     }
-});
+    else if (['complete', 'error', 'removed'].includes(status)) {
+        method = 'aria2.removeDownloadResult';
+    }
+    else {
+        return;
+    }
+    jsonRPCRequest(
+        {method, gid},
+        (result) => {
+            document.getElementById(gid).remove();
+        }
+    );
+}
+
+function openTaskMgrWindow(gid) {
+    openModuleWindow('taskMgrWindow', '/modules/taskMgr/index.html', (event) => {
+        event.target.contentWindow.postMessage(gid);
+    });
+}
+
+function removeTaskAndRetry(gid) {
+    jsonRPCRequest([
+            {method: 'aria2.getFiles', gid},
+            {method: 'aria2.getOption', gid}
+        ], (files, options) => {
+            var url = [];
+            files[0].uris.forEach(uri => {
+                if (!url.includes(uri.uri)) {
+                    url.push(uri.uri);
+                }
+            });
+            jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
+                document.getElementById(gid).remove();
+                downWithAria2({url}, options, true);
+            });
+        }
+    );
+}
+
+function pauseOrUnpauseTask(gid, status) {
+    if (['active', 'waiting'].includes(status)) {
+        var method = 'aria2.pause';
+    }
+    else if (status === 'paused') {
+        method = 'aria2.unpause';
+    }
+    else {
+        return;
+    }
+console.log(gid, status);
+    jsonRPCRequest({method, gid});
+}
 
 printMainFrame();
 var keepContentAlive = setInterval(printMainFrame, 1000);

@@ -15,34 +15,45 @@
     overflow-y: auto;
 }
 
-.taskInfo {
+.detail {
     border: 1px outset #CCC;
     padding: 5px;
     margin-bottom: 5px;
 }
 
-.taskBody {
-    width: calc(100% - 20px);
+.body {
+    width: calc(100% - 25px);
 }
 
-.taskBody, .taskMenu, .taskBody span, .taskMenu span {
+.body, .menu {
     display: inline-block;
 }
 
-.taskBody span {
-    width: calc(100% / 3);
+.triple > * {
+    display: inline-block;
 }
 
-.taskMenu {
+.triple > * {
+    width: 32%;
+}
+
+.triple span {
+    margin-left: 5px;
+}
+
+.menu {
     vertical-align: top;
     width: 20px;
 }
 
-.taskMenu .button {
+.menu .button {
     font-size: 12px;
     padding: 1px;
-    width: 16px;
-    height: 16px;
+}
+
+#error {
+    color: #f00;
+    font-size: 11px;
 }
 
 #fancybar {
