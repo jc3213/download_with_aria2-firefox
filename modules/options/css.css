@@ -1,7 +1,3 @@
-body {
-    width: 430px;
-}
-
 #jsonrpc, #token {
     width: calc(100% - 50px);
 }

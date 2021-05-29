@@ -3,6 +3,7 @@ body {
     font-size: 15px;
     user-select: none;
     width: 430px;
+    margin: 8px;
 }
 
 .title {

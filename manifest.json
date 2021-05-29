@@ -1,9 +1,8 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.5720",
+    "version": "2.5730",
     "manifest_version": 2,
-    "minimum_chrome_version": "66",
     "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "<all_urls>" ],
     "default_locale" : "en",
     "background": {
@@ -26,8 +25,7 @@
     },
     "applications": {
         "gecko": {
-            "id": "firefox@downwitharia2",
-            "strict_min_version": "63.0"
+            "id": "firefox@downwitharia2"
         }
     },
     "developer": {
