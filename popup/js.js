@@ -61,8 +61,8 @@ function printMainFrame() {
         document.querySelector('#menuTop').style.display = 'block';
         document.querySelector('#networkStatus').style.display = 'none';
         active.forEach(active => printTaskInfo(active, document.querySelector('#activeQueue')));
-        waiting.forEach(active => printTaskInfo(active, document.querySelector('#waitingQueue')))
-        stopped.forEach(active => printTaskInfo(active, document.querySelector('#stoppedQueue')))
+        waiting.forEach(active => printTaskInfo(active, document.querySelector('#waitingQueue')));
+        stopped.forEach(active => printTaskInfo(active, document.querySelector('#stoppedQueue')));
     }, (error, rpc) => {
         document.querySelector('#queueTabs').style.display = 'none';
         document.querySelector('#menuTop').style.display = 'none';
