@@ -45,19 +45,6 @@
     width: calc(100% - 50px);
 }
 
-table {
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
-}
-
-td {
-    border: 1px outset #CCC;
-    padding: 5px;
-    word-break: break-word;
-    vertical-align: middle;
-}
-
 #source input {
     width: calc(100% - 45px);
 }
@@ -67,8 +54,21 @@ td {
     padding: 5px;
 }
 
-#uri td:active, #file #index:active {
+#uri > *:nth-child(n+2) {
+    margin-top: 3px;
+}
+
+#uri > *:active, #file #index:active {
     filter: opacity(60%);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px outset #CCC;
+    padding: 5px;
 }
 
 #file #index {

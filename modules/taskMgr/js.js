@@ -20,7 +20,7 @@ function printTaskManager() {
             }
             else {
                 printTaskDetails('http');
-                result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#uri')));
+                result.files[0].uris.forEach((uri, index) => printTaskUris(uri, document.querySelector('#uri')));
             }
             document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
             document.querySelector('#name').className = result.status + ' button';
@@ -46,7 +46,7 @@ function printTaskDetails(type) {
 }
 
 function printTaskUris(uri, table) {
-    var cells = table.querySelectorAll('td');
+    var cells = table.querySelectorAll('div');
     var uris = [...cells].map(cell => cell.innerText);
     var index = uris.indexOf(uri.uri);
     var cell = index === -1 ? appendUriToTable(uri, table) : cells[index];
@@ -56,7 +56,7 @@ function printTaskUris(uri, table) {
 function appendUriToTable(uri, table) {
     var cell = table.querySelector('#template').cloneNode(true);
     cell.removeAttribute('id');
-    cell.querySelector('td').innerText = uri.uri;
+    cell.innerText = uri.uri;
     table.appendChild(cell);
     return cell;
 }
