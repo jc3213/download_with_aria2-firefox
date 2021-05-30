@@ -20,7 +20,7 @@ function printTaskManager() {
             }
             else {
                 printTaskDetails('http');
-                result.files[0].uris.forEach((uri, index) => printTaskUris(uri, document.querySelector('#uri')));
+                result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#uri')));
             }
             document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
             document.querySelector('#name').className = result.status + ' button';
