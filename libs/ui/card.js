@@ -11,7 +11,7 @@ document.querySelectorAll('div[card]').forEach((card, index, array) => {
             wheel = wheel <= 0 ? wheel - 1 : -1;
             toggleCardView(wheel === -3 && index !== 0, index - 1);
         }
-    });
+    }, {passive: true});
 
     function toggleCardView(condition, view) {
         if (condition) {
