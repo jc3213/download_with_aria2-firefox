@@ -37,6 +37,10 @@
     margin-bottom: 15px;
 }
 
+#name, #uri * {
+    word-break: break-word;
+}
+
 [swap] {
     padding: 3px;
 }
