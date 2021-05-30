@@ -128,12 +128,14 @@ function removeTaskFromQueue(gid, status) {
     }
     else if (['complete', 'error', 'removed'].includes(status)) {
         method = 'aria2.removeDownloadResult';
-        var clear = (result) => {
-            document.getElementById(gid).remove();
-        };
     }
     else {
         return;
+    }
+    if (['complete', 'paused', 'error', 'removed'].includes(status)) {
+        var clear = (result) => {
+            document.getElementById(gid).remove();
+        };
     }
     jsonRPCRequest({method, gid}, clear);
 }
