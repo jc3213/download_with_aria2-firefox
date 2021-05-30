@@ -45,29 +45,38 @@ function printTaskDetails(type) {
     }
 }
 
-function appendCelltoTable(id, table) {
-    var cell = document.getElementById(id) || table.querySelector('#template').cloneNode(true);
-    cell.id = id;
+function printTaskUris(uri, table) {
+    var cells = table.querySelectorAll('td');
+    var uris = [...cells].map(cell => cell.innerText);
+    var index = uris.indexOf(uri.uri);
+    var cell = index === -1 ? appendUriToTable(uri, table) : cells[index];
+    cell.className = uri.status === 'used' ? 'active' : 'waiting';
+}
+
+function appendUriToTable(uri, table) {
+    var cell = table.querySelector('#template').cloneNode(true);
+    cell.removeAttribute('id');
+    cell.querySelector('td').innerText = uri.uri;
     table.appendChild(cell);
     return cell;
 }
 
-function printTaskUris(uri, table) {
-    var id = uri.uri.split('/')[3];
-    var cell = appendCelltoTable(id, table);
-    cell.querySelector('td').innerText = uri.uri;
-    cell.querySelector('td').className = uri.status === 'used' ? 'active' : 'waiting';
+function printTaskFiles(file, table) {
+    var cell = appendFileToTable(file, table);
+    cell.querySelector('#index').className = file.selected === 'true' ? 'active' : 'error';
+    cell.querySelector('#ratio').innerText = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
 }
 
-function printTaskFiles(file, table) {
+function appendFileToTable(file, table) {
     var id = file.index + file.length;
-    var cell = appendCelltoTable(id, table);
+    var cell = document.getElementById(id) || table.querySelector('#template').cloneNode(true);
+    cell.id = id;
     cell.querySelector('#index').innerText = file.index;
-    cell.querySelector('#index').className = file.selected === 'true' ? 'active' : 'error';
     cell.querySelector('#name').innerText = file.path.slice(file.path.lastIndexOf('/') + 1);
     cell.querySelector('#name').title = file.path;
     cell.querySelector('#size').innerText = bytesToFileSize(file.length);
-    cell.querySelector('#ratio').innerText = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
+    table.appendChild(cell);
+    return cell;
 }
 
 document.querySelectorAll('[task]').forEach(aria2 => {
