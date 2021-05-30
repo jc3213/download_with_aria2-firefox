@@ -74,6 +74,7 @@ function printMainFrame() {
 function printTaskInfo(result, queue) {
     var task = document.getElementById(result.gid) || appendTaskInfo(result);
     task.status = result.status;
+    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     calcEstimatedTime(task, (result.totalLength - result.completedLength) / result.downloadSpeed);
@@ -91,7 +92,6 @@ function printTaskInfo(result, queue) {
 function appendTaskInfo(result) {
     var task = document.querySelector('#template').cloneNode(true);
     task.id = result.gid;
-    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
