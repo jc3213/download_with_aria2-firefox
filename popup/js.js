@@ -76,7 +76,7 @@ function printTaskInfo(result, queue) {
     task.status = result.status;
     task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
-    task.querySelector('#clock').innerHTML = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
+    calcEstimatedTime(task, (result.totalLength - result.completedLength) / result.downloadSpeed);
     task.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
     task.querySelector('#connect').innerText = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
     task.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
@@ -89,7 +89,7 @@ function printTaskInfo(result, queue) {
 }
 
 function appendTaskInfo(result) {
-    var task = document.querySelector('template').content.cloneNode(true).querySelector('div.detail');
+    var task = document.querySelector('#template').cloneNode(true);
     task.id = result.gid;
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
@@ -98,6 +98,25 @@ function appendTaskInfo(result) {
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
+}
+
+function calcEstimatedTime(task, number) {
+    if (isNaN(number) || number === Infinity) {
+        task.querySelector('#clock').innerHTML = '∞';
+    }
+    else {
+        var days = number / 86400 | 0;
+        var hours = number / 3600 - days * 24 | 0;
+        var minutes = number / 60 - days * 1440 - hours * 60 | 0;
+        var seconds = number - days * 86400 - hours * 3600 - minutes * 60 | 0;
+        task.querySelector('#day').innerText = days;
+        task.querySelector('#day').parentNode.style.display = days > 0 ? 'inline-block' : 'none';
+        task.querySelector('#hour').innerText = hours;
+        task.querySelector('#hour').parentNode.style.display = hours > 0 ? 'inline-block' : 'none';
+        task.querySelector('#minute').innerText = minutes;
+        task.querySelector('#minute').parentNode.style.display = minutes > 0 ? 'inline-block' : 'none';
+        task.querySelector('#second').innerText = seconds;
+    }
 }
 
 function removeTaskFromQueue(gid, status) {

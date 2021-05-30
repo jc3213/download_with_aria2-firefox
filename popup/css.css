@@ -15,6 +15,10 @@
     overflow-y: auto;
 }
 
+#template {
+    display: none;
+}
+
 .detail {
     border: 1px outset #CCC;
     padding: 5px;
@@ -37,8 +41,12 @@
     width: 32%;
 }
 
-.triple span {
-    margin-left: 5px;
+.triple > * > span {
+    margin-left: 4px;
+}
+
+.quadro > * {
+    margin-left: -4px;
 }
 
 .menu {

@@ -20,6 +20,18 @@
     "common_back": {
         "message": "Back"
     },
+    "time_day": {
+        "message": "d"
+    },
+    "time_hour": {
+        "message": "h"
+    },
+    "time_minute": {
+        "message": "m"
+    },
+    "time_second": {
+        "message": "s"
+    },
     "warn_download": {
         "message": "Aria2 Download"
     },

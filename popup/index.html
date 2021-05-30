@@ -28,32 +28,35 @@
             <div id="activeQueue" tab="active_btn"></div>
             <div id="waitingQueue" tab="waiting_btn"></div>
             <div id="stoppedQueue" tab="stopped_btn"></div>
-            <template>
-                <div class="detail">
-                    <div class="body">
-                        <div>
-                            <span id="name" class="title"></span>
-                            <span id="error"></span>
-                        </div>
-                        <div class="triple">
-                            <div>🖥️<span id="local"></span></div>
-                            <div>⏲️<span id="clock"></span></div>
-                            <div>📦<span id="remote"></span></div>
-                            <div>📶️<span id="connect"></span></div>
-                            <div>⏬<span id="download"></span></div>
-                            <div>⏫<span id="upload"></span></div>
-                        </div>
+            <div id="template" class="detail">
+                <div class="body">
+                    <div>
+                        <span id="name" class="title"></span>
+                        <span id="error"></span>
                     </div>
-                    <div class="menu">
-                        <span class="button" id="remove_btn">❌</span>
-                        <span class="button" id="invest_btn">🔍</span>
-                        <span class="button" id="retry_btn">🌌</span>
-                    </div>
-                    <div id="fancybar">
-                        <div id="ratio"></div>
+                    <div class="triple">
+                        <div>🖥️<span id="local"></span></div>
+                        <div>⏲️<span id="clock" class="quadro">
+                            <span><label id="day"></label><sub i18n>time_day</sub></span>
+                            <span><label id="hour"></label><sub i18n>time_hour</sub></span>
+                            <span><label id="minute"></label><sub i18n>time_minute</sub></span>
+                            <span><label id="second"></label><sub i18n>time_second</sub></span>
+                        </span></div>
+                        <div>📦<span id="remote"></span></div>
+                        <div>📶️<span id="connect"></span></div>
+                        <div>⏬<span id="download"></span></div>
+                        <div>⏫<span id="upload"></span></div>
                     </div>
                 </div>
-            </template>
+                <div class="menu">
+                    <span class="button" id="remove_btn">❌</span>
+                    <span class="button" id="invest_btn">🔍</span>
+                    <span class="button" id="retry_btn">🌌</span>
+                </div>
+                <div id="fancybar">
+                    <div id="ratio"></div>
+                </div>
+            </div>
         </div>
         <hr>
         <div class="frame">

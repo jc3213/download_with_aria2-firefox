@@ -20,6 +20,18 @@
     "common_back": {
         "message": "返回"
     },
+    "time_day": {
+        "message": "天"
+    },
+    "time_hour": {
+        "message": "时"
+    },
+    "time_minute": {
+        "message": "分"
+    },
+    "time_second": {
+        "message": "秒"
+    },
     "warn_download": {
         "message": "Aria2 开始下载"
     },
