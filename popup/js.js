@@ -135,7 +135,7 @@ function removeTaskFromQueue(gid, status) {
     else {
         return;
     }
-    if (['complete', 'paused', 'error', 'removed'].includes(status)) {
+    if (['complete', 'error', 'removed', 'paused'].includes(status)) {
         var clear = (result) => {
             document.getElementById(gid).remove();
         };
