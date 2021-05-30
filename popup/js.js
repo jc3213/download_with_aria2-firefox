@@ -102,7 +102,8 @@ function appendTaskInfo(result) {
 
 function calcEstimatedTime(task, number) {
     if (isNaN(number) || number === Infinity) {
-        task.querySelector('#clock').innerHTML = '∞';
+        task.querySelector('#infinite').style.display = 'inline-block';
+        task.querySelector('#estimate').style.display = 'none';
     }
     else {
         var days = number / 86400 | 0;
@@ -116,6 +117,8 @@ function calcEstimatedTime(task, number) {
         task.querySelector('#minute').innerText = minutes;
         task.querySelector('#minute').parentNode.style.display = minutes > 0 ? 'inline-block' : 'none';
         task.querySelector('#second').innerText = seconds;
+        task.querySelector('#infinite').style.display = 'none';
+        task.querySelector('#estimate').style.display = 'inline-block';
     }
 }
 

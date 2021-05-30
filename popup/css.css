@@ -15,10 +15,6 @@
     overflow-y: auto;
 }
 
-#template {
-    display: none;
-}
-
 .session {
     border: 1px outset #CCC;
     padding: 5px;
@@ -33,7 +29,7 @@
     display: inline-block;
 }
 
-.detail > * {
+.detail * {
     display: inline-block;
 }
 
@@ -41,7 +37,7 @@
     width: 32%;
 }
 
-.detail > * > span {
+.detail > * > * {
     margin-left: 4px;
 }
 
@@ -60,7 +56,7 @@
     font-size: 11px;
 }
 
-#clock > * {
+#estimate > * {
     margin-left: -4px;
 }
 
