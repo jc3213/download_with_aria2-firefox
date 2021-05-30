@@ -72,10 +72,7 @@ function printMainFrame() {
 }
 
 function printTaskInfo(result, queue) {
-    var task = document.getElementById(result.gid);
-    if (!task) {
-        task = appendTaskInfo(result);
-    }
+    var task = document.getElementById(result.gid) || appendTaskInfo(result);
     task.status = result.status;
     task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
