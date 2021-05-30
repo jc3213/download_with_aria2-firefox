@@ -110,11 +110,11 @@ document.querySelector('#uri').addEventListener('click', (event) => {
     }
 });
 
-document.querySelector('#taskAddUri > span').addEventListener('click', (event) => {
+document.querySelector('#source > span').addEventListener('click', (event) => {
     jsonRPCRequest(
-        {method: 'aria2.changeUri', gid, add: document.querySelector('#taskAddUri > input').value},
+        {method: 'aria2.changeUri', gid, add: document.querySelector('#source > input').value},
         (result) => {
-            document.querySelector('#taskAddUri > input').value = '';
+            document.querySelector('#source > input').value = '';
         }
     );
 });

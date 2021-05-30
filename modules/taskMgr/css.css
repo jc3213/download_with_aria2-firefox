@@ -45,10 +45,6 @@
     width: calc(100% - 50px);
 }
 
-#file, #uri {
-    overflow-y: auto;
-}
-
 table {
     border-collapse: collapse;
     table-layout: fixed;
@@ -62,11 +58,11 @@ td {
     vertical-align: middle;
 }
 
-#taskAddUri input {
+#source input {
     width: calc(100% - 45px);
 }
 
-#taskAddUri .button {
+#source .button {
     font-size: 12px;
     padding: 5px;
 }

@@ -1,11 +1,13 @@
+[tab], [card] {
+    overflow-y: auto;
+}
+
 [tab] {
     height: 400px;
-    overflow-y: auto;
 }
 
 [card] {
     height: 360px;
-    overflow-y: hidden;
 }
 
 .container > *:nth-child(n+2) {
