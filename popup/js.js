@@ -39,7 +39,11 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            document.querySelector('#stoppedQueue').innerHTML = '';
+            document.querySelectorAll('#queue > div').forEach(task => {
+                if (['complete', 'error', 'removed'].includes(task.status)) {
+                    task.remove();
+                }
+            });
         }
     );
 });
