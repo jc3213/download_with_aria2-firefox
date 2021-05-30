@@ -98,6 +98,10 @@ document.querySelector('#name').addEventListener('click', (event) => {
     parent.document.querySelector('#taskMgrWindow').remove();
 });
 
+document.querySelector('#allproxy').addEventListener('click', (event) => {
+    changeTaskOption(gid, 'all-proxy', document.querySelector('#all-proxy').value);
+});
+
 document.querySelector('#taskUris').addEventListener('click', (event) => {
     if (event.ctrlKey) {
         jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
