@@ -19,7 +19,7 @@
     display: none;
 }
 
-.detail {
+.session {
     border: 1px outset #CCC;
     padding: 5px;
     margin-bottom: 5px;
@@ -33,20 +33,16 @@
     display: inline-block;
 }
 
-.triple > * {
+.detail > * {
     display: inline-block;
 }
 
-.triple > * {
+.detail > * {
     width: 32%;
 }
 
-.triple > * > span {
+.detail > * > span {
     margin-left: 4px;
-}
-
-.quadro > * {
-    margin-left: -4px;
 }
 
 .menu {
@@ -62,6 +58,10 @@
 #error {
     color: #f00;
     font-size: 11px;
+}
+
+#clock > * {
+    margin-left: -4px;
 }
 
 #fancybar {
