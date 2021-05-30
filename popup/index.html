@@ -9,63 +9,59 @@
     </head>
     <body>
         <div class="frame">
-            <div id="menuTop" class="offside">
+            <div id="upper" class="offside">
                 <span id="newTask_btn" module="newTaskWindow" window="/modules/newTask/index.html" class="button" i18n>popup_new_button</span>
                 <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
             </div>
-            <div id="queueTabs">
-                <span id="active_btn" class="active tab" i18n>popup_active_button</span>
+            <div id="tabs">
+                <span queue="active" class="active tab" i18n>popup_active_button</span>
                 <span id="numActive">0</span>
-                <span id="waiting_btn" class="waiting tab" i18n>popup_waiting_button</span>
+                <span queue="waiting paused" class="waiting tab" i18n>popup_waiting_button</span>
                 <span id="numWaiting">0</span>
-                <span id="stopped_btn" class="removed tab" i18n>popup_stopped_button</span>
+                <span queue="error removed complete" class="removed tab" i18n>popup_stopped_button</span>
                 <span id="numStopped">0</span>
             </div>
-            <div id="networkStatus" class="error" style="display: none;"></div>
+            <div id="network" class="error" style="display: none;"></div>
         </div>
         <hr>
-        <div id="taskQueue">
-            <div id="activeQueue" tab="active_btn"></div>
-            <div id="waitingQueue" tab="waiting_btn"></div>
-            <div id="stoppedQueue" tab="stopped_btn"></div>
-            <div id="template" class="session">
-                <div class="body">
-                    <div>
-                        <span id="name" class="title"></span>
-                        <span id="error"></span>
+        <div id="queue"></div>
+        <div id="template" class="session">
+            <div class="body">
+                <div>
+                    <span id="name" class="title"></span>
+                    <span id="error"></span>
+                </div>
+                <div class="detail">
+                    <div>🖥️<span id="local"></span></div>
+                    <div>⏲️<span id="infinite">∞</span>
+                        <span id="estimate">
+                            <span><label id="day"></label><sub i18n>time_day</sub></span>
+                            <span><label id="hour"></label><sub i18n>time_hour</sub></span>
+                            <span><label id="minute"></label><sub i18n>time_minute</sub></span>
+                            <span><label id="second"></label><sub i18n>time_second</sub></span>
+                        </span>
                     </div>
-                    <div class="detail">
-                        <div>🖥️<span id="local"></span></div>
-                        <div>⏲️<span id="infinite">∞</span>
-                            <span id="estimate">
-                                <span><label id="day"></label><sub i18n>time_day</sub></span>
-                                <span><label id="hour"></label><sub i18n>time_hour</sub></span>
-                                <span><label id="minute"></label><sub i18n>time_minute</sub></span>
-                                <span><label id="second"></label><sub i18n>time_second</sub></span>
-                            </span>
-                        </div>
-                        <div>📦<span id="remote"></span></div>
-                        <div>📶️<span id="connect"></span></div>
-                        <div>⏬<span id="download"></span></div>
-                        <div>⏫<span id="upload"></span></div>
-                    </div>
+                    <div>📦<span id="remote"></span></div>
+                    <div>📶️<span id="connect"></span></div>
+                    <div>⏬<span id="download"></span></div>
+                    <div>⏫<span id="upload"></span></div>
                 </div>
-                <div class="menu">
-                    <span class="button" id="remove_btn">❌</span>
-                    <span class="button" id="invest_btn">🔍</span>
-                    <span class="button" id="retry_btn">🌌</span>
-                </div>
-                <div id="fancybar">
-                    <div id="ratio"></div>
-                </div>
+            </div>
+            <div class="menu">
+                <span class="button" id="remove_btn">❌</span>
+                <span class="button" id="invest_btn">🔍</span>
+                <span class="button" id="retry_btn">🌌</span>
+            </div>
+            <div id="fancybar">
+                <div id="ratio"></div>
             </div>
         </div>
         <hr>
         <div class="frame">
-            <div id="menuBottom" class="offside">
+            <div class="offside">
                 <span id="options_btn" module="optionsWindow" window="/modules/options/index.html" class="button" i18n>popup_options_button</span>
             </div>
-            <div id="networkBandwidth">
+            <div id="bandwidth">
                 <span class="active" i18n>popup_download</span>
                 <span id="downloadSpeed">0 B/s</span>
                 <span class="complete" i18n>popup_upload</span>

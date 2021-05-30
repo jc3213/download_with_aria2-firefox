@@ -1,16 +1,16 @@
-#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
+#tabs span:nth-child(2n), #bandwidth span:nth-child(2n) {
     margin-right: 10px;
 }
 
-#networkStatus {
+#network {
     padding: 3px;
 }
 
-#networkBandwidth span:nth-child(2n+1) {
+#bandwidth span:nth-child(2n+1) {
     padding: 3px 5px;
 }
 
-#taskQueue {
+#queue {
     height: 410px;
     overflow-y: auto;
 }

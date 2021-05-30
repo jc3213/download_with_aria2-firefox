@@ -17,22 +17,21 @@ document.querySelectorAll('span[module]').forEach(module => {
     });
 });
 
-document.querySelectorAll('span.tab').forEach(tab => {
-    tab.addEventListener('click', (event) => {
-        document.querySelectorAll('div[tab]').forEach(body => {
-            var tabId = body.getAttribute('tab');
-            if (tab.classList.contains('checked')) {
-                body.style.display = 'block';
-            }
-            else if (tabId === tab.id) {
-                body.style.display = 'block';
+document.querySelectorAll('[queue]').forEach((active, index, tabs) => {
+    var queue = active.getAttribute('queue');
+    active.addEventListener('click', (event) => {
+        document.querySelectorAll('#queue > div').forEach(task => {
+            task.style.display = active.classList.contains('checked') ? 'block'
+                               : queue.includes(task.status) ? 'block' : 'none';
+        });
+        tabs.forEach(tab => {
+            if (tab == active && !tab.classList.contains('checked')) {
+                tab.classList.add('checked');
             }
             else {
-                body.style.display = 'none';
-                document.getElementById(tabId).classList.remove('checked');
+                tab.classList.remove('checked');
             }
         });
-        tab.classList.toggle('checked');
     });
 });
 
@@ -57,17 +56,17 @@ function printMainFrame() {
         document.querySelector('#numStopped').innerText = global.numStopped;
         document.querySelector('#downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
         document.querySelector('#uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
-        document.querySelector('#queueTabs').style.display = 'block';
-        document.querySelector('#menuTop').style.display = 'block';
-        document.querySelector('#networkStatus').style.display = 'none';
+        document.querySelector('#tabs').style.display = 'block';
+        document.querySelector('#upper').style.display = 'block';
+        document.querySelector('#network').style.display = 'none';
         active.forEach(active => printTaskInfo(active, document.querySelector('#activeQueue')));
         waiting.forEach(active => printTaskInfo(active, document.querySelector('#waitingQueue')));
         stopped.forEach(active => printTaskInfo(active, document.querySelector('#stoppedQueue')));
     }, (error, rpc) => {
-        document.querySelector('#queueTabs').style.display = 'none';
-        document.querySelector('#menuTop').style.display = 'none';
-        document.querySelector('#networkStatus').innerText = error;
-        document.querySelector('#networkStatus').style.display = 'block';
+        document.querySelector('#tabs').style.display = 'none';
+        document.querySelector('#upper').style.display = 'none';
+        document.querySelector('#network').innerText = error;
+        document.querySelector('#network').style.display = 'block';
     });
 }
 
@@ -86,7 +85,6 @@ function printTaskInfo(result, queue) {
     task.querySelector('#ratio').innerText = task.querySelector('#ratio').style.width = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
     task.querySelector('#ratio').className = result.status;
     task.querySelector('#retry_btn').style.display = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
-    queue.appendChild(task);
 }
 
 function appendTaskInfo(result) {
@@ -97,6 +95,7 @@ function appendTaskInfo(result) {
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
+    document.querySelector('#queue').appendChild(task);
     return task;
 }
 
