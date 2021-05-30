@@ -16,11 +16,11 @@ function printTaskManager() {
             var completed = result.status === 'complete';
             if (result.bittorrent) {
                 printTaskDetails('bt');
-                document.querySelector('#taskFiles').innerHTML = printTaskFiles(result.files);
+                result.files.forEach(file => printTaskFiles(file, document.querySelector('#file')));
             }
             else {
                 printTaskDetails('http');
-                document.querySelector('#taskUris').innerHTML = printTaskUris(result.files[0].uris);
+                result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#uri')));
             }
             document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
             document.querySelector('#name').className = result.status + ' button';
@@ -34,41 +34,40 @@ function printTaskManager() {
             document.querySelector('#all-proxy').disabled = completed;
         }
     );
+}
 
-    function printTaskFiles(files) {
-        var fileInfo = '<table>';
-        files.forEach(file => {
-            var filename = file.path.slice(file.path.lastIndexOf('/') + 1);
-            var filePath = file.path.replace(/\//g, '\\');
-            var fileSize = bytesToFileSize(file.length);
-            var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
-            var status = file.selected === 'true' ? 'active' : 'error';
-            fileInfo += '<tr><td class="' + status + '">' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+function printTaskDetails(type) {
+    if (logic !== 1) {
+        document.querySelectorAll('[http], [bt]').forEach(option => {
+            option.style.display = option.hasAttribute(type) ? 'block' : 'none';
         });
-        return fileInfo + '</table>';
+        logic = 1;
     }
+}
 
-    function printTaskUris(uris) {
-        var uriInfo = '<table>';
-        var url = [];
-        uris.forEach(uri => {
-            if (!url.includes(uri.uri)) {
-                var status = uri.status === 'used' ? 'active' : 'waiting';
-                url.push(uri.uri);
-                uriInfo += '<tr><td class="' + status + '">' + uri.uri + '</td></tr>';
-            }
-        });
-        return uriInfo + '</table>';
-    }
+function appendCelltoTable(id, table) {
+    var cell = document.getElementById(id) || table.querySelector('#template').cloneNode(true);
+    cell.id = id;
+    table.appendChild(cell);
+    return cell;
+}
 
-    function printTaskDetails(type) {
-        if (logic !== 1) {
-            document.querySelectorAll('[http], [bt]').forEach(option => {
-                option.style.display = option.hasAttribute(type) ? 'block' : 'none';
-            });
-            logic = 1;
-        }
-    }
+function printTaskUris(uri, table) {
+    var id = uri.uri.split('/')[3];
+    var cell = appendCelltoTable(id, table);
+    cell.querySelector('td').innerText = uri.uri;
+    cell.querySelector('td').className = uri.status === 'used' ? 'active' : 'waiting';
+}
+
+function printTaskFiles(file, table) {
+    var id = file.index + file.length;
+    var cell = appendCelltoTable(id, table);
+    cell.querySelector('#index').innerText = file.index;
+    cell.querySelector('#index').className = file.selected === 'true' ? 'active' : 'error';
+    cell.querySelector('#name').innerText = file.path.slice(file.path.lastIndexOf('/') + 1);
+    cell.querySelector('#name').title = file.path;
+    cell.querySelector('#size').innerText = bytesToFileSize(file.length);
+    cell.querySelector('#ratio').innerText = ((file.completedLength / file.length * 10000 | 0) / 100) + '%';
 }
 
 document.querySelectorAll('[task]').forEach(aria2 => {
@@ -102,7 +101,7 @@ document.querySelector('#allproxy').addEventListener('click', (event) => {
     changeTaskOption(gid, 'all-proxy', document.querySelector('#all-proxy').value);
 });
 
-document.querySelector('#taskUris').addEventListener('click', (event) => {
+document.querySelector('#uri').addEventListener('click', (event) => {
     if (event.ctrlKey) {
         jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
     }
@@ -120,7 +119,7 @@ document.querySelector('#taskAddUri > span').addEventListener('click', (event) =
     );
 });
 
-document.querySelector('#taskFiles').addEventListener('click', (event) => {
+document.querySelector('#file').addEventListener('click', (event) => {
     if (event.target.className) {
         var checked = [];
         document.querySelectorAll('td:nth-child(1)').forEach(item => {
@@ -128,6 +127,7 @@ document.querySelector('#taskFiles').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
+console.log(checked);
         changeTaskOption(gid, 'select-file', checked.join());
     }
 });

@@ -45,7 +45,7 @@
     width: calc(100% - 50px);
 }
 
-#taskUris, #taskFiles {
+#file, #uri {
     overflow-y: auto;
 }
 
@@ -71,25 +71,25 @@ td {
     padding: 5px;
 }
 
-#taskUris td:active, #taskFiles td:nth-child(1):active {
+#uri td:active, #file #index:active {
     filter: opacity(60%);
 }
 
-#taskFiles td:nth-child(1) {
+#file #index {
     width: 20px;
     text-align: center;
 }
 
-#taskFiles td:nth-child(2) {
+#file #name {
     width: calc(100% - 140px);
 }
 
-#taskFiles td:nth-child(3) {
+#file #size {
     width: 70px;
     text-align: center;
 }
 
-#taskFiles td:nth-child(4) {
+#file #ratio {
     width: 50px;
     text-align: center;
 }
