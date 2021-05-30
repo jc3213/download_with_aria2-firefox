@@ -42,3 +42,7 @@ body {
     padding: 2px 4px;
     border: 2px inset #C33;
 }
+
+#template {
+    display: none;
+}
