@@ -127,7 +127,6 @@ document.querySelector('#file').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
-console.log(checked);
         changeTaskOption(gid, 'select-file', checked.join());
     }
 });
