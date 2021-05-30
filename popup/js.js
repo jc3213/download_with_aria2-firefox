@@ -59,9 +59,9 @@ function printMainFrame() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(active => printTaskInfo(active, document.querySelector('#activeQueue')));
-        waiting.forEach(active => printTaskInfo(active, document.querySelector('#waitingQueue')));
-        stopped.forEach(active => printTaskInfo(active, document.querySelector('#stoppedQueue')));
+        active.forEach(active => printTaskInfo(active));
+        waiting.forEach(active => printTaskInfo(active));
+        stopped.forEach(active => printTaskInfo(active));
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
@@ -70,7 +70,7 @@ function printMainFrame() {
     });
 }
 
-function printTaskInfo(result, queue) {
+function printTaskInfo(result) {
     var task = document.getElementById(result.gid) || appendTaskInfo(result);
     task.status = result.status;
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
