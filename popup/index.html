@@ -15,16 +15,19 @@
             </div>
             <div id="tabs">
                 <span queue="active" class="active tab" i18n>popup_active_button</span>
-                <span id="numActive">0</span>
+                <span id="active">0</span>
                 <span queue="waiting paused" class="waiting tab" i18n>popup_waiting_button</span>
-                <span id="numWaiting">0</span>
+                <span id="waiting">0</span>
                 <span queue="complete error removed" class="removed tab" i18n>popup_stopped_button</span>
-                <span id="numStopped">0</span>
+                <span id="stopped">0</span>
             </div>
             <div id="network" class="error" style="display: none;"></div>
         </div>
         <hr>
-        <div id="queue"></div>
+        <div id="queue">
+            <div></div>
+            <div></div>
+        </div>
         <div id="template" class="session">
             <div class="body">
                 <div>
@@ -63,9 +66,9 @@
             </div>
             <div id="bandwidth">
                 <span class="active" i18n>popup_download</span>
-                <span id="downloadSpeed">0 B/s</span>
+                <span id="download">0 B/s</span>
                 <span class="complete" i18n>popup_upload</span>
-                <span id="uploadSpeed">0 B/s</span>
+                <span id="upload">0 B/s</span>
             </div>
         </div>
         <script src="/components/jsonrpc.js"></script>

@@ -24,14 +24,6 @@ document.querySelectorAll('[queue]').forEach((active, index, tabs) => {
             task.style.display = active.classList.contains('checked') ? 'block'
                                : queue.includes(task.status) ? 'block' : 'none';
         });
-        tabs.forEach(tab => {
-            if (tab == active && !tab.classList.contains('checked')) {
-                tab.classList.add('checked');
-            }
-            else {
-                tab.classList.remove('checked');
-            }
-        });
     });
 });
 
@@ -55,11 +47,11 @@ function printMainFrame() {
         {method: 'aria2.tellWaiting', index: [0, 9999]},
         {method: 'aria2.tellStopped', index: [0, 9999]}
     ], (global, active, waiting, stopped) => {
-        document.querySelector('#numActive').innerText = global.numActive;
-        document.querySelector('#numWaiting').innerText = global.numWaiting;
-        document.querySelector('#numStopped').innerText = global.numStopped;
-        document.querySelector('#downloadSpeed').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
-        document.querySelector('#uploadSpeed').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
+        document.querySelector('#active').innerText = global.numActive;
+        document.querySelector('#waiting').innerText = global.numWaiting;
+        document.querySelector('#stopped').innerText = global.numStopped;
+        document.querySelector('#download').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
+        document.querySelector('#upload').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
@@ -99,7 +91,7 @@ function appendTaskInfo(result) {
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
-    document.querySelector('#queue').appendChild(task);
+    result.status === 'active' ? document.querySelector('#queue').prepend(task) : document.querySelector('#queue').appendChild(task);
     return task;
 }
 
