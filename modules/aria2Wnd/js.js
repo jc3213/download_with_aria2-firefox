@@ -4,8 +4,7 @@ addEventListener('message', (event) => {
 });
 
 document.querySelector('#back_btn').addEventListener('click', (event) => {
-    parent.document.body.style.height = 'max-content';
-    parent.document.querySelector('#aria2Global').remove();
+    parent.document.getElementById(frameElement.id).remove();
 });
 
 document.querySelectorAll('[aria2]').forEach(aria2 => {

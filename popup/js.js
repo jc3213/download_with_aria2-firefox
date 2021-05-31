@@ -1,25 +1,25 @@
-document.querySelectorAll('span[module]').forEach(module => {
-    var moduleId = module.getAttribute('module');
-    var moduleSrc = module.getAttribute('window');
+document.querySelectorAll('[module]').forEach(module => {
+    var id = module.getAttribute('module');
+    var src = module.getAttribute('window');
+    if (id === 'optionsWindow') {
+        var onload = (event) => {
+            event.target.contentDocument.querySelector('#preferences').style.display = 'none';
+        };
+    }
     module.addEventListener('click', (event) => {
-        if (moduleId === 'optionsWindow') {
-            var moduleActive = (event) => {
-                event.target.contentDocument.querySelector('#preferences').style.display = 'none';
-            };
-        }
         if (event.target.classList.contains('checked')) {
-            document.getElementById(moduleId).remove();
+            document.getElementById(id).remove();
         }
         else {
-            openModuleWindow(moduleId, moduleSrc, moduleActive);
+            openModuleWindow(id, src, onload);
         }
         module.classList.toggle('checked');
     });
 });
 
-document.querySelectorAll('span.tab').forEach(tab => {
+document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', (event) => {
-        document.querySelectorAll('div[tab]').forEach(body => {
+        document.querySelectorAll('[tab]').forEach(body => {
             var tabId = body.getAttribute('tab');
             if (tab.classList.contains('checked')) {
                 body.style.display = 'block';

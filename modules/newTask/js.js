@@ -23,10 +23,10 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
             downWithAria2({url, referer}, options);
         }
     });
-    parent.document.querySelector('#newTaskWindow').style.display = 'none';
-    parent.document.querySelector('#newTask_btn').classList.remove('checked');
+    parent.document.getElementById(frameElement.id).style.display = 'none';
+    parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
     setTimeout(() => {
-        parent.document.querySelector('#newTaskWindow').remove();
+        parent.document.getElementById(frameElement.id).remove();
     }, 1000);
 });
 

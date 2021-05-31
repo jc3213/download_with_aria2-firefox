@@ -1,4 +1,4 @@
-document.querySelectorAll('div[card]').forEach((card, index, array) => {
+document.querySelectorAll('[card]').forEach((card, index, array) => {
     var wheel = 0;
     var limit = array.length - 1;
     card.style.display = index === 0 ? 'block' : 'none';
