@@ -10,9 +10,9 @@
     <body>
         <div class="frame">
             <div class="container">
-                <span id="tabBasic" class="tab checked" i18n>option_basic</span>
-                <span id="tabAdvanced" class="tab" i18n>common_advanced</span>
-                <span id="tabDownload" class="tab" i18n>option_download</span>
+                <span id="basic" class="tab checked" i18n>option_basic</span>
+                <span id="advanced" class="tab" i18n>common_advanced</span>
+                <span id="download" class="tab" i18n>option_download</span>
             </div>
             <div id="preferences" class="offside">
                 <span id="export" class="button" i18n>option_export</span>
@@ -22,12 +22,12 @@
             </div>
         </div>
         <hr>
-        <div tab="tabBasic" class="container">
+        <div tab="basic" class="container">
             <div title="option_jsonrpc_desc" i18n_title>
                 <div class="title" i18n>option_jsonrpc</div>
                 <div>
                     <input id="jsonrpc" local type="text">
-                    <span id="verify" class="button">⚙️</span>
+                    <span id="aria2_btn" class="button">⚙️</span>
                 </div>
                 <span i18n>common_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
@@ -35,7 +35,7 @@
                 <div class="title" i18n>option_token</div>
                 <div>
                     <input id="token" local type="password" placeholder="$$secret$$">
-                    <span id="insight" class="button">👁️</span>
+                    <span id="show_btn" class="button">👁️</span>
                 </div>
             </div>
             <div title="option_folder_desc" i18n_title>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div tab="tabAdvanced" class="container" style="display: none;">
+        <div tab="advanced" class="container" style="display: none;">
             <div title="option_useragent_desc" i18n_title>
                 <div class="title" i18n>option_useragent</div>
                 <div>
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <div tab="tabDownload" class="container" style="display: none;">
+        <div tab="download" class="container" style="display: none;">
             <div title="option_capture_desc" i18n_title>
                 <span class="title" i18n>option_capture</span>
                 <select id="capture" local>
@@ -80,7 +80,7 @@
                     <option value="2" i18n>option_always</option>
                 </select>
             </div>
-            <div id="captureFilters" class="container">
+            <div id="filters" class="container">
                 <div title="option_filesize_desc" i18n_title>
                     <div class="title" i18n>option_filesize</div>
                     <div>
@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div id="captureIgnored" class="container">
+            <div id="exception" class="container">
                 <div title="option_ignored_desc" i18n_title>
                     <div class="title" i18n>option_ignored</div>
                     <div>

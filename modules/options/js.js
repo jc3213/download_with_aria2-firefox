@@ -29,7 +29,7 @@ document.querySelectorAll('[local]').forEach(option => {
     });
 });
 
-document.querySelector('#verify').addEventListener('click', (event) => {
+document.querySelector('#aria2_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
@@ -43,7 +43,7 @@ document.querySelector('#verify').addEventListener('click', (event) => {
     );
 });
 
-document.querySelector('#insight').addEventListener('click', (event) => {
+document.querySelector('#show_btn').addEventListener('click', (event) => {
     document.querySelector('#token').setAttribute('type', event.target.classList.contains('checked') ? 'password' : 'text');
     event.target.classList.toggle('checked');
 });
@@ -52,8 +52,8 @@ document.querySelector('#capture').addEventListener('change', captureFilters);
 captureFilters();
 
 function captureFilters() {
-    document.querySelector('#captureFilters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
-    document.querySelector('#captureIgnored').style.display = localStorage['capture'] !== '0' ? 'block' : 'none';
+    document.querySelector('#filters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
+    document.querySelector('#exception').style.display = localStorage['capture'] !== '0' ? 'block' : 'none';
 }
 
 document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
@@ -65,13 +65,3 @@ function calcFileSize() {
     var unit = localStorage['sizeUnit'] | 0;
     localStorage['fileSize'] = number * 1024 ** unit;
 }
-
-document.querySelector('#output').addEventListener('change', downloadFolder);
-downloadFolder();
-
-function downloadFolder() {
-    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
-}
-
-document.querySelector('#sizeEntry').disabled = true;
-document.querySelector('#sizeUnit').disabled = true;

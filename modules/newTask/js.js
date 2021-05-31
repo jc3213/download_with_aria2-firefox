@@ -1,10 +1,10 @@
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
-    var referer = document.querySelector('#taskReferer').value;
+    var referer = document.querySelector('#referer').value;
     var options = {};
     document.querySelectorAll('[option], [aria2]').forEach(option => {
         options[option.id] = option.value;
     });
-    document.querySelector('#taskBatch').value.split('\n').forEach(url => {
+    document.querySelector('#entries').value.split('\n').forEach(url => {
         try {
             var session = JSON.parse(url);
             if (Array.isArray(session)) {

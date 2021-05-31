@@ -1,6 +1,6 @@
 addEventListener('message', (event) => {
     printGlobalOptions();
-    document.querySelector('#aria2Ver').innerText = event.data;
+    document.querySelector('#version').innerText = event.data;
 });
 
 document.querySelector('#back_btn').addEventListener('click', (event) => {
