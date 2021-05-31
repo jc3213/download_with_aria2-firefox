@@ -1,14 +1,14 @@
-document.querySelectorAll('[card]').forEach((card, index, array) => {
+document.querySelectorAll('[card]').forEach((card, index, cards) => {
     var wheel = 0;
-    var limit = array.length - 1;
+    var limit = cards.length - 1;
     card.style.display = index === 0 ? 'block' : 'none';
     card.addEventListener('wheel', (event) => {
         if (event.deltaY > 0) {
-            wheel = wheel >= 0 ? wheel + 1 : 1;
+            wheel = card.scrollHeight - card.scrollTop === card.clientHeight ? wheel + 1 : 0;
             toggleCardView(wheel === 3 && index !== limit, index + 1);
         }
         else {
-            wheel = wheel <= 0 ? wheel - 1 : -1;
+            wheel = card.scrollTop === 0 ? wheel - 1 : 0;
             toggleCardView(wheel === -3 && index !== 0, index - 1);
         }
     }, {passive: true});
@@ -16,7 +16,7 @@ document.querySelectorAll('[card]').forEach((card, index, array) => {
     function toggleCardView(condition, view) {
         if (condition) {
             card.style.display = 'none';
-            array[view].style.display = 'block';
+            cards[view].style.display = 'block';
             wheel = 0;
         }
     }
