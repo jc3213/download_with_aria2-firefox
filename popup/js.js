@@ -17,13 +17,22 @@ document.querySelectorAll('span[module]').forEach(module => {
     });
 });
 
-document.querySelectorAll('[queue]').forEach((active, index, tabs) => {
-    var queue = active.getAttribute('queue');
-    active.addEventListener('click', (event) => {
-        document.querySelectorAll('#queue > div').forEach(task => {
-            task.style.display = active.classList.contains('checked') ? 'block'
-                               : queue.includes(task.status) ? 'block' : 'none';
+document.querySelectorAll('span.tab').forEach(tab => {
+    tab.addEventListener('click', (event) => {
+        document.querySelectorAll('div[tab]').forEach(body => {
+            var tabId = body.getAttribute('tab');
+            if (tab.classList.contains('checked')) {
+                body.style.display = 'block';
+            }
+            else if (tabId === tab.id) {
+                body.style.display = 'block';
+            }
+            else {
+                body.style.display = 'none';
+                document.getElementById(tabId).classList.remove('checked');
+            }
         });
+        tab.classList.toggle('checked');
     });
 });
 
@@ -31,11 +40,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            document.querySelectorAll('#queue > div').forEach(task => {
-                if (['complete', 'error', 'removed'].includes(task.status)) {
-                    task.remove();
-                }
-            });
+            document.querySelector('#terminated').innerHTML = '';
         }
     );
 });
@@ -55,9 +60,9 @@ function printMainFrame() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(active => printTaskInfo(active));
-        waiting.forEach(active => printTaskInfo(active));
-        stopped.forEach(active => printTaskInfo(active));
+        active.forEach(active => printTaskInfo(active, document.querySelector('#queue > #running')));
+        waiting.forEach(active => printTaskInfo(active, document.querySelector('#queue > #suspended')));
+        stopped.forEach(active => printTaskInfo(active, document.querySelector('#queue > #terminated')));
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
@@ -66,9 +71,12 @@ function printMainFrame() {
     });
 }
 
-function printTaskInfo(result) {
+function printTaskInfo(result, queue) {
     var task = document.getElementById(result.gid) || appendTaskInfo(result);
-    task.status = result.status;
+    if (task.status !== result.status) {
+        queue.appendChild(task);
+        task.status = result.status;
+    }
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
@@ -91,7 +99,6 @@ function appendTaskInfo(result) {
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
-    result.status === 'active' ? document.querySelector('#queue').prepend(task) : document.querySelector('#queue').appendChild(task);
     return task;
 }
 

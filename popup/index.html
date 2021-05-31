@@ -14,17 +14,21 @@
                 <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
             </div>
             <div id="tabs">
-                <span queue="active" class="active tab" i18n>popup_active_button</span>
+                <span id="active_btn" class="active tab" i18n>popup_active_button</span>
                 <span id="active">0</span>
-                <span queue="waiting paused" class="waiting tab" i18n>popup_waiting_button</span>
+                <span id="waiting_btn" class="waiting tab" i18n>popup_waiting_button</span>
                 <span id="waiting">0</span>
-                <span queue="complete error removed" class="removed tab" i18n>popup_stopped_button</span>
+                <span id="stopped_btn" class="removed tab" i18n>popup_stopped_button</span>
                 <span id="stopped">0</span>
             </div>
             <div id="network" class="error" style="display: none;"></div>
         </div>
         <hr>
-        <div id="queue"></div>
+        <div id="queue">
+            <div id="running" tab="active_btn"></div>
+            <div id="suspended" tab="waiting_btn"></div>
+            <div id="terminated" tab="stopped_btn"></div>
+        </div>
         <div id="template" class="session">
             <div class="body">
                 <div>
