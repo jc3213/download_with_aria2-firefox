@@ -103,7 +103,7 @@ document.querySelectorAll('[swap]').forEach(swap => {
 });
 
 document.querySelector('#name').addEventListener('click', (event) => {
-    parent.document.querySelector('#taskMgrWindow').remove();
+    parent.document.getElementById(frameElement.id).remove();
 });
 
 document.querySelector('#allproxy').addEventListener('click', (event) => {
