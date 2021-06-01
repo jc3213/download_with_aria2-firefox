@@ -40,7 +40,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            document.querySelector('#queue > #stopped').innerHTML = '';
+            document.querySelector('[queue="stopped"]').innerHTML = '';
         }
     );
 });
