@@ -60,9 +60,9 @@ function printMainFrame() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(active => printTaskInfo(active, document.querySelector('#queue > #active')));
-        waiting.forEach(waiting => printTaskInfo(waiting, document.querySelector('#queue > #waiting')));
-        stopped.forEach(stopped => printTaskInfo(stopped, document.querySelector('#queue > #stopped')));
+        active.forEach(active => printTaskInfo(active, document.querySelector('[queue="active"]')));
+        waiting.forEach(waiting => printTaskInfo(waiting, document.querySelector('[queue="waiting"]')));
+        stopped.forEach(stopped => printTaskInfo(stopped, document.querySelector('[queue="stopped"]')));
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
