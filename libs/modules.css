@@ -6,17 +6,17 @@ iframe {
     left: 0px;
 }
 
-#optionsWindow, #taskMgrWindow {
+#newTask {
+    top: 40px;
+    height: calc(100% - 80px);
+}
+
+#options, #taskMgr {
     top: 0px;
     height: calc(100% - 40px);
 }
 
-#aria2Global {
+#aria2Wnd {
     top: 0px;
     height: 100%;
-}
-
-#newTaskWindow {
-    top: 40px;
-    height: calc(100% - 80px);
 }

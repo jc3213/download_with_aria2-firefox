@@ -1,13 +1,5 @@
-var gid;
+var gid = location.search.slice(5);
 var logic = 0;
-var taskManager;
-
-addEventListener('message', (event) => {
-    gid = event.data;
-    printTaskOptions(gid);
-    printTaskManager();
-    taskManager = setInterval(printTaskManager, 1000);
-})
 
 function printTaskManager() {
     jsonRPCRequest(
@@ -37,7 +29,7 @@ function printTaskManager() {
 }
 
 function printTaskDetails(type) {
-    if (logic !== 1) {
+    if (logic === 0) {
         document.querySelectorAll('[http], [bt]').forEach(option => {
             option.style.display = option.hasAttribute(type) ? 'block' : 'none';
         });
@@ -139,3 +131,7 @@ document.querySelector('#file').addEventListener('click', (event) => {
         changeTaskOption(gid, 'select-file', checked.join());
     }
 });
+
+printTaskOptions(gid);
+printTaskManager();
+var taskManager = setInterval(printTaskManager, 1000);

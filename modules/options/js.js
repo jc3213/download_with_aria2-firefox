@@ -1,3 +1,5 @@
+document.querySelector('#manager').style.display = location.search === '?from=popup' ? 'none' : 'block';
+
 document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
     var saver = document.querySelector('#saver');
@@ -33,9 +35,7 @@ document.querySelector('#aria2_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
-            openModuleWindow('aria2Global', '/modules/aria2Wnd/index.html', (event) => {
-                event.target.contentWindow.postMessage(result.version);
-            });
+            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?version=' + result.version);
         },
         (error, rpc) => {
             showNotification(error, rpc);
@@ -65,3 +65,13 @@ function calcFileSize() {
     var unit = localStorage['sizeUnit'] | 0;
     localStorage['fileSize'] = number * 1024 ** unit;
 }
+
+document.querySelector('#output').addEventListener('change', downloadFolder);
+downloadFolder();
+
+function downloadFolder() {
+    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
+}
+
+document.querySelector('#sizeEntry').disabled = true;
+document.querySelector('#sizeUnit').disabled = true;
