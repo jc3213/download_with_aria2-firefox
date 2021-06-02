@@ -48,13 +48,14 @@ document.querySelector('#show_btn').addEventListener('click', (event) => {
     event.target.classList.toggle('checked');
 });
 
-document.querySelector('#capture').addEventListener('change', captureFilters);
-captureFilters();
-
-function captureFilters() {
-    document.querySelector('#filters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
-    document.querySelector('#exception').style.display = localStorage['capture'] !== '0' ? 'block' : 'none';
-}
+document.querySelectorAll('[gear]').forEach(gear => {
+    var setting = gear.getAttribute('gear').split('&');
+    var id = setting.shift();
+    gear.style.display = setting.includes(localStorage[id]) ? 'block' : 'none';
+    document.getElementById(id).addEventListener('change', (event) => {
+        gear.style.display = setting.includes(localStorage[id]) ? 'block' : 'none';
+    });
+});
 
 document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
 
@@ -65,13 +66,3 @@ function calcFileSize() {
     var unit = localStorage['sizeUnit'] | 0;
     localStorage['fileSize'] = number * 1024 ** unit;
 }
-
-document.querySelector('#output').addEventListener('change', downloadFolder);
-downloadFolder();
-
-function downloadFolder() {
-    document.querySelector('#folder').style.display = localStorage['output'] === '2' ? 'block' : 'none';
-}
-
-document.querySelector('#sizeEntry').disabled = true;
-document.querySelector('#sizeUnit').disabled = true;
