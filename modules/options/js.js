@@ -66,3 +66,6 @@ function calcFileSize() {
     var unit = localStorage['sizeUnit'] | 0;
     localStorage['fileSize'] = number * 1024 ** unit;
 }
+
+document.querySelector('#sizeEntry').disabled = true;
+document.querySelector('#sizeUnit').disabled = true;
