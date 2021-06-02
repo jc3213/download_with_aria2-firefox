@@ -7,7 +7,7 @@ document.querySelectorAll('[module]').forEach(module => {
             document.getElementById(id).remove();
         }
         else {
-            openModuleWindow(id, src, onload);
+            openModuleWindow(id, src);
         }
         module.classList.toggle('checked');
     });
