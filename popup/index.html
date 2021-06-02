@@ -14,17 +14,17 @@
                 <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
             </div>
             <div id="tabs">
-                <span id="active_btn" class="active tab" i18n>popup_active_button</span>
+                <span id="active_btn" class="tab active" i18n>popup_active_button</span>
                 <span id="active">0</span>
-                <span id="waiting_btn" class="waiting tab" i18n>popup_waiting_button</span>
+                <span id="waiting_btn" class="tab waiting" i18n>popup_waiting_button</span>
                 <span id="waiting">0</span>
-                <span id="stopped_btn" class="removed tab" i18n>popup_stopped_button</span>
+                <span id="stopped_btn" class="tab removed" i18n>popup_stopped_button</span>
                 <span id="stopped">0</span>
             </div>
             <div id="network" class="error" style="display: none;"></div>
         </div>
         <hr>
-        <div id="queue">
+        <div class="queue">
             <div tab="active_btn">
                 <div queue="active"></div>
             </div>
@@ -39,12 +39,12 @@
             </div>
         </div>
         <div id="template" class="session">
-            <div class="body">
+            <div class="details">
                 <div>
                     <span id="name" class="title"></span>
                     <span id="error"></span>
                 </div>
-                <div class="detail">
+                <div class="result">
                     <div>🖥️<span id="local"></span></div>
                     <div>⏲️<span id="infinite">∞</span>
                         <span id="estimate">

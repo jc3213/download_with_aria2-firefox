@@ -43,7 +43,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     );
 });
 
-function printMainFrame() {
+function printTaskManager() {
     jsonRPCRequest([
         {method: 'aria2.getGlobalStat'},
         {method: 'aria2.tellActive'},
@@ -58,9 +58,9 @@ function printMainFrame() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(printTaskInfo);
-        waiting.forEach(printTaskInfo);
-        stopped.forEach(printTaskInfo);
+        active.forEach(printTaskDetails);
+        waiting.forEach(printTaskDetails);
+        stopped.forEach(printTaskDetails);
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
@@ -69,8 +69,8 @@ function printMainFrame() {
     });
 }
 
-function printTaskInfo(result, index) {
-    var task = document.getElementById(result.gid) || appendTaskInfo(result);
+function printTaskDetails(result, index) {
+    var task = document.getElementById(result.gid) || appendTaskDetails(result);
     if (task.status !== result.status) {
         var queue = document.querySelector('[queue="' + result.status + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
@@ -90,7 +90,7 @@ function printTaskInfo(result, index) {
     task.querySelector('#retry_btn').style.display = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
 }
 
-function appendTaskInfo(result) {
+function appendTaskDetails(result) {
     var task = document.querySelector('#template').cloneNode(true);
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
@@ -177,5 +177,5 @@ function pauseOrUnpauseTask(gid, status) {
     jsonRPCRequest({method, gid});
 }
 
-printMainFrame();
-var keepContentAlive = setInterval(printMainFrame, 1000);
+printTaskManager();
+var keepContentAlive = setInterval(printTaskManager, 1000);

@@ -10,7 +10,7 @@
     padding: 3px 5px;
 }
 
-#queue {
+.queue {
     height: 410px;
     overflow-y: auto;
 }
@@ -21,23 +21,19 @@
     margin-bottom: 5px;
 }
 
-.body {
+.details {
     width: calc(100% - 25px);
 }
 
-.body, .menu {
+.details, .menu, .result * {
     display: inline-block;
 }
 
-.detail * {
-    display: inline-block;
-}
-
-.detail > * {
+.result > * {
     width: 32%;
 }
 
-.detail > * > * {
+.result > * > * {
     margin-left: 4px;
 }
 
