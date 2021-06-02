@@ -36,7 +36,9 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            document.querySelector('[queue="stopped"]').innerHTML = '';
+            document.querySelector('[queue="complete"]').innerHTML = '';
+            document.querySelector('[queue="error"]').innerHTML = '';
+            document.querySelector('[queue="removed"]').innerHTML = '';
         }
     );
 });
@@ -56,9 +58,9 @@ function printMainFrame() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(active => printTaskInfo(active, document.querySelector('[queue="active"]')));
-        waiting.forEach(waiting => printTaskInfo(waiting, document.querySelector('[queue="waiting"]')));
-        stopped.forEach(stopped => printTaskInfo(stopped, document.querySelector('[queue="stopped"]')));
+        active.forEach(printTaskInfo);
+        waiting.forEach(printTaskInfo);
+        stopped.forEach(printTaskInfo);
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
@@ -67,10 +69,11 @@ function printMainFrame() {
     });
 }
 
-function printTaskInfo(result, queue) {
+function printTaskInfo(result, index) {
     var task = document.getElementById(result.gid) || appendTaskInfo(result);
     if (task.status !== result.status) {
-        queue.appendChild(task);
+        var queue = document.querySelector('[queue="' + result.status + '"]');
+        queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
     }
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
@@ -130,7 +133,7 @@ function removeTaskFromQueue(gid, status) {
     else {
         return;
     }
-    if (['complete', 'error', 'removed', 'paused'].includes(status)) {
+    if (['complete', 'error', 'paused', 'removed'].includes(status)) {
         var clear = (result) => {
             document.getElementById(gid).remove();
         };

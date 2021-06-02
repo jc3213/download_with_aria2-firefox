@@ -25,9 +25,18 @@
         </div>
         <hr>
         <div id="queue">
-            <div queue="active" tab="active_btn"></div>
-            <div queue="waiting" tab="waiting_btn"></div>
-            <div queue="stopped" tab="stopped_btn"></div>
+            <div tab="active_btn">
+                <div queue="active"></div>
+            </div>
+            <div tab="waiting_btn">
+                <div queue="waiting"></div>
+                <div queue="paused"></div>
+            </div>
+            <div tab="stopped_btn">
+                <div queue="complete"></div>
+                <div queue="error"></div>
+                <div queue="removed"></div>
+            </div>
         </div>
         <div id="template" class="session">
             <div class="body">
