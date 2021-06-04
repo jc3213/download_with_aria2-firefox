@@ -38,6 +38,17 @@
                     <span id="show_btn" button>👁️</span>
                 </div>
             </div>
+            <div title="option_folder_desc" i18n_title>
+                <span class="title" i18n>option_folder</span>
+                <select id="output" local>
+                    <option value="0" i18n>common_default</option>
+                    <option value="1" i18n>option_folder_browser</option>
+                    <option value="2" i18n>option_folder_custom</option>
+                </select>
+                <div gear="output&2">
+                    <input id="folder" local type="text" placeholder="C:\Aria2 Downloads">
+                </div>
+            </div>
         </div>
         <div panel="advanced" class="container">
             <div title="option_useragent_desc" i18n_title>
