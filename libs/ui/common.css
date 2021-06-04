@@ -1,8 +1,8 @@
-[tab], [card] {
+[panel], [card] {
     overflow-y: auto;
 }
 
-[tab] {
+[panel] {
     height: 400px;
 }
 

@@ -10,33 +10,24 @@
     <body>
         <div class="frame">
             <div id="upper" class="offside">
-                <span module="newTask" class="button" i18n>popup_new_button</span>
-                <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+                <span module="newTask" button i18n>popup_new_button</span>
+                <span id="purdge_btn" button i18n>popup_purge_button</span>
             </div>
             <div id="tabs">
-                <span id="active_btn" class="tab active" i18n>popup_active_button</span>
+                <span tab="running" class="active" i18n>popup_active_button</span>
                 <span id="active">0</span>
-                <span id="waiting_btn" class="tab waiting" i18n>popup_waiting_button</span>
+                <span tab="suspend" class="waiting" i18n>popup_waiting_button</span>
                 <span id="waiting">0</span>
-                <span id="stopped_btn" class="tab removed" i18n>popup_stopped_button</span>
+                <span tab="aborted" class="removed" i18n>popup_stopped_button</span>
                 <span id="stopped">0</span>
             </div>
             <div id="network" class="error" style="display: none;"></div>
         </div>
         <hr>
         <div class="queue">
-            <div tab="active_btn">
-                <div queue="active"></div>
-            </div>
-            <div tab="waiting_btn">
-                <div queue="waiting"></div>
-                <div queue="paused"></div>
-            </div>
-            <div tab="stopped_btn">
-                <div queue="complete"></div>
-                <div queue="error"></div>
-                <div queue="removed"></div>
-            </div>
+            <div panel="running"></div>
+            <div panel="suspend"></div>
+            <div panel="aborted"></div>
         </div>
         <div id="template" class="session">
             <div class="details">
@@ -61,9 +52,9 @@
                 </div>
             </div>
             <div class="menu">
-                <span class="button" id="remove_btn">❌</span>
-                <span class="button" id="invest_btn">🔍</span>
-                <span class="button" id="retry_btn">🌌</span>
+                <span button id="remove_btn">❌</span>
+                <span button id="invest_btn">🔍</span>
+                <span button id="retry_btn">🌌</span>
             </div>
             <div id="fancybar">
                 <div id="ratio"></div>
@@ -72,7 +63,7 @@
         <hr>
         <div class="frame">
             <div class="offside">
-                <span module="options" class="button" i18n>popup_options_button</span>
+                <span module="options" button i18n>popup_options_button</span>
             </div>
             <div id="bandwidth">
                 <span class="active" i18n>popup_download</span>

@@ -8,17 +8,17 @@
     <body>
         <div class="frame">
             <div class="container">
-                <span id="http" class="tab checked" i18n>aria2_http</span>
-                <span id="bt" class="tab" i18n>aria2_bittorrent</span>
-                <span id="advanced" class="tab" i18n>common_advanced</span>
+                <span tab="http" class="checked" i18n>aria2_http</span>
+                <span tab="bt" i18n>aria2_bittorrent</span>
+                <span tab="advanced" i18n>common_advanced</span>
             </div>
             <div class="offside">
                 <span id="version"></span>
-                <span id="back_btn" class="button" i18n>common_back</span>
+                <span id="back_btn" button i18n>common_back</span>
             </div>
         </div>
         <hr>
-        <div tab="http" class="container">
+        <div panel="http" class="container">
             <div title="aria2_http_retry_desc" i18n_title>
                 <div class="title" i18n>aria2_http_retry</div>
                 <div>
@@ -49,7 +49,7 @@
                 <span i18n>common_default</span>: <u><i>20M</i></u>
             </div>
         </div>
-        <div tab="bt" class="container" style="display: none;">
+        <div panel="bt" class="container">
             <div title="aria2_bt_port_desc" i18n_title>
                 <div class="title" i18n>aria2_bt_port</div>
                 <div>
@@ -89,7 +89,7 @@
                 <span i18n>common_sample</span>: <u><i>30</i></u>
             </div>
         </div>
-        <div tab="advanced" class="container" style="display: none;">
+        <div panel="advanced" class="container">
             <div title="aria2_adv_dir_desc" i18n_title>
                 <div class="title" i18n>aria2_adv_dir</div>
                 <div>

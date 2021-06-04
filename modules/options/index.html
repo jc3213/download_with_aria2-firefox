@@ -10,24 +10,24 @@
     <body>
         <div class="frame">
             <div class="container">
-                <span id="basic" class="tab checked" i18n>option_basic</span>
-                <span id="advanced" class="tab" i18n>common_advanced</span>
-                <span id="download" class="tab" i18n>option_download</span>
+                <span tab="basic" class="checked" i18n>option_basic</span>
+                <span tab="advanced" i18n>common_advanced</span>
+                <span tab="download" i18n>option_download</span>
             </div>
             <div id="manager" class="offside">
-                <span id="export" class="button" i18n>option_export</span>
+                <span id="export" button i18n>option_export</span>
                 <a id="saver" style="display: none;"></a>
-                <span id="import" class="button" i18n>option_import</span>
+                <span id="import" button i18n>option_import</span>
                 <input id="reader" type="file" accept="application/json" style="display: none;">
             </div>
         </div>
         <hr>
-        <div tab="basic" class="container">
+        <div panel="basic" class="container">
             <div title="option_jsonrpc_desc" i18n_title>
                 <div class="title" i18n>option_jsonrpc</div>
                 <div>
                     <input id="jsonrpc" local type="text">
-                    <span id="aria2_btn" class="button">⚙️</span>
+                    <span id="aria2_btn" button>⚙️</span>
                 </div>
                 <span i18n>common_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
@@ -35,22 +35,11 @@
                 <div class="title" i18n>option_token</div>
                 <div>
                     <input id="token" local type="password" placeholder="$$secret$$">
-                    <span id="show_btn" class="button">👁️</span>
-                </div>
-            </div>
-            <div title="option_folder_desc" i18n_title>
-                <span class="title" i18n>option_folder</span>
-                <select id="output" local>
-                    <option value="0" i18n>common_default</option>
-                    <option value="1" i18n>option_folder_browser</option>
-                    <option value="2" i18n>option_folder_custom</option>
-                </select>
-                <div>
-                    <input id="folder" local gear="output&2" type="text" placeholder="C:\Aria2 Downloads">
+                    <span id="show_btn" button>👁️</span>
                 </div>
             </div>
         </div>
-        <div tab="advanced" class="container" style="display: none;">
+        <div panel="advanced" class="container">
             <div title="option_useragent_desc" i18n_title>
                 <div class="title" i18n>option_useragent</div>
                 <div>
@@ -71,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div tab="download" class="container" style="display: none;">
+        <div panel="download" class="container">
             <div title="option_capture_desc" i18n_title>
                 <span class="title" i18n>option_capture</span>
                 <select id="capture" local>

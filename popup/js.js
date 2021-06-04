@@ -13,19 +13,20 @@ document.querySelectorAll('[module]').forEach(module => {
     });
 });
 
-document.querySelectorAll('.tab').forEach(tab => {
+document.querySelectorAll('[tab]').forEach(tab => {
+    var active = tab.getAttribute('tab');
     tab.addEventListener('click', (event) => {
-        document.querySelectorAll('[tab]').forEach(body => {
-            var tabId = body.getAttribute('tab');
+        document.querySelectorAll('[panel]').forEach(panel => {
+            var id = panel.getAttribute('panel');
             if (tab.classList.contains('checked')) {
-                body.style.display = 'block';
+                panel.style.display = 'block';
             }
-            else if (tabId === tab.id) {
-                body.style.display = 'block';
+            else if (id === active) {
+                panel.style.display = 'block';
             }
             else {
-                body.style.display = 'none';
-                document.getElementById(tabId).classList.remove('checked');
+                panel.style.display = 'none';
+                document.querySelector('[tab="' + id + '"]').classList.remove('checked');
             }
         });
         tab.classList.toggle('checked');
@@ -49,7 +50,7 @@ function printTaskManager() {
         {method: 'aria2.tellActive'},
         {method: 'aria2.tellWaiting', index: [0, 9999]},
         {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (global, active, waiting, stopped) => {
+    ], (global, running, suspend, aborted) => {
         document.querySelector('#active').innerText = global.numActive;
         document.querySelector('#waiting').innerText = global.numWaiting;
         document.querySelector('#stopped').innerText = global.numStopped;
@@ -58,9 +59,9 @@ function printTaskManager() {
         document.querySelector('#tabs').style.display = 'block';
         document.querySelector('#upper').style.display = 'block';
         document.querySelector('#network').style.display = 'none';
-        active.forEach(printTaskDetails);
-        waiting.forEach(printTaskDetails);
-        stopped.forEach(printTaskDetails);
+        running.forEach((running, index) => printTaskDetails(running, index, document.querySelector('[panel="running"]')));
+        suspend.forEach((suspend, index) => printTaskDetails(suspend, index, document.querySelector('[panel="suspend"]')));
+        aborted.forEach((aborted, index) => printTaskDetails(aborted, index, document.querySelector('[panel="aborted"]')));
     }, (error, rpc) => {
         document.querySelector('#tabs').style.display = 'none';
         document.querySelector('#upper').style.display = 'none';
@@ -69,10 +70,9 @@ function printTaskManager() {
     });
 }
 
-function printTaskDetails(result, index) {
+function printTaskDetails(result, index, queue) {
     var task = document.getElementById(result.gid) || appendTaskDetails(result);
     if (task.status !== result.status) {
-        var queue = document.querySelector('[queue="' + result.status + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
     }

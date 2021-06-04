@@ -53,7 +53,7 @@
     width: calc(100% - 45px);
 }
 
-#source .button {
+#source [button] {
     font-size: 12px;
     padding: 5px;
 }

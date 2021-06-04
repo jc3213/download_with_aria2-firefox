@@ -42,7 +42,7 @@
     width: 20px;
 }
 
-.menu .button {
+.menu [button] {
     font-size: 12px;
     padding: 1px;
 }

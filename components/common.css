@@ -11,13 +11,6 @@ body {
     word-break: break-word;
 }
 
-.tab, .button {
-    border: 1px outset #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 3px 5px;
-}
-
 .frame {
     height: 20px;
 }
@@ -30,11 +23,18 @@ body {
     text-align: right;
 }
 
-.button:hover, .tab:hover {
+[tab], [button] {
+    border: 1px outset #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 3px 5px;
+}
+
+[tab]:hover, [button]:hover {
     filter: opacity(60%);
 }
 
-.button:active, .tab:active {
+[tab]:active, [button]:active {
     filter: opacity(30%);
 }
 
