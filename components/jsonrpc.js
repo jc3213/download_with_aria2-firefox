@@ -60,12 +60,6 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (localStorage['output'] === '1' && session.folder) {
-        options['dir'] = session.folder;
-    }
-    else if (localStorage['output'] === '2' && localStorage['folder']) {
-        options['dir'] = localStorage['folder'];
-    }
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
@@ -73,7 +67,7 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!session.referer) {
         return sendRPCRequest();
     }
-    browser.cookies.getAll({url: session.referer}, (cookies) => {
+    chrome.cookies.getAll({url: session.referer}, (cookies) => {
         var cookie = 'Cookie:';
         cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
         options['header'].push(cookie, 'Referer: ' + session.referer);
@@ -84,7 +78,7 @@ function downWithAria2(session, options = {}, bypass = false) {
         jsonRPCRequest(
             {method: 'aria2.addUri', url, options},
             (result) => {
-                showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
+                showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
             },
             (error, rpc) => {
                 showNotification(error, rpc || url.join('\n'));
@@ -101,9 +95,9 @@ function showNotification(title, message) {
         iconUrl: '/icons/icon48.png',
         message: message || ''
     };
-    browser.notifications.create(id, notification, () => {
+    chrome.notifications.create(id, notification, () => {
         setTimeout(() => {
-            browser.notifications.clear(id);
+            chrome.notifications.clear(id);
         }, 5000);
     });
 }

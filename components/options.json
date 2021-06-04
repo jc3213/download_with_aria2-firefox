@@ -1,9 +1,7 @@
 {
     "jsonrpc": "http://localhost:6800/jsonrpc",
     "token": "",
-    "output": "0",
-    "folder": "",
-    "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/86.0",
+    "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36",
     "allproxy": "",
     "proxied": "",
     "capture": "0",

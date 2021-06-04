@@ -1,13 +1,13 @@
-browser.contextMenus.create({
-    title: browser.i18n.getMessage('extension_name'),
-    id: 'downwitharia2firefox',
+chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('extension_name'),
+    id: 'downwitharia2',
     contexts: ['link'],
     onclick: (info, tab) => {
         downWithAria2({url: info.linkUrl, referer: tab.url, host: new URL(tab.url).hostname});
     }
 });
 
-browser.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((details) => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/components/options.json', true);
     xhr.responseType = 'json';
@@ -21,23 +21,20 @@ browser.runtime.onInstalled.addListener((details) => {
     xhr.send();
 });
 
-browser.downloads.onCreated.addListener((item) => {
-    if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+    if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
-    var session = {url: item.url, filename: getFileName(item.filename)};
-    browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
+    var session = {url: item.finalUrl, filename: item.filename};
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.host = new URL(session.referer).hostname;
         if (captureFilterWorker()) {
-            browser.downloads.cancel(item.id).then(() => {
-                browser.downloads.erase({id: item.id}, () => {
+            chrome.downloads.cancel(item.id, () => {
+                chrome.downloads.erase({id: item.id}, () => {
                     downWithAria2(session);
                 });
-            }, () => {
-                showNotification(browser.i18n.getMessage('warn_firefox'), item.url);
             });
         }
     });
@@ -60,22 +57,17 @@ browser.downloads.onCreated.addListener((item) => {
         }
         return false;
     }
-
-    function getFileName(uri) {
-        var index = uri.lastIndexOf('\\') === -1 ? uri.lastIndexOf('/') : uri.lastIndexOf('\\');
-        return uri.slice(index + 1);
-    }
 });
 
 function displayActiveTaskNumber() {
     jsonRPCRequest(
         {method: 'aria2.getGlobalStat'},
         (result) => {
-            browser.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
+            chrome.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
         }
     );
 }
 
-browser.browserAction.setBadgeBackgroundColor({color: '#3CC'});
+chrome.browserAction.setBadgeBackgroundColor({color: '#3CC'});
 displayActiveTaskNumber();
 var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);

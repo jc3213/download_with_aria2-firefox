@@ -45,19 +45,6 @@
     padding: 3px;
 }
 
-#all-proxy {
-    width: calc(100% - 50px);
-}
-
-#source input {
-    width: calc(100% - 45px);
-}
-
-#source [button] {
-    font-size: 12px;
-    padding: 5px;
-}
-
 #uri > *:nth-child(n+2) {
     margin-top: 3px;
 }

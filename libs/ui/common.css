@@ -20,6 +20,21 @@
     padding: 3px;
 }
 
+.extend > input {
+    width: 90%;
+}
+
+.extend > [button] {
+    font-size: 13px;
+    padding: 4px;
+}
+
+.extend > .checked {
+    padding: 3px;
+    border: 2px inset #c48;
+}
+
+
 .submenu {
     text-align: center;
 }
