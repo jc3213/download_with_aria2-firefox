@@ -1,0 +1,95 @@
+.double > *:nth-child(2), .triple > *:nth-child(n+2) {
+    margin-left: 10px;
+}
+
+.double > *, .triple > * {
+    display: inline-block;
+}
+
+.double > * {
+    width: 48%;
+}
+
+.triple > * {
+    width: 31%;
+}
+
+.triple span {
+    margin-left: 4px;
+    border: 1px ridge #ccc;
+    display: inline-block;
+    width: 80%;
+    text-align: center;
+}
+
+.double > *:first-child .suffix {
+    right: 236px;
+}
+
+.double > *:last-child .suffix {
+    right: 16px;
+}
+
+#name {
+    padding: 0px;
+    height: 46px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+#name, #uri * {
+    word-break: break-word;
+}
+
+[swap] {
+    padding: 3px;
+}
+
+#all-proxy {
+    width: calc(100% - 50px);
+}
+
+#source input {
+    width: calc(100% - 45px);
+}
+
+#source [button] {
+    font-size: 12px;
+    padding: 5px;
+}
+
+#uri > *:nth-child(n+2) {
+    margin-top: 3px;
+}
+
+#uri > *:active, #file #index:active {
+    filter: opacity(60%);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px outset #CCC;
+    padding: 5px;
+}
+
+#file #index {
+    width: 20px;
+    text-align: center;
+}
+
+#file #name {
+    width: calc(100% - 140px);
+}
+
+#file #size {
+    width: 70px;
+    text-align: center;
+}
+
+#file #ratio {
+    width: 50px;
+    text-align: center;
+}

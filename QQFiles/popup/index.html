@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/components/common.css">
+        <link rel="stylesheet" href="/components/status.css">
+        <link rel="stylesheet" href="/libs/modules.css">
+        <link rel="stylesheet" href="css.css">
+    </head>
+    <body>
+        <div class="frame">
+            <div id="upper" class="offside">
+                <span module="newTask" button i18n>popup_new_button</span>
+                <span id="purdge_btn" button i18n>popup_purge_button</span>
+            </div>
+            <div id="tabs">
+                <span tab="running" class="active" i18n>popup_active_button</span>
+                <span id="active">0</span>
+                <span tab="suspend" class="waiting" i18n>popup_waiting_button</span>
+                <span id="waiting">0</span>
+                <span tab="aborted" class="removed" i18n>popup_stopped_button</span>
+                <span id="stopped">0</span>
+            </div>
+            <div id="network" class="error" style="display: none;"></div>
+        </div>
+        <hr>
+        <div class="queue">
+            <div panel="running"></div>
+            <div panel="suspend"></div>
+            <div panel="aborted"></div>
+        </div>
+        <div id="template" class="session">
+            <div class="details">
+                <div>
+                    <span id="name" class="title"></span>
+                    <span id="error"></span>
+                </div>
+                <div class="result">
+                    <div>🖥️<span id="local"></span></div>
+                    <div>⏲️<span id="infinite">∞</span>
+                        <span id="estimate">
+                            <span><label id="day"></label><sub i18n>time_day</sub></span>
+                            <span><label id="hour"></label><sub i18n>time_hour</sub></span>
+                            <span><label id="minute"></label><sub i18n>time_minute</sub></span>
+                            <span><label id="second"></label><sub i18n>time_second</sub></span>
+                        </span>
+                    </div>
+                    <div>📦<span id="remote"></span></div>
+                    <div>📶️<span id="connect"></span></div>
+                    <div>⏬<span id="download"></span></div>
+                    <div>⏫<span id="upload"></span></div>
+                </div>
+            </div>
+            <div class="menu">
+                <span button id="remove_btn">❌</span>
+                <span button id="invest_btn">🔍</span>
+                <span button id="retry_btn">🌌</span>
+            </div>
+            <div id="fancybar">
+                <div id="ratio"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="frame">
+            <div class="offside">
+                <span module="options" button i18n>popup_options_button</span>
+            </div>
+            <div id="bandwidth">
+                <span class="active" i18n>popup_download</span>
+                <span id="download">0 B/s</span>
+                <span class="complete" i18n>popup_upload</span>
+                <span id="upload">0 B/s</span>
+            </div>
+        </div>
+        <script src="/components/jsonrpc.js"></script>
+        <script src="/libs/ui/i18n.js"></script>
+        <script src="/libs/ui/calc.js"></script>
+        <script src="/libs/modules.js"></script>
+        <script src="js.js"></script>
+    </body>
+</html>
