@@ -1,4 +1,8 @@
 #sizeEntry {
-    width: calc(100% - 70px);
+    width: 80%;
+}
+
+#sizeUnit {
+    width: 65px;
 }
 
