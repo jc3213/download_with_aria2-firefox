@@ -7,6 +7,7 @@
 }
 
 .double > * {
+    position: relative;
     width: 48%;
 }
 
@@ -22,12 +23,8 @@
     text-align: center;
 }
 
-.double > *:first-child .suffix {
-    right: 236px;
-}
-
-.double > *:last-child .suffix {
-    right: 16px;
+.swap .suffix {
+    top: 3px;
 }
 
 #name {

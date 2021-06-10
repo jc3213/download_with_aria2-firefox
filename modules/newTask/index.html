@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="/components/common.css">
         <link rel="stylesheet" href="/libs/ui/common.css">
-        <link rel="stylesheet" href="css.css">
     </head>
     <body>
         <div card class="container">
@@ -45,18 +44,18 @@
             </div>
             <div title="aria2_http_size_desc" i18n_title>
                 <div class="title" i18n>aria2_http_size</div>
-                <div>
-                    <label class="suffix">B</label>
+                <label>
+                    <span class="suffix">B</span>
                     <input id="min-split-size" aria2 calc type="text">
-                </div>
+                </label>
                 <span i18n>common_default</span>: <u><i>20M</i></u>
             </div>
             <div title="task_download_desc" i18n_title>
                 <div class="title" i18n>task_download</div>
-                <div>
-                    <label class="suffix">B/s</label>
+                <label>
+                    <span class="suffix">B/s</span>
                     <input id="max-download-limit" aria2 calc type="text">
-                </div>
+                </label>
                 <span i18n>common_disabled</span>: <u><i>0</i></u>
             </div>
         </div>

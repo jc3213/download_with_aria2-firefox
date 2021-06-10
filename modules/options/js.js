@@ -25,9 +25,9 @@ document.querySelector('#reader').addEventListener('change', (event) => {
 });
 
 document.querySelectorAll('[local]').forEach(option => {
-    option.value = localStorage[option.id];
+    option.value = option.id === 'fileSize' ? localStorage[option.id] / 1048576 : localStorage[option.id];
     option.addEventListener('change', (event) => {
-        localStorage[option.id] = option.value;
+        localStorage[option.id] = option.id === 'fileSize' ? option.value * 1048576 : option.value;
     });
 });
 
@@ -57,15 +57,4 @@ document.querySelectorAll('[gear]').forEach(gear => {
     });
 });
 
-document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
-
-document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
-
-function calcFileSize() {
-    var number = localStorage['sizeEntry'] | 0;
-    var unit = localStorage['sizeUnit'] | 0;
-    localStorage['fileSize'] = number * 1024 ** unit;
-}
-
-document.querySelector('#sizeEntry').disabled = true;
-document.querySelector('#sizeUnit').disabled = true;
+document.querySelector('#fileSize').disabled = true;

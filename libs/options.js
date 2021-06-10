@@ -1,10 +1,18 @@
+function applyValueToOptions(option, data) {
+    if (option.hasAttribute('calc')) {
+        var calc = bytesToFileSize(data[option.id]);
+        option.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
+    }
+    else {
+        option.value = data[option.id] || '';
+    }
+}
+
 function printGlobalOptions() {
     jsonRPCRequest(
         {method: 'aria2.getGlobalOption'},
         (global) => {
-            document.querySelectorAll('[aria2]').forEach(aria2 => {
-                aria2.value = aria2.hasAttribute('calc') ? bytesToFileSize(global[aria2.id]).slice(0, -1).replace(' ', '') : global[aria2.id] || '';
-            });
+            document.querySelectorAll('[aria2]').forEach(aria2 => applyValueToOptions(aria2, global));
         }
     );
 }
@@ -18,9 +26,7 @@ function printTaskOptions(gid) {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            document.querySelectorAll('[task]').forEach(task => {
-                task.value = task.hasAttribute('calc') ? bytesToFileSize(options[task.id]).slice(0, -1).replace(' ', '') : options[task.id] || '';
-            });
+            document.querySelectorAll('[task]').forEach(task => applyValueToOptions(task, options));
         }
     );
 }

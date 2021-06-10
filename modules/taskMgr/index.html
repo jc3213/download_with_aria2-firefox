@@ -9,7 +9,7 @@
     </head>
     <body>
         <div id="name" button></div>
-        <div card class="container">
+        <div card="options" class="container">
             <div class="triple">
                 <div>🖥️<span id="local"></span></div>
                 <div>🛰️<span id="ratio"></span></div>
@@ -18,18 +18,18 @@
             <div class="double">
                 <div title="task_download_desc" i18n_title>
                     <div class="title" i18n>task_download</div>
-                    <div style="display: none;">
-                        <div class="suffix">B/s</div>
+                    <label class="swap" style="display: none;">
+                        <span class="suffix">B/s</span>
                         <input id="max-download-limit" task calc type="text">
-                    </div>
+                    </label>
                     <div id="download" swap="max-download-limit" class="active"></div>
                 </div>
                 <div title="task_upload_desc" i18n_title>
                     <div class="title" i18n>task_upload</div>
-                    <div style="display: none;">
-                        <div class="suffix">B/s</div>
+                    <label class="swap" style="display: none;">
+                        <span class="suffix">B/s</span>
                         <input id="max-upload-limit" task calc type="text">
-                    </div>
+                    </label>
                     <div id="upload" swap="max-upload-limit" class="complete"></div>
                 </div>
             </div>
@@ -50,10 +50,10 @@
                 </div>
                 <div title="aria2_http_size_desc" i18n_title>
                     <div class="title" i18n>aria2_http_size</div>
-                    <div>
-                        <label class="suffix">B</label>
+                    <label>
+                        <span class="suffix">B</span>
                         <input id="min-split-size" task calc type="text">
-                    </div>
+                    </label>
                     <span i18n>common_default</span>: <u><i>20M</i></u>
                 </div>
             </div>
