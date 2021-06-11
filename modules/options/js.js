@@ -56,5 +56,3 @@ document.querySelectorAll('[gear]').forEach(gear => {
         gear.style.display = setting.includes(localStorage[id]) ? 'block' : 'none';
     });
 });
-
-document.querySelector('#fileSize').disabled = true;

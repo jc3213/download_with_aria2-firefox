@@ -24,17 +24,43 @@ browser.runtime.onInstalled.addListener((details) => {
     delete localStorage['sizeUnit'];
 });
 
+// Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
+var requests = [];
+browser.webRequest.onHeadersReceived.addListener(
+    (event) => {
+        try {
+            var size = event.responseHeaders.find(item => item.name === 'content-length').value;
+            requests.push({'url': event.url, 'size': size});
+        }
+        catch(error) {
+            return;
+        }
+        finally {
+            if (requests.length > 50) {
+                requests.shift();
+            }
+        }
+    },
+    {'urls': ['<all_urls>']},
+    ['blocking', 'responseHeaders']
+)
+
+function fileSizeWrapper(item) {
+    return requests.find(request => request.url === item.url).size;
+}
+// End of workaround
+
 browser.downloads.onCreated.addListener((item) => {
     if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
 
-    var session = {url: item.url, filename: getFileName(item.filename)};
+    var session = {url: item.url, filename: getFileNameFromUri(item.filename)};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-        session.host = new URL(session.referer).hostname;
-        if (captureFilterWorker()) {
+        session.host = getHostnameFromUrl(session.referer);
+        if (captureFilterWorker(getHostnameFromUrl(session.referer), getFileExtension(session.filename), fileSizeWrapper(item))) {
             browser.downloads.cancel(item.id).then(() => {
                 browser.downloads.erase({id: item.id}, () => {
                     downWithAria2(session);
@@ -44,31 +70,41 @@ browser.downloads.onCreated.addListener((item) => {
             });
         }
     });
+});
 
-    function captureFilterWorker() {
-        if (localStorage['ignored'].includes(session.host)) {
-            return false;
-        }
-        if (localStorage['capture'] === '2') {
-            return true;
-        }
-        if (localStorage['monitored'].includes(session.host)) {
-            return true;
-        }
-        if (localStorage['fileExt'].includes(item.filename.slice(item.filename.lastIndexOf('.') + 1).toLowerCase())) {
-            return true;
-        }
-        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
-            return true;
-        }
+function captureFilterWorker(hostname, fileExt, fileSize) {
+    if (localStorage['ignored'].includes(hostname)) {
         return false;
     }
-
-    function getFileName(uri) {
-        var index = uri.lastIndexOf('\\') === -1 ? uri.lastIndexOf('/') : uri.lastIndexOf('\\');
-        return uri.slice(index + 1);
+    if (localStorage['capture'] === '2') {
+        return true;
     }
-});
+    if (localStorage['monitored'].includes(hostname)) {
+        return true;
+    }
+    if (localStorage['fileExt'].includes(fileExt)) {
+        return true;
+    }
+    if (localStorage['fileSize'] > 0 && fileSize >= localStorage['fileSize']) {
+        return true;
+    }
+    return false;
+}
+
+function getHostnameFromUrl(url) {
+    var host = url.split('/')[2];
+    var hostname = host.includes(':') ? host.slice(0, host.indexOf(':')) : host;
+    return hostname;
+}
+
+function getFileNameFromUri(uri) {
+    var index = uri.lastIndexOf('\\') === -1 ? uri.lastIndexOf('/') : uri.lastIndexOf('\\');
+    return uri.slice(index + 1);
+}
+
+function getFileExtension(filename) {
+    return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
+}
 
 function displayActiveTaskNumber() {
     jsonRPCRequest(

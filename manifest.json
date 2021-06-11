@@ -3,7 +3,7 @@
     "description": "__MSG_extension_description__",
     "version": "2.6300",
     "manifest_version": 2,
-    "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "<all_urls>" ],
+    "permissions": [ "contextMenus", "downloads", "webRequest", "webRequestBlocking", "tabs", "cookies", "notifications", "<all_urls>" ],
     "default_locale" : "en",
     "background": {
         "scripts": [ "/components/jsonrpc.js", "/components/main.js" ]
