@@ -59,8 +59,8 @@ browser.downloads.onCreated.addListener((item) => {
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-        session.host = getHostnameFromUrl(session.referer);
-        if (captureFilterWorker(getHostnameFromUrl(session.referer), getFileExtension(session.filename), fileSizeWrapper(item))) {
+        session.hostname = getHostnameFromUrl(session.referer);
+        if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
             browser.downloads.cancel(item.id).then(() => {
                 browser.downloads.erase({id: item.id}, () => {
                     downWithAria2(session);

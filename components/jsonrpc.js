@@ -66,7 +66,7 @@ function downWithAria2(session, options = {}, bypass = false) {
     else if (localStorage['output'] === '2' && localStorage['folder']) {
         options['dir'] = localStorage['folder'];
     }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
     options['header'] = ['User-Agent: ' + localStorage['useragent']];
