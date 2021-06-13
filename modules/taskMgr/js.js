@@ -95,7 +95,7 @@ document.querySelectorAll('[swap]').forEach(swap => {
 });
 
 document.querySelector('#name').addEventListener('click', (event) => {
-    parent.document.getElementById(frameElement.id).remove();
+    frameElement.remove();
 });
 
 document.querySelector('#allproxy').addEventListener('click', (event) => {
