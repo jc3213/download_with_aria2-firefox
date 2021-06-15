@@ -7,7 +7,7 @@
 }
 
 [card] {
-    height: 380px;
+    height: 360px;
 }
 
 .container > *:nth-child(n+2) {
