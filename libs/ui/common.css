@@ -7,7 +7,7 @@
 }
 
 [card] {
-    height: 360px;
+    height: 380px;
 }
 
 .container > *:nth-child(n+2) {
@@ -28,7 +28,7 @@ label .suffix {
 }
 
 label .suffix2 {
-    right: 25px;
+    right: 28px;
 }
 
 .extend > input {
