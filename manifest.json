@@ -1,7 +1,7 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.6300",
+    "version": "2.6400",
     "manifest_version": 2,
     "permissions": [ "contextMenus", "downloads", "webRequest", "webRequestBlocking", "tabs", "cookies", "notifications", "<all_urls>" ],
     "default_locale" : "en",
