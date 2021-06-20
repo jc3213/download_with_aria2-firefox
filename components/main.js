@@ -3,7 +3,7 @@ browser.contextMenus.create({
     id: 'downwitharia2firefox',
     contexts: ['link'],
     onclick: (info, tab) => {
-        downWithAria2({url: info.linkUrl, referer: tab.url, host: new URL(tab.url).hostname});
+        downWithAria2({url: info.linkUrl, referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
     }
 });
 
@@ -19,9 +19,6 @@ browser.runtime.onInstalled.addListener((details) => {
         });
     };
     xhr.send();
-    //patch since R6300, will be removed from R6400
-    delete localStorage['sizeEntry'];
-    delete localStorage['sizeUnit'];
 });
 
 // Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
@@ -48,7 +45,7 @@ browser.webRequest.onHeadersReceived.addListener(
 function fileSizeWrapper(item) {
     return requests.find(request => request.url === item.url).size;
 }
-// End of workaround
+// End of file size wrapper
 
 browser.downloads.onCreated.addListener((item) => {
     if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
