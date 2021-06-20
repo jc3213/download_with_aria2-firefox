@@ -69,7 +69,7 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = ['User-Agent: ' + localStorage['useragent']];
+    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
     if (!session.referer) {
         return sendRPCRequest();
     }
