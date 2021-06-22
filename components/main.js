@@ -17,6 +17,12 @@ browser.runtime.onInstalled.addListener((async (details) => {
     });
 });
 
+browser.runtime.onMessage.addListener((message, sender, response) => {
+    var {session, options} = message;
+    downWithAria2(session, options);
+    response();
+});
+
 // Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
 var requests = [];
 browser.webRequest.onHeadersReceived.addListener(
@@ -65,6 +71,49 @@ browser.downloads.onCreated.addListener((item) => {
     });
 });
 
+browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
+
+function downWithAria2(session, options = {}) {
+    if (!session.url) {
+        return;
+    }
+    var url = Array.isArray(session.url) ? session.url : [session.url];
+    if (session.filename) {
+        options['out'] = session.filename;
+    }
+    if (localStorage['output'] === '1' && session.folder) {
+        options['dir'] = session.folder;
+    }
+    else if (localStorage['output'] === '2' && localStorage['folder']) {
+        options['dir'] = localStorage['folder'];
+    }
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
+        options['all-proxy'] = localStorage['allproxy'];
+    }
+    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    if (!session.referer) {
+        return sendRPCRequest();
+    }
+    browser.cookies.getAll({url: session.referer}, (cookies) => {
+        var cookie = 'Cookie:';
+        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
+        options['header'].push(cookie, 'Referer: ' + session.referer);
+        sendRPCRequest();
+    });
+
+    function sendRPCRequest() {
+        jsonRPCRequest(
+            {method: 'aria2.addUri', url, options},
+            (result) => {
+                showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
+            },
+            (error, jsonrpc) => {
+                showNotification(error, jsonrpc || url.join('\n'));
+            }
+        );
+    }
+}
+
 function captureFilterWorker(hostname, fileExt, fileSize) {
     if (localStorage['ignored'].includes(hostname)) {
         return false;
@@ -110,6 +159,5 @@ function displayActiveTaskNumber() {
     );
 }
 
-browser.browserAction.setBadgeBackgroundColor({color: '#3CC'});
 displayActiveTaskNumber();
 var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);

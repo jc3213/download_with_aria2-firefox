@@ -8,26 +8,29 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
         try {
             var session = JSON.parse(url);
             if (Array.isArray(session)) {
-                if (session[0].constructor.name === 'String') {
-                    downWithAria2({url: session, referer}, options);
+                if (typeof session[0] === 'string') {
+                    submitNewDownloadTask({url: session, referer}, options);
                 }
                 else {
-                    session.forEach(task => downWithAria2(referer ? {...task, referer} : task, options));
+                    session.forEach(task => submitNewDownloadTask(referer ? {...task, referer} : task, options));
                 }
             }
             else {
-                downWithAria2(referer ? {...session, referer} : session, options);
+                submitNewDownloadTask(referer ? {...session, referer} : session, options);
             }
         }
         catch(error) {
-            downWithAria2({url, referer}, options);
+            submitNewDownloadTask({url: [url], referer}, options);
         }
     });
-    parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
-    frameElement.style.display = 'none';
-    setTimeout(() => {
-        frameElement.remove();
-    }, 1000);
 });
+
+function submitNewDownloadTask(session, options) {
+    chrome.runtime.sendMessage({session, options},
+    () => {
+        parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
+        frameElement.remove();
+    });
+}
 
 printGlobalOptions();

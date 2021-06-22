@@ -45,47 +45,6 @@ function createJSON(request) {
     return {jsonrpc: 2.0, method: request.method, id: '', params};
 }
 
-function downWithAria2(session, options = {}) {
-    if (!session.url) {
-        return;
-    }
-    var url = Array.isArray(session.url) ? session.url : [session.url];
-    if (session.filename) {
-        options['out'] = session.filename;
-    }
-    if (localStorage['output'] === '1' && session.folder) {
-        options['dir'] = session.folder;
-    }
-    else if (localStorage['output'] === '2' && localStorage['folder']) {
-        options['dir'] = localStorage['folder'];
-    }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
-        options['all-proxy'] = localStorage['allproxy'];
-    }
-    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
-    if (!session.referer) {
-        return sendRPCRequest();
-    }
-    browser.cookies.getAll({url: session.referer}, (cookies) => {
-        var cookie = 'Cookie:';
-        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
-        options['header'].push(cookie, 'Referer: ' + session.referer);
-        sendRPCRequest();
-    });
-
-    function sendRPCRequest() {
-        jsonRPCRequest(
-            {method: 'aria2.addUri', url, options},
-            (result) => {
-                showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
-            },
-            (error, jsonrpc) => {
-                showNotification(error, jsonrpc || url.join('\n'));
-            }
-        );
-    }
-}
-
 function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {
