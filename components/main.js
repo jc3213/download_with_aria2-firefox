@@ -1,9 +1,12 @@
 browser.contextMenus.create({
     title: browser.i18n.getMessage('extension_name'),
     id: 'downwitharia2firefox',
-    contexts: ['link'],
-    onclick: (info, tab) => {
-        downWithAria2({url: [info.linkUrl], referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
+    contexts: ['link']
+});
+
+browser.contextMenus.onClicked.addListener(info => {
+    if (info.menuItemId === 'downwitharia2') {
+        downWithAria2({url: [info.linkUrl], referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
