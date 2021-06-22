@@ -1,52 +1,48 @@
-function jsonRPCRequest(request, success, failure) {
+async function jsonRPCRequest(request, success, failure) {
     var rpc = localStorage['jsonrpc'];
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', rpc, true);
-    xhr.onloadend = () => {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.response);
-            var result = response[0].result;
-            var error = response[0].error;
-            if (result && typeof success === 'function') {
-                success(...response.map(item => item.result));
-            }
-            if (error && typeof failure === 'function') {
-                failure(error.message);
-            }
+    var response = await fetch(rpc, {method: 'POST', body: JSON.stringify(json)});
+    if (response.ok) {
+        var json = await response.json();
+        var result = json[0].result;
+        var error = json[0].error;
+        if (result && typeof success === 'function') {
+            success(...json.map(item => item.result));
         }
-        else {
-            if (typeof failure === 'function') {
-                failure('No Response', rpc);
-            }
+        if (error && typeof failure === 'function') {
+            failure(error.message);
         }
-    };
-    xhr.send(JSON.stringify(json));
-
-    function createJSON(request) {
-        var params = ['token:' + localStorage['token']];
-        if (request.gid) {
-            params.push(request.gid);
-        }
-        if (request.index) {
-            params.push(...request.index);
-        }
-        if (request.url) {
-            params.push(request.url);
-        }
-        if (request.add) {
-            params.shift();
-            params.push(1, [], [request.add]);
-        }
-        if (request.remove) {
-            params.shift();
-            params.push(1, [request.remove], []);
-        }
-        if (request.options) {
-            params.push(request.options);
-        }
-        return {jsonrpc: 2.0, method: request.method, id: '', params};
     }
+    else {
+        if (typeof failure === 'function') {
+            failure('No Response', rpc);
+        }
+    }
+}
+
+function createJSON(request) {
+    var params = ['token:' + localStorage['token']];
+    if (request.gid) {
+        params.push(request.gid);
+    }
+    if (request.index) {
+        params.push(...request.index);
+    }
+    if (request.url) {
+        params.push(request.url);
+    }
+    if (request.add) {
+        params.shift();
+        params.push(1, [], [request.add]);
+    }
+    if (request.remove) {
+        params.shift();
+        params.push(1, [request.remove], []);
+    }
+    if (request.options) {
+        params.push(request.options);
+    }
+    return {jsonrpc: 2.0, method: request.method, id: '', params};
 }
 
 function downWithAria2(session, options = {}, bypass = false) {
