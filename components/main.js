@@ -52,26 +52,25 @@ function fileSizeWrapper(item) {
 }
 // End of file size wrapper
 
-browser.downloads.onCreated.addListener((item) => {
+browser.downloads.onCreated.addListener(async (item) => {
     if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
 
     var session = {url: [item.url], filename: getFileNameFromUri(item.filename)};
-    browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
-        session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-        session.hostname = getHostnameFromUrl(session.referer);
-        if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
-            browser.downloads.cancel(item.id).then(() => {
-                browser.downloads.erase({id: item.id}, () => {
-                    downWithAria2(session);
-                });
-            }, () => {
-                showNotification(browser.i18n.getMessage('warn_firefox'), item.url);
+    var tabs = await browser.tabs.query({active: true, currentWindow: true});
+    session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
+    session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    session.hostname = getHostnameFromUrl(session.referer);
+    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
+        browser.downloads.cancel(item.id).then(() => {
+            browser.downloads.erase({id: item.id}, () => {
+                downWithAria2(session);
             });
-        }
-    });
+        }, () => {
+            showNotification(browser.i18n.getMessage('warn_firefox'), item.url);
+        });
+    }
 });
 
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
