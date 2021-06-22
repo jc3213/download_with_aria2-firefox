@@ -37,7 +37,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            document.querySelector('[panel="aborted"]').innerHTML = '';
+            document.querySelector('[panel="stopped"]').innerHTML = '';
         }
     );
 });
