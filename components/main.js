@@ -3,18 +3,18 @@ browser.contextMenus.create({
     id: 'downwitharia2firefox',
     contexts: ['link'],
     onclick: (info, tab) => {
-        downWithAria2({url: info.linkUrl, referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
+        downWithAria2({url: [info.linkUrl], referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
     }
 });
 
-browser.runtime.onInstalled.addListener((async (details) => {
-    var response = await fetch('/components/options.json');
-    var json = await response.json();
-    Object.keys(json).forEach(key => {
-        if (!localStorage[key]) {
+browser.runtime.onInstalled.addListener(async (details) => {
+    if (details.reason === 'install') {
+        var response = await fetch('/components/options.json');
+        var json = await response.json();
+        Object.keys(json).forEach(key => {
             localStorage[key] = json[key];
-        }
-    });
+        });
+    }
 });
 
 browser.runtime.onMessage.addListener((message, sender, response) => {
@@ -54,7 +54,7 @@ browser.downloads.onCreated.addListener((item) => {
         return;
     }
 
-    var session = {url: item.url, filename: getFileNameFromUri(item.filename)};
+    var session = {url: [item.url], filename: getFileNameFromUri(item.filename)};
     browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
@@ -73,11 +73,10 @@ browser.downloads.onCreated.addListener((item) => {
 
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
-function downWithAria2(session, options = {}) {
+async function downWithAria2(session, options = {}) {
     if (!session.url) {
         return;
     }
-    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
     }
@@ -97,7 +96,7 @@ function downWithAria2(session, options = {}) {
             showNotification(browser.i18n.getMessage('warn_download'), session.url.join('\n'));
         },
         (error, jsonrpc) => {
-            showNotification(error, jsonrpc || url.join('\n'));
+            showNotification(error, jsonrpc || session.url.join('\n'));
         }
     );
 }
@@ -123,13 +122,13 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
 
 async function getCookiesFromReferer(url, result = 'Cookie:') {
     var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
-    if (url)
+    if (url) {
         var cookies = await browser.cookies.getAll({url});
         cookies.forEach(cookie => {
             result += ' ' + cookie.name + '=' + cookie.value + ';';
         });
         header.push(result, 'Referer: ' + url);
-    });
+    }
     return header;
 }
 
