@@ -76,9 +76,6 @@ browser.downloads.onCreated.addListener(async (item) => {
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 async function downWithAria2(session, options = {}) {
-    if (!session.url) {
-        return;
-    }
     if (session.filename) {
         options['out'] = session.filename;
     }
