@@ -45,14 +45,11 @@ function createJSON(request) {
     return {jsonrpc: 2.0, method: request.method, id: '', params};
 }
 
-function downWithAria2(session, options = {}, bypass = false) {
+function downWithAria2(session, options = {}) {
     if (!session.url) {
         return;
     }
     var url = Array.isArray(session.url) ? session.url : [session.url];
-    if (bypass) {
-        return sendRPCRequest();
-    }
     if (session.filename) {
         options['out'] = session.filename;
     }

@@ -154,7 +154,7 @@ function removeTaskAndRetry(gid) {
             });
             jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
                 document.getElementById(gid).remove();
-                downWithAria2({url}, options, true);
+                jsonRPCRequest({method: 'aria2.addUri', url, options});
             });
         }
     );
