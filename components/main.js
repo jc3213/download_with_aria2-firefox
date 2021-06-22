@@ -90,28 +90,16 @@ function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
-    if (!session.referer) {
-        return sendRPCRequest();
-    }
-    browser.cookies.getAll({url: session.referer}, (cookies) => {
-        var cookie = 'Cookie:';
-        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
-        options['header'].push(cookie, 'Referer: ' + session.referer);
-        sendRPCRequest();
-    });
-
-    function sendRPCRequest() {
-        jsonRPCRequest(
-            {method: 'aria2.addUri', url, options},
-            (result) => {
-                showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
-            },
-            (error, jsonrpc) => {
-                showNotification(error, jsonrpc || url.join('\n'));
-            }
-        );
-    }
+    options['header'] = await getCookiesFromReferer(session.referer);
+    jsonRPCRequest(
+        {method: 'aria2.addUri', url: session.url, options},
+        (result) => {
+            showNotification(browser.i18n.getMessage('warn_download'), session.url.join('\n'));
+        },
+        (error, jsonrpc) => {
+            showNotification(error, jsonrpc || url.join('\n'));
+        }
+    );
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
@@ -131,6 +119,18 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
         return true;
     }
     return false;
+}
+
+async function getCookiesFromReferer(url, result = 'Cookie:') {
+    var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    if (url)
+        var cookies = await browser.cookies.getAll({url});
+        cookies.forEach(cookie => {
+            result += ' ' + cookie.name + '=' + cookie.value + ';';
+        });
+        header.push(result, 'Referer: ' + url);
+    });
+    return header;
 }
 
 function getHostnameFromUrl(url) {
