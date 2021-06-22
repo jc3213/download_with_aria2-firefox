@@ -8,26 +8,26 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div class="frame">
-            <div id="upper" class="offside">
+        <div id="menus" class="frame">
+            <div class="offside">
                 <span module="newTask" button i18n>popup_new_button</span>
                 <span id="purdge_btn" button i18n>popup_purge_button</span>
             </div>
-            <div id="tabs">
-                <span tab="running" class="active" i18n>popup_active_button</span>
-                <span id="active">0</span>
-                <span tab="suspend" class="waiting" i18n>popup_waiting_button</span>
-                <span id="waiting">0</span>
-                <span tab="aborted" class="removed" i18n>popup_stopped_button</span>
-                <span id="stopped">0</span>
+            <div>
+                <span tab="active" class="active" i18n>popup_active_button</span>
+                <span id="active" info>0</span>
+                <span tab="waiting" class="waiting" i18n>popup_waiting_button</span>
+                <span id="waiting" info>0</span>
+                <span tab="stopped" class="removed" i18n>popup_stopped_button</span>
+                <span id="stopped" info>0</span>
             </div>
-            <div id="network" class="error" style="display: none;"></div>
         </div>
+        <div id="caution" class="error" style="display: none;"></div>
         <hr>
         <div class="queue">
-            <div panel="running"></div>
-            <div panel="suspend"></div>
-            <div panel="aborted"></div>
+            <div panel="active"></div>
+            <div panel="waiting"></div>
+            <div panel="stopped"></div>
         </div>
         <div id="template" class="session">
             <div class="details">
@@ -39,10 +39,10 @@
                     <div>🖥️<span id="local"></span></div>
                     <div>⏲️<span id="infinite">∞</span>
                         <span id="estimate">
-                            <span><label id="day"></label><sub i18n>time_day</sub></span>
-                            <span><label id="hour"></label><sub i18n>time_hour</sub></span>
-                            <span><label id="minute"></label><sub i18n>time_minute</sub></span>
-                            <span><label id="second"></label><sub i18n>time_second</sub></span>
+                            <span><span id="day"></span><sub i18n>time_day</sub></span>
+                            <span><span id="hour"></span><sub i18n>time_hour</sub></span>
+                            <span><span id="minute"></span><sub i18n>time_minute</sub></span>
+                            <span><span id="second"></span><sub i18n>time_second</sub></span>
                         </span>
                     </div>
                     <div>📦<span id="remote"></span></div>
@@ -65,11 +65,11 @@
             <div class="offside">
                 <span module="options" button i18n>popup_options_button</span>
             </div>
-            <div id="bandwidth">
-                <span class="active" i18n>popup_download</span>
-                <span id="download">0 B/s</span>
-                <span class="complete" i18n>popup_upload</span>
-                <span id="upload">0 B/s</span>
+            <div>
+                <span class="active" highlight i18n>popup_download</span>
+                <span id="download" info>0 B/s</span>
+                <span class="complete" highlight i18n>popup_upload</span>
+                <span id="upload" info>0 B/s</span>
             </div>
         </div>
         <script src="/components/jsonrpc.js"></script>

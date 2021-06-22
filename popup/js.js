@@ -48,23 +48,21 @@ function printTaskManager() {
         {method: 'aria2.tellActive'},
         {method: 'aria2.tellWaiting', index: [0, 9999]},
         {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (global, running, suspend, aborted) => {
+    ], (global, active, waiting, stopped) => {
         document.querySelector('#active').innerText = global.numActive;
         document.querySelector('#waiting').innerText = global.numWaiting;
         document.querySelector('#stopped').innerText = global.numStopped;
         document.querySelector('#download').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
         document.querySelector('#upload').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
-        document.querySelector('#tabs').style.display = 'block';
-        document.querySelector('#upper').style.display = 'block';
-        document.querySelector('#network').style.display = 'none';
-        running.forEach((running, index) => printTaskDetails(running, index, document.querySelector('[panel="running"]')));
-        suspend.forEach((suspend, index) => printTaskDetails(suspend, index, document.querySelector('[panel="suspend"]')));
-        aborted.forEach((aborted, index) => printTaskDetails(aborted, index, document.querySelector('[panel="aborted"]')));
+        document.querySelector('#menus').style.display = 'block';
+        document.querySelector('#caution').style.display = 'none';
+        active.forEach((active, index) => printTaskDetails(active, index, document.querySelector('[panel="active"]')));
+        waiting.forEach((waiting, index) => printTaskDetails(waiting, index, document.querySelector('[panel="waiting"]')));
+        stopped.forEach((stopped, index) => printTaskDetails(stopped, index, document.querySelector('[panel="stopped"]')));
     }, (error, rpc) => {
-        document.querySelector('#tabs').style.display = 'none';
-        document.querySelector('#upper').style.display = 'none';
-        document.querySelector('#network').innerText = error;
-        document.querySelector('#network').style.display = 'block';
+        document.querySelector('#menus').style.display = 'none';
+        document.querySelector('#caution').innerText = error;
+        document.querySelector('#caution').style.display = 'block';
     });
 }
 
