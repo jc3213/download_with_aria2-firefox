@@ -1,13 +1,13 @@
 async function jsonRPCRequest(request, success, failure) {
-    var rpc = localStorage['jsonrpc'];
-    var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
-    var response = await fetch(rpc, {method: 'POST', body: JSON.stringify(json)});
+    var jsonrpc = localStorage['jsonrpc'];
+    var requestJSON = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
+    var response = await fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)});
     if (response.ok) {
-        var json = await response.json();
-        var result = json[0].result;
-        var error = json[0].error;
+        var responseJSON = await response.json();
+        var result = responseJSON[0].result;
+        var error = responseJSON[0].error;
         if (result && typeof success === 'function') {
-            success(...json.map(item => item.result));
+            success(...responseJSON.map(item => item.result));
         }
         if (error && typeof failure === 'function') {
             failure(error.message);
@@ -15,7 +15,7 @@ async function jsonRPCRequest(request, success, failure) {
     }
     else {
         if (typeof failure === 'function') {
-            failure('No Response', rpc);
+            failure('No Response', jsonrpc);
         }
     }
 }
@@ -82,8 +82,8 @@ function downWithAria2(session, options = {}, bypass = false) {
             (result) => {
                 showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
             },
-            (error, rpc) => {
-                showNotification(error, rpc || url.join('\n'));
+            (error, jsonrpc) => {
+                showNotification(error, jsonrpc || url.join('\n'));
             }
         );
     }
