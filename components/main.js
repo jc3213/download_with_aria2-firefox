@@ -7,18 +7,14 @@ browser.contextMenus.create({
     }
 });
 
-browser.runtime.onInstalled.addListener((details) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/components/options.json', true);
-    xhr.responseType = 'json';
-    xhr.onload = () => {
-        Object.keys(xhr.response).forEach(key => {
-            if (!localStorage[key]) {
-                localStorage[key] = xhr.response[key];
-            }
-        });
-    };
-    xhr.send();
+browser.runtime.onInstalled.addListener((async (details) => {
+    var response = await fetch('/components/options.json');
+    var json = await response.json();
+    Object.keys(json).forEach(key => {
+        if (!localStorage[key]) {
+            localStorage[key] = json[key];
+        }
+    });
 });
 
 // Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
