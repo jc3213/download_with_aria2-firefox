@@ -6,7 +6,7 @@ browser.contextMenus.create({
 
 browser.contextMenus.onClicked.addListener(info => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({url: [info.linkUrl], referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
+        downWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -57,7 +57,7 @@ browser.downloads.onCreated.addListener(async (item) => {
         return;
     }
 
-    var session = {url: [item.url], filename: getFileNameFromUri(item.filename)};
+    var session = {url: item.url, filename: getFileNameFromUri(item.filename)};
     var tabs = await browser.tabs.query({active: true, currentWindow: true});
     session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
     session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
@@ -76,26 +76,27 @@ browser.downloads.onCreated.addListener(async (item) => {
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 async function downWithAria2(session, options = {}) {
+    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
     }
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
+        options['all-proxy'] = localStorage['allproxy'];
+    }
+    options['header'] = await getCookiesFromReferer(session.referer);
     if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
     else if (localStorage['output'] === '2' && localStorage['folder']) {
         options['dir'] = localStorage['folder'];
     }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
-        options['all-proxy'] = localStorage['allproxy'];
-    }
-    options['header'] = await getCookiesFromReferer(session.referer);
     jsonRPCRequest(
-        {method: 'aria2.addUri', url: session.url, options},
+        {method: 'aria2.addUri', url, options},
         (result) => {
-            showNotification(browser.i18n.getMessage('warn_download'), session.url.join('\n'));
+            showNotification(browser.i18n.getMessage('warn_download'), url.join('\n'));
         },
         (error, jsonrpc) => {
-            showNotification(error, jsonrpc || session.url.join('\n'));
+            showNotification(error, jsonrpc || url.join('\n'));
         }
     );
 }
