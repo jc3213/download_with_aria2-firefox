@@ -59,7 +59,7 @@ function printTaskManager() {
         active.forEach((active, index) => printTaskDetails(active, index, document.querySelector('[panel="active"]')));
         waiting.forEach((waiting, index) => printTaskDetails(waiting, index, document.querySelector('[panel="waiting"]')));
         stopped.forEach((stopped, index) => printTaskDetails(stopped, index, document.querySelector('[panel="stopped"]')));
-    }, (error, rpc) => {
+    }, (error, jsonrpc) => {
         document.querySelector('#menus').style.display = 'none';
         document.querySelector('#caution').innerText = error;
         document.querySelector('#caution').style.display = 'block';
@@ -143,21 +143,20 @@ function openTaskMgrWindow(gid) {
 
 function removeTaskAndRetry(gid) {
     jsonRPCRequest([
-            {method: 'aria2.getFiles', gid},
-            {method: 'aria2.getOption', gid}
-        ], (files, options) => {
-            var url = [];
-            files[0].uris.forEach(uri => {
-                if (!url.includes(uri.uri)) {
-                    url.push(uri.uri);
-                }
-            });
-            jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
-                document.getElementById(gid).remove();
-                jsonRPCRequest({method: 'aria2.addUri', url, options});
-            });
-        }
-    );
+        {method: 'aria2.getFiles', gid},
+        {method: 'aria2.getOption', gid}
+    ], (files, options) => {
+        var url = [];
+        files[0].uris.forEach(uri => {
+            if (!url.includes(uri.uri)) {
+                url.push(uri.uri);
+            }
+        });
+        jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
+            document.getElementById(gid).remove();
+            jsonRPCRequest({method: 'aria2.addUri', url, options});
+        });
+    });
 }
 
 function pauseOrUnpauseTask(gid, status) {
