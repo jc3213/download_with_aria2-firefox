@@ -1,12 +1,24 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.6500",
+    "version": "2.6600",
     "manifest_version": 2,
-    "permissions": [ "contextMenus", "downloads", "webRequest", "webRequestBlocking", "tabs", "cookies", "notifications", "<all_urls>" ],
+    "permissions": [
+        "contextMenus",
+        "downloads",
+        "tabs",
+        "cookies",
+        "notifications",
+        "<all_urls>",
+        "webRequest",
+        "webRequestBlocking"
+    ],
     "default_locale" : "en",
     "background": {
-        "scripts": [ "/components/jsonrpc.js", "/components/main.js" ]
+        "scripts": [
+            "/components/jsonrpc.js",
+            "/components/main.js"
+        ]
     },
     "browser_action": {
         "default_icon": {
