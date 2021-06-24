@@ -134,4 +134,4 @@ document.querySelector('#file').addEventListener('click', (event) => {
 
 printTaskOptions(gid);
 printTaskManager();
-var taskManager = setInterval(printTaskManager, 3000);
+var taskManager = setInterval(printTaskManager, 1000);

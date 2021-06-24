@@ -160,4 +160,4 @@ function displayActiveTaskNumber() {
 }
 
 displayActiveTaskNumber();
-var activeTaskNumber = setInterval(displayActiveTaskNumber, 3000);
+var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
