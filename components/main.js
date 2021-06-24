@@ -84,7 +84,7 @@ async function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer, session.storeI);
+    options['header'] = await getCookiesFromReferer(session.referer, session.storeId);
     if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
