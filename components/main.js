@@ -4,9 +4,9 @@ browser.contextMenus.create({
     contexts: ['link']
 });
 
-browser.contextMenus.onClicked.addListener(info => {
-    if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
+browser.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === 'downwitharia2firefox') {
+        downWithAria2({url: info.linkUrl, referer: info.pageUrl, storeId: tab.cookieStoreId, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -61,6 +61,7 @@ browser.downloads.onCreated.addListener(async (item) => {
     var tabs = await browser.tabs.query({active: true, currentWindow: true});
     session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
     session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    session.storeId = tabs[0].cookieStoreId;
     session.hostname = getHostnameFromUrl(session.referer);
     if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
         browser.downloads.cancel(item.id).then(() => {
@@ -83,7 +84,7 @@ async function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer);
+    options['header'] = await getCookiesFromReferer(session.referer, session.storeId || 'firefox-default');
     if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
@@ -120,10 +121,10 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
     return false;
 }
 
-async function getCookiesFromReferer(url, result = 'Cookie:') {
+async function getCookiesFromReferer(url, storeId, result = 'Cookie:') {
     var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
     if (url) {
-        var cookies = await browser.cookies.getAll({url});
+        var cookies = await browser.cookies.getAll({url, storeId});
         cookies.forEach(cookie => {
             result += ' ' + cookie.name + '=' + cookie.value + ';';
         });
