@@ -84,7 +84,7 @@ async function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer, session.storeId || 'firefox-default');
+    options['header'] = await getCookiesFromReferer(session.referer, session.storeI);
     if (localStorage['output'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
@@ -121,7 +121,7 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
     return false;
 }
 
-async function getCookiesFromReferer(url, storeId, result = 'Cookie:') {
+async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 'Cookie:') {
     var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
     if (url) {
         var cookies = await browser.cookies.getAll({url, storeId});
