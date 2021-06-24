@@ -173,4 +173,4 @@ function pauseOrUnpauseTask(gid, status) {
 }
 
 printTaskManager();
-var keepContentAlive = setInterval(printTaskManager, 1000);
+var keepContentAlive = setInterval(printTaskManager, 3000);

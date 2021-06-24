@@ -17,7 +17,11 @@ function jsonRPCRequest(request, success, failure) {
         if (error) {
             throw(error.message);
         }
-    }).catch(failure);
+    }).catch(error => {
+        if (typeof failure === 'function') {
+            failure(error);
+        }
+    });
 }
 
 function createJSON(request) {
