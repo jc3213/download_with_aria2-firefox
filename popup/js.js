@@ -63,6 +63,9 @@ function printTaskManager() {
         document.querySelector('#menus').style.display = 'none';
         document.querySelector('#caution').innerText = error;
         document.querySelector('#caution').style.display = 'block';
+        document.querySelector('[panel="active"]').innerHTML = '';
+        document.querySelector('[panel="waiting"]').innerHTML = '';
+        document.querySelector('[panel="stopped"]').innerHTML = '';
     });
 }
 
