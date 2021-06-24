@@ -1,7 +1,8 @@
-function jsonRPCRequest(request, success, failure) {
+  async function jsonRPCRequest(request, success, failure) {
     var jsonrpc = localStorage['jsonrpc'];
     var requestJSON = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
-    fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)}).then(async response => {
+    var response = await fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)});
+    if (response.ok) {
         var responseJSON = await response.json();
         var result = responseJSON[0].result;
         var error = responseJSON[0].error;
@@ -11,11 +12,12 @@ function jsonRPCRequest(request, success, failure) {
         if (error && typeof failure === 'function') {
             failure(error.message);
         }
-    }, () => {
+    }
+    else {
         if (typeof failure === 'function') {
             failure('No Response', jsonrpc);
         }
-    });
+    }
 }
 
 function createJSON(request) {
