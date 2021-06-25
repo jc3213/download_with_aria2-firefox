@@ -24,13 +24,13 @@ var aria2RPC = {
 
 browser.contextMenus.create({
     title: browser.i18n.getMessage('extension_name'),
-    id: 'downwitharia2',
+    id: 'downwitharia2firefox',
     contexts: ['link']
 });
 
-browser.contextMenus.onClicked.addListener(info => {
-    if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
+browser.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === 'downwitharia2firefox') {
+        downWithAria2({url: info.linkUrl, referer: info.pageUrl, storeId: tab.cookieStoreId, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -59,32 +59,53 @@ browser.runtime.onMessage.addListener((message, sender, response) => {
     }
 });
 
-browser.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
-    if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
+// Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
+var requests = [];
+browser.webRequest.onHeadersReceived.addListener(
+    (event) => {
+        try {
+            var size = event.responseHeaders.find(item => item.name === 'content-length').value;
+            requests.push({'url': event.url, 'size': size});
+        }
+        catch(error) {
+            return;
+        }
+        finally {
+            if (requests.length > 50) {
+                requests.shift();
+            }
+        }
+    },
+    {'urls': ['<all_urls>']},
+    ['blocking', 'responseHeaders']
+)
+
+function fileSizeWrapper(item) {
+    return requests.find(request => request.url === item.url).size;
+}
+// End of file size wrapper
+
+browser.downloads.onCreated.addListener(async (item) => {
+    if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
 
-    var session = {url: item.finalUrl, filename: item.filename};
-    var tabs = await getCurrentActiveTabs();
+    var session = {url: item.url, filename: getFileNameFromUri(item.filename)};
+    var tabs = await browser.tabs.query({active: true, currentWindow: true});
+    session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
     session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    session.storeId = tabs[0].cookieStoreId;
     session.hostname = getHostnameFromUrl(session.referer);
-    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
-        browser.downloads.cancel(item.id, () => {
+    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
+        browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
                 downWithAria2(session);
             });
+        }, () => {
+            showNotification(browser.i18n.getMessage('warn_firefox'), item.url);
         });
     }
 });
-
-//Wrapper untill manifest v3
-async function getCurrentActiveTabs() {
-    return new Promise((resolve, reject) => {
-        browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            resolve(tabs);
-        })
-    });
-}
 
 async function downWithAria2(session, options = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
@@ -94,7 +115,13 @@ async function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer);
+    options['header'] = await getCookiesFromReferer(session.referer, session.storeId);
+    if (localStorage['output'] === '1' && session.folder) {
+        options['dir'] = session.folder;
+    }
+    else if (localStorage['output'] === '2' && localStorage['folder']) {
+        options['dir'] = localStorage['folder'];
+    }
     jsonRPCRequest(
         {method: 'aria2.addUri', url, options},
         (result) => {
@@ -125,23 +152,16 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
     return false;
 }
 
-async function getCookiesFromReferer(url, result = 'Cookie:') {
+async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 'Cookie:') {
     var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
-    //Wrapper untill manifest v3
-    return new Promise((resolve, reject) => {
-        if (url) {
-            browser.cookies.getAll({url}, (cookies) => {
-                cookies.forEach(cookie => {
-                    result += ' ' + cookie.name + '=' + cookie.value + ';';
-                });
-                header.push(result, 'Referer: ' + url);
-                resolve(header);
-            });
-        }
-        else {
-            resolve(header);
-        }
-    });
+    if (url) {
+        var cookies = await browser.cookies.getAll({url, storeId});
+        cookies.forEach(cookie => {
+            result += ' ' + cookie.name + '=' + cookie.value + ';';
+        });
+        header.push(result, 'Referer: ' + url);
+    }
+    return header;
 }
 
 function getHostnameFromUrl(url) {
@@ -150,6 +170,11 @@ function getHostnameFromUrl(url) {
     	return host.slice(0, host.indexOf(':'))
  	}
     return host;
+}
+
+function getFileNameFromUri(uri) {
+    var index = uri.lastIndexOf('\\') === -1 ? uri.lastIndexOf('/') : uri.lastIndexOf('\\');
+    return uri.slice(index + 1);
 }
 
 function getFileExtension(filename) {
