@@ -24,10 +24,11 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-document.querySelectorAll('[local]').forEach(option => {
-    option.value = option.id === 'fileSize' ? localStorage[option.id] / 1048576 : localStorage[option.id];
-    option.addEventListener('change', (event) => {
-        localStorage[option.id] = option.id === 'fileSize' ? option.value * 1048576 : option.value;
+document.querySelectorAll('[local]').forEach(field => {
+    var multi = field.getAttribute('multi');
+    field.value = multi ? localStorage[field.id] / multi : localStorage[field.id];
+    field.addEventListener('change', (event) => {
+        localStorage[field.id] = multi ? field.value * multi : field.value;
     });
 });
 

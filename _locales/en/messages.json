@@ -3,7 +3,7 @@
         "message": "Download with Aria2"
     },
     "extension_description": {
-        "message": "The Aria2 Download Manager for Firefox"
+        "message": "The Aria2 Download Manager for Chromium / Firefox"
     },
     "common_default": {
         "message": "Default"
@@ -31,6 +31,9 @@
     },
     "time_second": {
         "message": "s"
+    },
+    "time_second_full": {
+        "message": "Second(s)"
     },
     "warn_download": {
         "message": "Aria2 Download"
@@ -60,13 +63,19 @@
         "message": "JSONRPC URI"
     },
     "option_jsonrpc_desc": {
-        "message": "Setting Aria2 \"jsonrpc\" URI"
+        "message": "Set URI of JSON-RPC interface"
     },
     "option_token": {
         "message": "Secret Token"
     },
     "option_token_desc": {
-        "message": "Setting Aria2 \"token\" option"
+        "message": "Set secret authorization \"token\""
+    },
+    "option_refresh": {
+        "message": "Refresh Interval"
+    },
+    "option_refresh_desc": {
+        "message": "Set task manager refresh interval"
     },
     "option_folder": {
         "message": "Download Folder"

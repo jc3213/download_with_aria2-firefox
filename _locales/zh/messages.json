@@ -3,7 +3,7 @@
         "message": "通过 Aria2 下载"
     },
     "extension_description": {
-        "message": "基于 Firefox 浏览器的 Aria2 下载管理器"
+        "message": "基于 Chromium / Firefox 浏览器的 Aria2 下载管理器"
     },
     "common_default": {
         "message": "默认"
@@ -30,6 +30,9 @@
         "message": "分"
     },
     "time_second": {
+        "message": "秒"
+    },
+    "time_second_full": {
         "message": "秒"
     },
     "warn_download": {
@@ -60,13 +63,19 @@
         "message": "JSONRPC 链接"
     },
     "option_jsonrpc_desc": {
-        "message": "设置 Aria2 JSONRPC 链接"
+        "message": "设置 JSON-RPC 界面的链接"
     },
     "option_token": {
         "message": "密钥"
     },
     "option_token_desc": {
-        "message": "设置 Aria2 \"token\" 密钥"
+        "message": "设置 JSON-RPC 的安全密钥"
+    },
+    "option_refresh": {
+        "message": "刷新间隔"
+    },
+    "option_refresh_desc": {
+        "message": "设置任务管理器刷新间隔"
     },
     "option_folder": {
         "message": "下载目录"
