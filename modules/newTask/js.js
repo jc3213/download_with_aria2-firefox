@@ -20,7 +20,7 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
             }
         }
         catch(error) {
-            submitNewDownloadTask({url: url, referer}, options);
+            submitNewDownloadTask({url, referer}, options);
         }
     });
 });
