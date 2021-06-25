@@ -1,4 +1,5 @@
 var gid = location.search.slice(1);
+var options = {};
 var logic = 0;
 
 browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
@@ -70,10 +71,8 @@ function appendFileToTable(file, table) {
     return cell;
 }
 
-document.querySelectorAll('[task]').forEach(aria2 => {
-    aria2.addEventListener('change', (event) => {
-        changeTaskOption(gid, aria2.id, aria2.value || '');
-    });
+document.addEventListener('change', (event) => {
+    changeTaskOption(gid, event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -130,5 +129,19 @@ document.querySelector('#file').addEventListener('click', (event) => {
         changeTaskOption(gid, 'select-file', checked.join());
     }
 });
+
+function printTaskOption(gid) {
+    jsonRPCRequest(
+        {method: 'aria2.getOption', gid},
+        (options) => {
+            document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
+        }
+    );
+}
+
+function changeTaskOption(gid, name, value) {
+    options[name] = value;
+    jsonRPCRequest({method: 'aria2.changeOption', gid, options});
+}
 
 printTaskOption(gid);

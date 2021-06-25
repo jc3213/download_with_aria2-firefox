@@ -1,13 +1,16 @@
+var options = {};
+
 document.querySelector('#version').innerText = location.search.slice(1);
 
 document.querySelector('#back_btn').addEventListener('click', (event) => {
-    parent.document.getElementById(frameElement.id).remove();
+    frameElement.remove();
 });
 
-document.querySelectorAll('[aria2]').forEach(aria2 => {
-    aria2.addEventListener('change', (event) => {
-        changeGlobalOption(aria2.id, aria2.value);
-    });
+browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+    document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
 });
 
-printGlobalOption();
+document.addEventListener('change', (event) => {
+    options[event.target.id] = event.target.value;
+    jsonRPCRequest({method: 'aria2.changeGlobalOption', options});
+});

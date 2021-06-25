@@ -1,3 +1,7 @@
+browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+    document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
+});
+
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#referer').value;
     var options = {};
@@ -30,5 +34,3 @@ function submitNewDownloadTask(session, options) {
     parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
     frameElement.remove();
 }
-
-printGlobalOption();
