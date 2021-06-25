@@ -16,7 +16,7 @@ function printGlobalOption() {
 
 function changeGlobalOption(name, value, options = {}) {
     options[name] = value;
-    jsonRPCRequest({method: 'aria2.changeGlobalOption', options}, printGlobalOptions);
+    jsonRPCRequest({method: 'aria2.changeGlobalOption', options}, printGlobalOption);
 }
 
 function printTaskOption(gid) {
@@ -33,7 +33,7 @@ function changeTaskOption(gid, name, value, options = {}) {
     jsonRPCRequest(
         {method: 'aria2.changeOption', gid, options},
         (result) => {
-            printTaskOptions(gid);
+            printTaskOption(gid);
         }
     );
 }
