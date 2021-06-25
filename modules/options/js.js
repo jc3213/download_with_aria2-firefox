@@ -1,4 +1,4 @@
-document.querySelector('#manager').style.display = location.search === '?from=popup' ? 'none' : 'block';
+document.querySelector('#manager').style.display = location.search === '?popup' ? 'none' : 'block';
 
 document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
@@ -32,15 +32,15 @@ document.querySelectorAll('[local]').forEach(option => {
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    jsonRPCRequest(
-        {method: 'aria2.getVersion'},
-        (result) => {
-            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?version=' + result.version);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc);
+    browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+        var {version, error} = aria2RPC;
+        if (version) {
+            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + version.version);
         }
-    );
+        if (error) {
+            showNotification(error);
+        }
+    });
 });
 
 document.querySelector('#show_btn').addEventListener('click', (event) => {

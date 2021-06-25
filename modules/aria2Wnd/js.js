@@ -1,4 +1,4 @@
-document.querySelector('#version').innerText = location.search.slice(9);
+document.querySelector('#version').innerText = location.search.slice(1);
 
 document.querySelector('#back_btn').addEventListener('click', (event) => {
     parent.document.getElementById(frameElement.id).remove();
@@ -10,4 +10,4 @@ document.querySelectorAll('[aria2]').forEach(aria2 => {
     });
 });
 
-printGlobalOptions();
+printGlobalOption();

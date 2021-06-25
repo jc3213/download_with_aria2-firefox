@@ -1,4 +1,4 @@
-function applyValueToOptions(option, data) {
+function parseValueToOption(option, data) {
     if (option.hasAttribute('calc')) {
         var calc = bytesToFileSize(data[option.id]);
         option.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
@@ -8,13 +8,10 @@ function applyValueToOptions(option, data) {
     }
 }
 
-function printGlobalOptions() {
-    jsonRPCRequest(
-        {method: 'aria2.getGlobalOption'},
-        (global) => {
-            document.querySelectorAll('[aria2]').forEach(aria2 => applyValueToOptions(aria2, global));
-        }
-    );
+function printGlobalOption() {
+    browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+        document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
+    });
 }
 
 function changeGlobalOption(name, value, options = {}) {
@@ -22,11 +19,11 @@ function changeGlobalOption(name, value, options = {}) {
     jsonRPCRequest({method: 'aria2.changeGlobalOption', options}, printGlobalOptions);
 }
 
-function printTaskOptions(gid) {
+function printTaskOption(gid) {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            document.querySelectorAll('[task]').forEach(task => applyValueToOptions(task, options));
+            document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
         }
     );
 }
