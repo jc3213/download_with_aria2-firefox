@@ -1,24 +1,26 @@
 var aria2RPC = {
+    keepAlive: setInterval(() => {
+        jsonRPCRequest([
+            {method: 'aria2.getVersion'},
+            {method: 'aria2.getGlobalOption'},
+            {method: 'aria2.getGlobalStat'},
+            {method: 'aria2.tellActive'},
+            {method: 'aria2.tellWaiting', index: [0, 999]},
+            {method: 'aria2.tellStopped', index: [0, 999]}
+        ], (version, globalOption, globalStat, active, waiting, stopped) => {
+            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
+            browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
+        }, (error) => {
+            aria2RPC = {...aria2RPC, error};
+        });
+    }, 1000),
     register: () => {
-        aria2RPC.keepAlive = setInterval(() => {
-            jsonRPCRequest([
-                {method: 'aria2.getVersion'},
-                {method: 'aria2.getGlobalOption'},
-                {method: 'aria2.getGlobalStat'},
-                {method: 'aria2.tellActive'},
-                {method: 'aria2.tellWaiting', index: [0, 999]},
-                {method: 'aria2.tellStopped', index: [0, 999]}
-            ], (version, globalOption, globalStat, active, waiting, stopped) => {
-                aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
-                browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
-            }, (error) => {
-                aria2RPC = {...aria2RPC, error};
-            });
+        aria2RPC.message = setInterval(() => {
             browser.runtime.sendMessage(aria2RPC);
-        }, 1000);
+        }, 2000);
     },
     unregister: () => {
-        clearInterval(aria2RPC.keepAlive);
+        clearInterval(aria2RPC.message);
     }
 };
 
