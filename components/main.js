@@ -17,13 +17,10 @@ var aria2RPC = {
 };
 
 function registerMessageChannel() {
+    clearInterval(aria2RPC.message);
     aria2RPC.message = setInterval(() => {
         browser.runtime.sendMessage(aria2RPC);
     }, 2000);
-}
-
-function unregisterMessageChannel() {
-    clearInterval(aria2RPC.message);
 }
 
 browser.contextMenus.create({
