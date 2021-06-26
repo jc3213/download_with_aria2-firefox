@@ -35,12 +35,6 @@
     "time_second_full": {
         "message": "Second(s)"
     },
-    "warn_download": {
-        "message": "Aria2 Download"
-    },
-    "warn_firefox": {
-        "message": "Firefox Download"
-    },
     "option_basic": {
         "message": "Basic"
     },

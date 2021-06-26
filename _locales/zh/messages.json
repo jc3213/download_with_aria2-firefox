@@ -35,12 +35,6 @@
     "time_second_full": {
         "message": "秒"
     },
-    "warn_download": {
-        "message": "Aria2 开始下载"
-    },
-    "warn_firefox": {
-        "message": "Firefox 已完成下载"
-    },
     "option_basic": {
         "message": "基础"
     },

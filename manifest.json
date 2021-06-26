@@ -1,7 +1,7 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.6900",
+    "version": "2.7000",
     "manifest_version": 2,
     "permissions": [
         "contextMenus",
@@ -17,8 +17,7 @@
     "default_locale" : "en",
     "background": {
         "scripts": [
-            "/components/jsonrpc.js",
-            "/components/main.js"
+            "background.js"
         ]
     },
     "browser_action": {

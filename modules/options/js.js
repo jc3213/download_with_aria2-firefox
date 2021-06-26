@@ -1,17 +1,18 @@
 document.querySelector('#manager').style.display = location.search === '?popup' ? 'none' : 'block';
 
-browser.storage.local.get(null, result => {
+chrome.storage.sync.get(null, result => {
     aria2Option = result;
     document.querySelectorAll('input, select, textarea').forEach(field => {
-        var gear = field.getAttribute('gear');
         var root = field.getAttribute('root');
         var tree = root ? aria2Option[root] : aria2Option;
         var value = root ? tree[field.id] : tree[field.id];
+        var token = field.getAttribute('token');
         var multi = field.getAttribute('multi');
-        field.value = multi ? value / multi : value;
+        field.value = token ? value.slice('token:'.length) : multi ? value / multi : value;
         field.addEventListener('change', (event) => {
-            tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) : multi ? field.value * multi : field.value;
-            browser.storage.local.set(aria2Option);
+            tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
+                token ? 'token:' + value : multi ? field.value * multi : field.value;
+            chrome.storage.sync.set(aria2Option);
         });
     });
     document.querySelectorAll('[gear]').forEach(gear => {
@@ -45,14 +46,14 @@ document.querySelector('#import').addEventListener('click', (event) => {
         reader.readAsText(event.target.files[0]);
         reader.onload = () => {
             var json = JSON.parse(reader.result);
-            browser.storage.local.set(json);
+            chrome.storage.sync.set(json);
             location.reload();
         };
     });
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+    chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
         var {version, error} = aria2RPC;
         if (version) {
             openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + version.version);
