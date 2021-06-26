@@ -1,6 +1,6 @@
 document.querySelector('#manager').style.display = location.search === '?popup' ? 'none' : 'block';
 
-browser.storage.sync.get(null, result => {
+browser.storage.local.get(null, result => {
     aria2Option = result;
     document.querySelectorAll('input, select, textarea').forEach(field => {
         var gear = field.getAttribute('gear');
@@ -11,7 +11,7 @@ browser.storage.sync.get(null, result => {
         field.value = multi ? value / multi : value;
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) : multi ? field.value * multi : field.value;
-            browser.storage.sync.set(aria2Option);
+            browser.storage.local.set(aria2Option);
         });
     });
     document.querySelectorAll('[gear]').forEach(gear => {
@@ -45,7 +45,7 @@ document.querySelector('#import').addEventListener('click', (event) => {
         reader.readAsText(event.target.files[0]);
         reader.onload = () => {
             var json = JSON.parse(reader.result);
-            browser.storage.sync.set(json);
+            browser.storage.local.set(json);
             field.remove();
             location.reload();
         };

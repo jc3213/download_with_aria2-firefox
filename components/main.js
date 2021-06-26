@@ -36,16 +36,30 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
+browser.storage.local.get(null, result => {
+    aria2RPC.option = result;
+    registerMessageService();
+});
+
+browser.storage.onChanged.addListener(changes => {
+    Object.keys(changes).forEach(key => {
+        aria2RPC.option[key] = changes[key].newValue;
+        if (key === 'jsonrpc') {
+            registerMessageService();
+        }
+    });
+});
+
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 browser.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
         var response = await fetch('/components/option.json');
         var json = await response.json();
-        browser.storage.sync.set(json);
+        browser.storage.local.set(json);
     }
     if (details.reason === 'update' && details.previousVersion <= '2.6800') {
-        browser.storage.sync.set({
+        browser.storage.local.set({
             jsonrpc: {
                 uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
                 token: localStorage['token'] ?? '',
