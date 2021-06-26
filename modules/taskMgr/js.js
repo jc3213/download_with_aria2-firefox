@@ -5,6 +5,7 @@ var logic = 0;
 browser.runtime.sendMessage({jsonrpc: true}, response => {
     printTaskManager(response);
     printTaskOption(gid);
+    feedEventHandler();
 });
 browser.runtime.onMessage.addListener(printTaskManager);
 
@@ -14,11 +15,11 @@ function printTaskManager(response) {
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
         printTaskDetails('bt');
-        result.files.forEach(file => printTaskFiles(file, document.querySelector('#file')));
+        result.files.forEach(file => printTaskFiles(file, document.querySelector('#bt')));
     }
     else {
         printTaskDetails('http');
-        result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#uri')));
+        result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#http')));
     }
     document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     document.querySelector('#name').className = result.status;
@@ -100,11 +101,11 @@ document.querySelector('#name').addEventListener('click', (event) => {
     frameElement.remove();
 });
 
-document.querySelector('#allproxy').addEventListener('click', (event) => {
-    changeTaskOption(gid, 'all-proxy', document.querySelector('#all-proxy').value);
+document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
+    changeTaskOption(gid, 'all-proxy', aria2RPC.option.proxy['uri']);
 });
 
-document.querySelector('#uri').addEventListener('click', (event) => {
+document.querySelector('#http').addEventListener('click', (event) => {
     if (event.ctrlKey) {
         jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
     }
@@ -122,7 +123,7 @@ document.querySelector('#source > span').addEventListener('click', (event) => {
     );
 });
 
-document.querySelector('#file').addEventListener('click', (event) => {
+document.querySelector('#bt').addEventListener('click', (event) => {
     if (event.target.className) {
         var checked = [];
         document.querySelectorAll('td:nth-child(1)').forEach(item => {

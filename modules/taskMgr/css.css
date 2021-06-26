@@ -34,7 +34,7 @@
     margin-bottom: 15px;
 }
 
-#name, #uri * {
+#name, #http * {
     word-break: break-word;
 }
 
@@ -42,11 +42,11 @@
     padding: 3px;
 }
 
-#uri > *:nth-child(n+2) {
+#http > *:nth-child(n+2) {
     margin-top: 3px;
 }
 
-#uri > *:active, #file #index:active {
+#http > *:active, #bt #index:active {
     filter: opacity(60%);
 }
 
@@ -59,21 +59,21 @@ td {
     padding: 5px;
 }
 
-#file #index {
+#bt #index {
     width: 20px;
     text-align: center;
 }
 
-#file #name {
+#bt #name {
     width: calc(100% - 140px);
 }
 
-#file #size {
+#bt #size {
     width: 70px;
     text-align: center;
 }
 
-#file #ratio {
+#bt #ratio {
     width: 50px;
     text-align: center;
 }
