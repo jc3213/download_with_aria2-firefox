@@ -37,14 +37,14 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            chrome.runtime.sendMessage({purge: true});
+            browser.runtime.sendMessage({purge: true});
             document.querySelector('[panel="stopped"]').innerHTML = '';
         }
     );
 });
 
-chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
-chrome.runtime.onMessage.addListener(printTaskManager);
+browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
+browser.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(response) {
     aria2RPC = response;
@@ -138,7 +138,7 @@ function removeTaskFromQueue(gid, status) {
     }
     if (['complete', 'error', 'paused', 'removed'].includes(status)) {
         var clear = (result) => {
-            chrome.runtime.sendMessage({purge: true});
+            browser.runtime.sendMessage({purge: true});
             document.getElementById(gid).remove();
         };
     }
