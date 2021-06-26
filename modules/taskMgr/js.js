@@ -21,7 +21,7 @@ function printTaskManager(response) {
         printTaskDetails('http');
         result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#http')));
     }
-    document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
+    document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) ?? result.files[0].uris[0].uri;
     document.querySelector('#name').className = result.status;
     document.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     document.querySelector('#ratio').innerText = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
@@ -29,7 +29,7 @@ function printTaskManager(response) {
     document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
     document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
     document.querySelector('#max-download-limit').disabled = stopped;
-    document.querySelector('#max-upload-limit').disabled = stopped || !result.bittorrent;
+    document.querySelector('#max-upload-limit').disabled = stopped ?? !result.bittorrent;
     document.querySelector('#all-proxy').disabled = stopped;
 }
 
@@ -66,7 +66,7 @@ function printTaskFiles(file, table) {
 
 function appendFileToTable(file, table) {
     var id = file.index + file.length;
-    var cell = document.getElementById(id) || table.querySelector('#template').cloneNode(true);
+    var cell = document.getElementById(id) ?? table.querySelector('#template').cloneNode(true);
     cell.id = id;
     cell.querySelector('#index').innerText = file.index;
     cell.querySelector('#name').innerText = file.path.slice(file.path.lastIndexOf('/') + 1);

@@ -15,6 +15,6 @@ function parseValueToOption(field, options) {
         field.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
     }
     else {
-        field.value = options[field.id] || '';
+        field.value = options[field.id] ?? '';
     }
 }

@@ -33,23 +33,22 @@ document.querySelector('#export').addEventListener('click', (event) => {
     saver.href = URL.createObjectURL(blob);
     saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
     saver.click();
-    saver.remove();
 });
 
 document.querySelector('#import').addEventListener('click', (event) => {
-    var field = document.createElement('input');
-    field.type = 'file';
-    field.accept = 'application/json';
-    field.addEventListener('change', (event) => {
+    var file = document.createElement('input');
+    file.type = 'file';
+    file.accept = 'application/json';
+    file.click();
+    file.addEventListener('change', (event) => {
         var reader = new FileReader();
         reader.readAsText(event.target.files[0]);
         reader.onload = () => {
             var json = JSON.parse(reader.result);
             browser.storage.local.set(json);
-            field.remove();
             location.reload();
         };
-    })
+    });
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {

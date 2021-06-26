@@ -49,17 +49,14 @@ function createJSON(request) {
     return {jsonrpc: 2.0, method: request.method, id: '', params};
 }
 
-function showNotification(title, message) {
-    var id = 'aria2_' + Date.now();
-    var notification = {
+function showNotification(title = 'Aria2 Response', message = '') {
+    var id = browser.notifications.create({
         type: 'basic',
-        title: title || 'Aria2 Response',
+        title: title,
         iconUrl: '/icons/icon48.png',
-        message: message || ''
-    };
-    browser.notifications.create(id, notification, () => {
-        setTimeout(() => {
-            browser.notifications.clear(id);
-        }, 5000);
+        message: message
     });
+    setTimeout(() => {
+        browser.notifications.clear(id);
+    }, 5000);
 }

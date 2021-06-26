@@ -37,14 +37,14 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
-            browser.runtime.sendMessage({purge: true});
+            chrome.runtime.sendMessage({purge: true});
             document.querySelector('[panel="stopped"]').innerHTML = '';
         }
     );
 });
 
-browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
-browser.runtime.onMessage.addListener(printTaskManager);
+chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
+chrome.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(response) {
     aria2RPC = response;
@@ -72,15 +72,15 @@ function printTaskManager(response) {
 }
 
 function printTaskDetails(result, index) {
-    var task = document.getElementById(result.gid) || appendTaskDetails(result);
+    var task = document.getElementById(result.gid) ?? appendTaskDetails(result);
     if (task.status !== result.status) {
         var type = result.status === 'active' ? 'active' : ['waiting', 'paused'].includes(result.status) ? 'waiting' : 'stopped';
         var queue = document.querySelector('[panel="' + type + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
     }
-    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
-    task.querySelector('#error').innerText = result.errorMessage || '';
+    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) ?? result.files[0].uris[0].uri;
+    task.querySelector('#error').innerText = result.errorMessage ?? '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     calcEstimatedTime(task, (result.totalLength - result.completedLength) / result.downloadSpeed);
     task.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
@@ -138,7 +138,7 @@ function removeTaskFromQueue(gid, status) {
     }
     if (['complete', 'error', 'paused', 'removed'].includes(status)) {
         var clear = (result) => {
-            browser.runtime.sendMessage({purge: true});
+            chrome.runtime.sendMessage({purge: true});
             document.getElementById(gid).remove();
         };
     }
