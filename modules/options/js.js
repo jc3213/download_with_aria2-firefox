@@ -1,6 +1,6 @@
 document.querySelector('#manager').style.display = location.search === '?popup' ? 'none' : 'block';
 
-chrome.storage.sync.get(null, result => {
+browser.storage.local.get(null, result => {
     aria2Option = result;
     document.querySelectorAll('input, select, textarea').forEach(field => {
         var root = field.getAttribute('root');
@@ -12,7 +12,7 @@ chrome.storage.sync.get(null, result => {
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
                 token ? 'token:' + value : multi ? field.value * multi : field.value;
-            chrome.storage.sync.set(aria2Option);
+            browser.storage.local.set(aria2Option);
         });
     });
     document.querySelectorAll('[gear]').forEach(gear => {
@@ -46,20 +46,17 @@ document.querySelector('#import').addEventListener('click', (event) => {
         reader.readAsText(event.target.files[0]);
         reader.onload = () => {
             var json = JSON.parse(reader.result);
-            chrome.storage.sync.set(json);
+            browser.storage.local.set(json);
             location.reload();
         };
     });
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+    browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
         var {version, error} = aria2RPC;
         if (version) {
             openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + version.version);
-        }
-        if (error) {
-            showNotification(error);
         }
     });
 });
