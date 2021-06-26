@@ -8,7 +8,7 @@ browser.storage.local.get(null, result => {
         var value = root ? tree[field.id] : tree[field.id];
         var token = field.getAttribute('token');
         var multi = field.getAttribute('multi');
-        field.value = token ? value.slice('token:'.length) : multi ? value / multi : value;
+        field.value = token ? value.slice(token.length) : multi ? value / multi : value;
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
                 token ? 'token:' + value : multi ? field.value * multi : field.value;
