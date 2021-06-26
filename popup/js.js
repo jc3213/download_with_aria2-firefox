@@ -79,7 +79,7 @@ function printTaskDetails(result, index) {
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
     }
-    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) ?? result.files[0].uris[0].uri;
+    task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path ? result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) : result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage ?? '';
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     calcEstimatedTime(task, (result.totalLength - result.completedLength) / result.downloadSpeed);
