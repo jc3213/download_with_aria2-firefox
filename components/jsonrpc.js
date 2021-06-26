@@ -1,5 +1,5 @@
 function jsonRPCRequest(request, success, failure) {
-    var jsonrpc = localStorage['jsonrpc'];
+    var jsonrpc = aria2RPC.option.jsonrpc['uri'];
     var requestJSON = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
         if (response.ok) {
@@ -25,7 +25,7 @@ function jsonRPCRequest(request, success, failure) {
 }
 
 function createJSON(request) {
-    var params = ['token:' + localStorage['token']];
+    var params = ['token:' + aria2RPC.option.jsonrpc['token']];
     if (request.gid) {
         params.push(request.gid);
     }

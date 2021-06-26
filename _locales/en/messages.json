@@ -59,25 +59,25 @@
     "option_protocol": {
         "message": "Protocol"
     },
-    "option_jsonrpc": {
+    "option_jsonrpc_uri": {
         "message": "JSONRPC URI"
     },
-    "option_jsonrpc_desc": {
+    "option_jsonrpc_uri_desc": {
         "message": "Set URI of JSON-RPC interface"
     },
-    "option_token": {
+    "option_jsonrpc_token": {
         "message": "Secret Token"
     },
-    "option_token_desc": {
+    "option_jsonrpc_token_desc": {
         "message": "Set secret authorization \"token\""
     },
-    "option_refresh": {
+    "option_jsonrpc_refresh": {
         "message": "Refresh Interval"
     },
-    "option_refresh_desc": {
+    "option_jsonrpc_refresh_desc": {
         "message": "Set task manager refresh interval"
     },
-    "option_folder": {
+    "option_folder_mode": {
         "message": "Download Folder"
     },
     "option_folder_browser": {
@@ -86,7 +86,7 @@
     "option_folder_custom": {
         "message": "Custom"
     },
-    "option_folder_desc": {
+    "option_folder_mode_desc": {
         "message": "Download files to where you would preferred"
     },
     "option_useragent": {
@@ -95,49 +95,49 @@
     "option_useragent_desc": {
         "message": "Customize user agent to bypass the restrictions of some websites"
     },
-    "option_allproxy": {
+    "option_proxy_uri": {
         "message": "Proxy Server"
     },
-    "option_allproxy_desc": {
+    "option_proxy_uri_desc": {
         "message": "Setting server for \"all-proxy\" option"
     },
-    "option_proxied": {
+    "option_proxy_resolve": {
         "message": "Hosts over Proxy"
     },
-    "option_proxied_desc": {
+    "option_proxy_resolve_desc": {
         "message": "Add \"all-proxy\" option for downloads from these hosts automatically"
     },
-    "option_capture": {
+    "option_capture_mode": {
         "message": "Capturing"
     },
-    "option_capture_filters": {
+    "option_capture_mode_filters": {
         "message": "Built-in Filters"
     },
-    "option_capture_desc": {
+    "option_capture_mode_desc": {
         "message": "Capture browser downloads depend on user settings"
     },
-    "option_filesize": {
+    "option_capture_fileSize": {
         "message": "File Size"
     },
-    "option_filesize_desc": {
+    "option_capture_fileSize_desc": {
         "message": "Capture downloads those are larger than user setting"
     },
-    "option_fileext": {
+    "option_capture_fileExt": {
         "message": "File Extensions"
     },
-    "option_fileext_desc": {
+    "option_capture_fileExt_desc": {
         "message": "Capture downloads match the listed file extensions"
     },
-    "option_monitored": {
+    "option_capture_resolve": {
         "message": "Monitored Hosts"
     },
-    "option_monitored_desc": {
+    "option_capture_resolve_desc": {
         "message": "Monitoring downloads from listed host names"
     },
-    "option_ignored": {
+    "option_capture_reject": {
         "message": "Ignored Hosts"
     },
-    "option_ignored_desc": {
+    "option_capture_reject_desc": {
         "message": "Ignore downloads from listed host names"
     },
     "popup_active_button": {

@@ -15,46 +15,44 @@
             </div>
             <div id="manager" class="offside">
                 <span id="export" button i18n>option_export</span>
-                <a id="saver" style="display: none;"></a>
                 <span id="import" button i18n>option_import</span>
-                <input id="reader" type="file" accept="application/json" style="display: none;">
             </div>
         </div>
         <hr>
         <div panel="basic" class="container">
-            <div title="option_jsonrpc_desc" i18n_title>
-                <div class="title" i18n>option_jsonrpc</div>
+            <div title="option_jsonrpc_uri_desc" i18n_title>
+                <div class="title" i18n>option_jsonrpc_uri</div>
                 <div class="extend">
-                    <input id="jsonrpc" local type="url">
+                    <input id="uri" root="jsonrpc" type="url">
                     <span id="aria2_btn" button>⚙️</span>
                 </div>
                 <span i18n>common_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
             </div>
-            <div title="option_token_desc" i18n_title>
-                <div class="title" i18n>option_token</div>
+            <div title="option_jsonrpc_token_desc" i18n_title>
+                <div class="title" i18n>option_jsonrpc_token</div>
                 <div class="extend">
-                    <input id="token" local type="password" placeholder="$$secret$$">
+                    <input id="token" root="jsonrpc" type="password" placeholder="$$secret$$">
                     <span id="show_btn" button>👁️</span>
                 </div>
             </div>
-           <div title="option_refresh_desc" i18n_title>
-                <div class="title" i18n>option_refresh</div>
+           <div title="option_jsonrpc_refresh_desc" i18n_title>
+                <div class="title" i18n>option_jsonrpc_refresh</div>
                 <div>
                     <label>
                         <span class="suffix2" i18n>time_second_full</span>
-                        <input id="refresh" local multi="1000" type="number" min="1" max="10">
+                        <input id="refresh" root="jsonrpc" multi="1000" type="number" min="1" max="10">
                     </label>
                 </div>
             </div>
-            <div title="option_folder_desc" i18n_title>
-                <span class="title" i18n>option_folder</span>
-                <select id="output" local>
+            <div title="option_folder_mode_desc" i18n_title>
+                <span class="title" i18n>option_folder_mode</span>
+                <select id="mode" root="folder">
                     <option value="0" i18n>common_default</option>
                     <option value="1" i18n>option_folder_browser</option>
                     <option value="2" i18n>option_folder_custom</option>
                 </select>
-                <div gear="output&2">
-                    <input id="folder" local type="text" placeholder="C:\Aria2 Downloads">
+                <div gear="mode,folder&2">
+                    <input id="uri" root="folder" type="text" placeholder="C:\Aria2 Downloads">
                 </div>
             </div>
         </div>
@@ -62,59 +60,59 @@
             <div title="option_useragent_desc" i18n_title>
                 <div class="title" i18n>option_useragent</div>
                 <div>
-                    <textarea id="useragent" local rows="3"></textarea>
+                    <textarea id="useragent" rows="3"></textarea>
                 </div>
             </div>
-            <div title="option_allproxy_desc" i18n_title>
-                <div class="title" i18n>option_allproxy</div>
+            <div title="option_proxy_uri_desc" i18n_title>
+                <div class="title" i18n>option_proxy_uri</div>
                 <div>
-                    <input id="allproxy" local type="url" placeholder="http://127.0.0.1:1180/">
+                    <input id="uri" root="proxy" type="url" placeholder="http://127.0.0.1:1180/">
                     <span i18n>option_protocol</span>: <u><i>http</i></u>/<u><i>https</i></u>
                 </div>
             </div>
-            <div title="option_proxied_desc" i18n_title>
-                <div class="title" i18n>option_proxied</div>
+            <div title="option_proxy_resolve_desc" i18n_title>
+                <div class="title" i18n>option_proxy_resolve</div>
                 <div>
-                    <textarea id="proxied" local rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                    <textarea id="resolve" root="proxy" rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                 </div>
             </div>
         </div>
         <div panel="download" class="container">
-            <div title="option_capture_desc" i18n_title>
-                <span class="title" i18n>option_capture</span>
-                <select id="capture" local>
+            <div title="option_capture_mode_desc" i18n_title>
+                <span class="title" i18n>option_capture_mode</span>
+                <select id="mode" root="capture">
                     <option value="0" i18n>common_disabled</option>
-                    <option value="1" i18n>option_capture_filters</option>
+                    <option value="1" i18n>option_capture_mode_filters</option>
                     <option value="2" i18n>option_always</option>
                 </select>
             </div>
-            <div gear="capture&1" class="container">
-                <div title="option_filesize_desc" i18n_title>
-                    <div class="title" i18n>option_filesize</div>
+            <div gear="mode,capture&1" class="container">
+                <div title="option_capture_fileSize_desc" i18n_title>
+                    <div class="title" i18n>option_capture_fileSize</div>
                     <label>
                         <span class="suffix2">MB</span>
-                        <input id="fileSize" local multi="1048576" type="number" min="0">
+                        <input id="fileSize" root="capture" multi="1048576" type="number" min="0">
                     </label>
                     <span i18n>common_disabled</span>: <u><i>0</i></u>
                 </div>
-                <div title="option_fileext_desc" i18n_title>
-                    <div class="title" i18n>option_fileext</div>
+                <div title="option_capture_fileExt_desc" i18n_title>
+                    <div class="title" i18n>option_capture_fileExt</div>
                     <div>
-                        <input id="fileExt" local placeholder="zip&ensp;exe&ensp;jpg">
+                        <input id="fileExt" root="capture" placeholder="zip&ensp;exe&ensp;jpg">
                     </div>
                 </div>
-                <div title="option_monitored_desc" i18n_title>
-                    <div class="title" i18n>option_monitored</div>
+                <div title="option_capture_resolve_desc" i18n_title>
+                    <div class="title" i18n>option_capture_resolve</div>
                     <div>
-                        <textarea id="monitored" local rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                        <textarea id="resolve" root="capture" rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                     </div>
                 </div>
             </div>
-            <div gear="capture&1&2" class="container">
-                <div title="option_ignored_desc" i18n_title>
-                    <div class="title" i18n>option_ignored</div>
+            <div gear="mode,capture&1,2" class="container">
+                <div title="option_capture_reject_desc" i18n_title>
+                    <div class="title" i18n>option_capture_reject</div>
                     <div>
-                        <textarea id="ignored" local rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
+                        <textarea id="reject" root="capture" rows="10" placeholder="example.com&ensp;lib.domain.net&#10;dl3.my.org"></textarea>
                     </div>
                 </div>
             </div>

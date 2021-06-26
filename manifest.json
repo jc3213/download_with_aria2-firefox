@@ -1,7 +1,7 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.6800",
+    "version": "2.6900",
     "manifest_version": 2,
     "permissions": [
         "contextMenus",
@@ -9,6 +9,7 @@
         "tabs",
         "cookies",
         "notifications",
+        "storage",
         "<all_urls>",
         "webRequest",
         "webRequestBlocking"

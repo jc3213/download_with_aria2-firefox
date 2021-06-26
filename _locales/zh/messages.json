@@ -59,25 +59,25 @@
     "option_protocol": {
         "message": "协议"
     },
-    "option_jsonrpc": {
+    "option_jsonrpc_uri": {
         "message": "JSONRPC 链接"
     },
-    "option_jsonrpc_desc": {
+    "option_jsonrpc_uri_desc": {
         "message": "设置 JSON-RPC 界面的链接"
     },
-    "option_token": {
+    "option_jsonrpc_token": {
         "message": "密钥"
     },
-    "option_token_desc": {
+    "option_jsonrpc_token_desc": {
         "message": "设置 JSON-RPC 的安全密钥"
     },
-    "option_refresh": {
+    "option_jsonrpc_refresh": {
         "message": "刷新间隔"
     },
-    "option_refresh_desc": {
+    "option_jsonrpc_refresh_desc": {
         "message": "设置任务管理器刷新间隔"
     },
-    "option_folder": {
+    "option_folder_mode": {
         "message": "下载目录"
     },
     "option_folder_browser": {
@@ -86,7 +86,7 @@
     "option_folder_custom": {
         "message": "自定义"
     },
-    "option_folder_desc": {
+    "option_folder_mode_desc": {
         "message": "将文件下载至目标目录"
     },
     "option_useragent": {
@@ -95,49 +95,49 @@
     "option_useragent_desc": {
         "message": "自定义用户代理以回避一些网站的下载限制"
     },
-    "option_allproxy": {
+    "option_proxy_uri": {
         "message": "代理服务器"
     },
-    "option_allproxy_desc": {
+    "option_proxy_uri_desc": {
         "message": "设置 \"all-proxy\" 选项的服务器"
     },
-    "option_proxied": {
+    "option_proxy_resolve": {
         "message": "需代理主机名"
     },
-    "option_proxied_desc": {
+    "option_proxy_resolve_desc": {
         "message": "为来自列表中的主机名的下载添加 \"all-proxy\" 选项"
     },
-    "option_capture": {
+    "option_capture_mode": {
         "message": "抓取"
     },
-    "option_capture_filters": {
+    "option_capture_mode_filters": {
         "message": "基于条件"
     },
-    "option_capture_desc": {
+    "option_capture_mode_desc": {
         "message": "根据用户设置抓取浏览器的下载请求"
     },
-    "option_filesize": {
+    "option_capture_fileSize": {
         "message": "文件大小"
     },
-    "option_filesize_desc": {
+    "option_capture_fileSize_desc": {
         "message": "抓取文件大小超过设置的下载"
     },
-    "option_fileext": {
+    "option_capture_fileExt": {
         "message": "文件后缀"
     },
-    "option_fileext_desc": {
+    "option_capture_fileExt_desc": {
         "message": "抓取匹配列表中的文件后缀的下载"
     },
-    "option_monitored": {
+    "option_capture_resolve": {
         "message": "监视主机名"
     },
-    "option_monitored_desc": {
+    "option_capture_resolve_desc": {
         "message": "监视来自列表中的主机名的下载"
     },
-    "option_ignored": {
+    "option_capture_reject": {
         "message": "忽略主机名"
     },
-    "option_ignored_desc": {
+    "option_capture_reject_desc": {
         "message": "忽略来自列表中的主机名的下载"
     },
     "popup_active_button": {

@@ -1,5 +1,9 @@
-var aria2RPC = {
-    keepAlive: setInterval(() => {
+var aria2RPC = {};
+
+function registerMessageService() {
+    clearInterval(aria2RPC.keepAlive);
+    clearInterval(aria2RPC.message);
+    aria2RPC.keepAlive = setInterval(() => {
         jsonRPCRequest([
             {method: 'aria2.getVersion'},
             {method: 'aria2.getGlobalOption'},
@@ -12,15 +16,12 @@ var aria2RPC = {
             browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }, (error) => {
             aria2RPC = {...aria2RPC, error};
+            clearInterval(aria2RPC.keepAlive);
         });
-    }, 1000)
-};
-
-function registerMessageChannel() {
-    clearInterval(aria2RPC.message);
+    }, 1000);
     aria2RPC.message = setInterval(() => {
         browser.runtime.sendMessage(aria2RPC);
-    }, localStorage['refresh']);
+    }, aria2RPC.option.jsonrpc['refresh']);
 }
 
 browser.contextMenus.create({
@@ -39,14 +40,35 @@ browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 browser.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-        var response = await fetch('/components/options.json');
+        var response = await fetch('/components/option.json');
         var json = await response.json();
-        Object.keys(json).forEach(key => {
-            localStorage[key] = json[key];
-        });
+        browser.storage.sync.set(json);
     }
-    if (details.reason === 'update' && details.previousVersion <= '2.6700') {
-        localStorage['refresh'] = 2000;
+    if (details.reason === 'update' && details.previousVersion <= '2.6800') {
+        browser.storage.sync.set({
+            jsonrpc: {
+                uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
+                token: localStorage['token'] ?? '',
+                refresh: localStorage['refresh'] | 0
+            },
+            folder: {
+                mode: localStorage['output'] ?? '0',
+                uri: localStorage['folder'] ?? ''
+            },
+            useragent: localStorage['useragent'] ?? navigator.userAgent,
+            proxy: {
+                uri: localStorage['allproxy'] ?? '',
+                resolve: (localStorage['proxied'] ?? '').split(/[\s\n,]/)
+            },
+            capture: {
+                mode: localStorage['capture'] ?? '0',
+                reject: (localStorage['ignored'] ?? '').split(/[\s\n,]/),
+                resolve: (localStorage['monitored'] ?? '').split(/[\s\n,]/),
+                fileExt: (localStorage['fileExt'] ?? '').split(/[\s\n,]/),
+                fileSize: localStorage['fileSize'] | 0
+            }
+        });
+        localStorage.clear();
     }
 });
 
@@ -90,7 +112,7 @@ function fileSizeWrapper(item) {
 // End of file size wrapper
 
 browser.downloads.onCreated.addListener(async (item) => {
-    if (localStorage['capture'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
+    if (aria2RPC.option.capture['mode'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
 
@@ -116,15 +138,15 @@ async function downWithAria2(session, options = {}) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
-        options['all-proxy'] = localStorage['allproxy'];
+    if (!options['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
+        options['all-proxy'] = aria2RPC.option.proxy['uri'];
     }
     options['header'] = await getCookiesFromReferer(session.referer, session.storeId);
-    if (localStorage['output'] === '1' && session.folder) {
+    if (aria2RPC.option.folder['mode'] === '1' && session.folder) {
         options['dir'] = session.folder;
     }
-    else if (localStorage['output'] === '2' && localStorage['folder']) {
-        options['dir'] = localStorage['folder'];
+    else if (aria2RPC.option.folder['mode'] === '2' && aria2RPC.option.folder['uri']) {
+        options['dir'] = aria2RPC.option.folder['uri'];
     }
     jsonRPCRequest(
         {method: 'aria2.addUri', url, options},
@@ -138,26 +160,26 @@ async function downWithAria2(session, options = {}) {
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (localStorage['ignored'].includes(hostname)) {
+    if (aria2RPC.option['reject'].includes(hostname)) {
         return false;
     }
-    if (localStorage['capture'] === '2') {
+    if (aria2RPC.option.capture['mode'] === '2') {
         return true;
     }
-    if (localStorage['monitored'].includes(hostname)) {
+    if (aria2RPC.option.capure['resolve'].includes(hostname)) {
         return true;
     }
-    if (localStorage['fileExt'].includes(fileExt)) {
+    if (aria2RPC.option.capture['fileExt'].includes(fileExt)) {
         return true;
     }
-    if (localStorage['fileSize'] > 0 && fileSize >= localStorage['fileSize']) {
+    if (aria2RPC.option.capture['fileSize'] > 0 && fileSize >= aria2RPC.option.capture['fileSize']) {
         return true;
     }
     return false;
 }
 
 async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 'Cookie:') {
-    var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    var header = ['User-Agent: ' + aria2RPC.option['useragent'], 'Connection: keep-alive'];
     if (url) {
         var cookies = await browser.cookies.getAll({url, storeId});
         cookies.forEach(cookie => {
@@ -184,5 +206,3 @@ function getFileNameFromUri(uri) {
 function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
-
-registerMessageChannel();

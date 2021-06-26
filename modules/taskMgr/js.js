@@ -2,10 +2,14 @@ var gid = location.search.slice(1);
 var options = {};
 var logic = 0;
 
-browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
+browser.runtime.sendMessage({jsonrpc: true}, response => {
+    printTaskManager(response);
+    printTaskOption(gid);
+});
 browser.runtime.onMessage.addListener(printTaskManager);
 
-function printTaskManager(aria2RPC) {
+function printTaskManager(response) {
+    aria2RPC = response;
     var result = [...aria2RPC.active, ...aria2RPC.waiting, ...aria2RPC.stopped].find(task => task.gid === gid);
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
@@ -143,5 +147,3 @@ function changeTaskOption(gid, name, value) {
     options[name] = value;
     jsonRPCRequest({method: 'aria2.changeOption', gid, options});
 }
-
-printTaskOption(gid);
