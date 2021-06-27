@@ -213,7 +213,7 @@ function downloadWithAria2(url, options) {
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (aria2RPC.option['reject'].includes(hostname)) {
+    if (aria2RPC.option.capture['reject'].includes(hostname)) {
         return false;
     }
     if (aria2RPC.option.capture['mode'] === '2') {
