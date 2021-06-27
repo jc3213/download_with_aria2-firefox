@@ -34,13 +34,12 @@ document.querySelectorAll('[tab]').forEach(tab => {
 });
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
-    jsonRPCRequest(
-        {method: 'aria2.purgeDownloadResult'},
-        (result) => {
-            browser.runtime.sendMessage({purge: true});
-            document.querySelector('[panel="stopped"]').innerHTML = '';
-        }
-    );
+    browser.runtime.sendMessage({
+        request: {id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.option.jsonrpc['token']]},
+        purge: true
+    }, response => {
+        document.querySelector('[panel="stopped"]').innerHTML = '';
+    });
 });
 
 browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
@@ -136,34 +135,38 @@ function removeTaskFromQueue(gid, status) {
     else {
         return;
     }
-    if (['complete', 'error', 'paused', 'removed'].includes(status)) {
-        var clear = (result) => {
-            browser.runtime.sendMessage({purge: true});
+    var purge = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
+    browser.runtime.sendMessage({
+        request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]},
+        purge
+    }, response => {
+        if (purge) {
             document.getElementById(gid).remove();
-        };
-    }
-    jsonRPCRequest({method, gid}, clear);
+        }
+    });
 }
 
 function openTaskMgrWindow(gid) {
-    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
+    if (window.taskManager) {
+        return;
+    }
+    browser.runtime.sendMessage({session: gid});
+    setTimeout(() => {
+        openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
+    }, 1000);
+    window.taskManager = gid;
 }
 
 function removeTaskAndRetry(gid) {
-    jsonRPCRequest([
-        {method: 'aria2.getFiles', gid},
-        {method: 'aria2.getOption', gid}
-    ], (files, options) => {
-        var url = [];
-        files[0].uris.forEach(uri => {
-            if (!url.includes(uri.uri)) {
-                url.push(uri.uri);
-            }
-        });
-        jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
-            document.getElementById(gid).remove();
-            jsonRPCRequest({method: 'aria2.addUri', url, options});
-        });
+    browser.runtime.sendMessage({
+        restart: [
+            {id: '', jsonrpc: 2, method: 'aria2.getFiles', params: [aria2RPC.option.jsonrpc['token'], gid]},
+            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], gid]},
+            {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.option.jsonrpc['token'], gid]}
+        ],
+        purge: true
+    }, response => {
+        document.getElementById(gid).remove();
     });
 }
 
@@ -177,5 +180,5 @@ function pauseOrUnpauseTask(gid, status) {
     else {
         return;
     }
-    jsonRPCRequest({method, gid});
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]}});
 }

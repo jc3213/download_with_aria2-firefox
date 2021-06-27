@@ -32,10 +32,12 @@ function registerMessageService() {
             {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.option.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.option.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]}
+            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
+            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {},
+            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {}
         ]).then(response => {
-            var [version, globalOption, globalStat, active, waiting, stopped] = response;
-            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
+            var [version, globalOption, globalStat, active, waiting, stopped, result, option] = response;
+            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined, lastSessionResult: {result, option}};
             browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }).catch(error => {
             aria2RPC = {...aria2RPC, error};
@@ -56,7 +58,7 @@ browser.contextMenus.create({
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2firefox') {
-        downWithAria2({url: info.linkUrl, referer: info.pageUrl, storeId: tab.cookieStoreId, hostname: getHostnameFromUrl(info.pageUrl)});
+        startDownload({url: info.linkUrl, referer: info.pageUrl, storeId: tab.cookieStoreId, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -86,7 +88,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
         browser.storage.local.set({
             jsonrpc: {
                 uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
-                token: localStorage['token'] ?? '',
+                token: 'token:' + (localStorage['token'] ?? ''),
                 refresh: localStorage['refresh'] | 0
             },
             folder: {
@@ -108,41 +110,52 @@ browser.runtime.onInstalled.addListener(async (details) => {
         });
         localStorage.clear();
     }
+    if (details.reason === 'update' && details.previousVersion === '2.6900') {
+        aria2RPC.option.jsonrpc['token'] = 'token:' + aria2RPC.option.jsonrpc['token'];
+        browser.storage.local.set(aria2RPC.option);
+    }
 });
 
 browser.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, purge, session, options} = message;
+    var {jsonrpc, download, request, restart, session, purge} = message;
     if (jsonrpc) {
         response(aria2RPC);
     }
+    if (download) {
+        startDownload(...download);
+    }
+    if (request) {
+        aria2RPCRequest(request);
+        response();
+    }
+    if (restart) {
+        aria2RPCRequest(restart).then(restartDownload);
+        response();
+    }
+    if (session !== undefined) {
+        aria2RPC.lastSession = session;
+    }
     if (purge) {
         aria2RPC.stopped = [];
-    }
-    if (session && options) {
-        downWithAria2(session, options);
     }
 });
 
 // Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
 var requests = [];
-browser.webRequest.onHeadersReceived.addListener(
-    (event) => {
-        try {
-            var size = event.responseHeaders.find(item => item.name === 'content-length').value;
-            requests.push({'url': event.url, 'size': size});
+browser.webRequest.onHeadersReceived.addListener((event) => {
+    try {
+        var size = event.responseHeaders.find(item => item.name === 'content-length').value;
+        requests.push({'url': event.url, 'size': size});
+    }
+    catch(error) {
+        return;
+    }
+    finally {
+        if (requests.length > 50) {
+            requests.shift();
         }
-        catch(error) {
-            return;
-        }
-        finally {
-            if (requests.length > 50) {
-                requests.shift();
-            }
-        }
-    },
-    {'urls': ['<all_urls>']},
-    ['blocking', 'responseHeaders']
-)
+    }
+}, {'urls': ['<all_urls>']}, ['blocking', 'responseHeaders']);
 
 function fileSizeWrapper(item) {
     return requests.find(request => request.url === item.url).size;
@@ -163,13 +176,13 @@ browser.downloads.onCreated.addListener(async (item) => {
     if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
         browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
-                downWithAria2(session);
+                startDownload(session);
             });
         }, showNotification);
     }
 });
 
-async function downWithAria2(session, options = {}) {
+async function startDownload(session, options = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
@@ -184,6 +197,16 @@ async function downWithAria2(session, options = {}) {
     else if (aria2RPC.option.folder['mode'] === '2' && aria2RPC.option.folder['uri']) {
         options['dir'] = aria2RPC.option.folder['uri'];
     }
+    downloadWithAria2(url, options);
+}
+
+function restartDownload(response) {
+    var [files, options] = response;
+    var url = files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, options);
+};
+
+function downloadWithAria2(url, options) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, options]})
         .then(response => showNotification(url.join('\n')))
         .catch(showNotification);

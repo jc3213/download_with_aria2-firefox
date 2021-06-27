@@ -1,17 +1,16 @@
 var gid = location.search.slice(1);
-var options = {};
 var logic = 0;
 
 browser.runtime.sendMessage({jsonrpc: true}, response => {
     printTaskManager(response);
-    printTaskOption(gid);
     feedEventHandler();
+    document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, aria2RPC.lastSessionResult.option));
 });
 browser.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(response) {
     aria2RPC = response;
-    var result = [...aria2RPC.active, ...aria2RPC.waiting, ...aria2RPC.stopped].find(task => task.gid === gid);
+    var {result} = aria2RPC.lastSessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
         printTaskDetails('bt');
@@ -77,7 +76,7 @@ function appendFileToTable(file, table) {
 }
 
 document.addEventListener('change', (event) => {
-    changeTaskOption(gid, event.target.id, event.target.value);
+    changeTaskOption(event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -98,15 +97,18 @@ document.querySelectorAll('[swap]').forEach(swap => {
 });
 
 document.querySelector('#name').addEventListener('click', (event) => {
+    browser.runtime.sendMessage({session: null});
+    parent.window.taskManager = null;
     frameElement.remove();
 });
 
 document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption(gid, 'all-proxy', aria2RPC.option.proxy['uri']);
+    changeTaskOption('all-proxy', aria2RPC.option.proxy['uri']);
 });
 
 document.querySelector('#http').addEventListener('click', (event) => {
     if (event.ctrlKey) {
+        changeTaskUris({remove: event.target.innerText});
         jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
     }
     else {
@@ -115,12 +117,8 @@ document.querySelector('#http').addEventListener('click', (event) => {
 });
 
 document.querySelector('#source > span').addEventListener('click', (event) => {
-    jsonRPCRequest(
-        {method: 'aria2.changeUri', gid, add: document.querySelector('#source > input').value},
-        (result) => {
-            document.querySelector('#source > input').value = '';
-        }
-    );
+    changeTaskUris({add: document.querySelector('#source > input').value});
+    document.querySelector('#source > input').value = '';
 });
 
 document.querySelector('#bt').addEventListener('click', (event) => {
@@ -131,20 +129,17 @@ document.querySelector('#bt').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
-        changeTaskOption(gid, 'select-file', checked.join());
+        changeTaskOption('select-file', checked.join());
     }
 });
 
-function printTaskOption(gid) {
-    jsonRPCRequest(
-        {method: 'aria2.getOption', gid},
-        (options) => {
-            document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
-        }
-    );
+function changeTaskUris(changes) {
+    var add = changes.add ? [changes.add] : [];
+    var remove = changes.remove ? [changes.remove] : [];
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [gid, 1, remove, add]}});
 }
 
-function changeTaskOption(gid, name, value) {
-    options[name] = value;
-    jsonRPCRequest({method: 'aria2.changeOption', gid, options});
+function changeTaskOption(name, value) {
+    aria2RPC.lastSessionResult.option[name] = value;
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, aria2RPC.lastSessionResult.option]}});
 }
