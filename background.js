@@ -166,16 +166,18 @@ browser.downloads.onCreated.addListener(async (item) => {
         return;
     }
 
-    var session = {url: item.url, filename: getFileNameFromUri(item.filename)};
     var tabs = await browser.tabs.query({active: true, currentWindow: true});
-    session.folder = item.filename.slice(0, item.filename.indexOf(session.filename));
-    session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-    session.storeId = tabs[0].cookieStoreId;
-    session.hostname = getHostnameFromUrl(session.referer);
-    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), fileSizeWrapper(item))) {
+    var url = item.url;
+    var referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    var hostname = getHostnameFromUrl(referer);
+    var folder = filename.slice(0, item.filename.indexOf(filename));
+    var filename = getFileNameFromUri(item.filename);
+    var storeId = tabs[0].cookieStoreId;
+
+    if (captureFilterWorker(hostname, getFileExtension(filename), fileSizeWrapper(url))) {
         browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
-                startDownload(session);
+                startDownload({url, referer, hostname, filename, folder, storeId});
             });
         }, showNotification);
     }
