@@ -140,27 +140,26 @@ browser.runtime.onMessage.addListener((message, sender, response) => {
     }
 });
 
-// Temporary wrapper until downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
-var requests = [];
+// Temporary till downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
+var webRequest = [];
 browser.webRequest.onHeadersReceived.addListener((event) => {
-    try {
-        var size = event.responseHeaders.find(item => item.name === 'content-length').value;
-        requests.push({'url': event.url, 'size': size});
+    var length = event.responseHeaders.find(item => item.name === 'content-length');
+    if (length) {
+        webRequest.push({url: event.url, fileSize: length.value});
     }
-    catch(error) {
-        return;
-    }
-    finally {
-        if (requests.length > 50) {
-            requests.shift();
-        }
+    if (webRequest.length > 50) {
+        webRequest.shift();
     }
 }, {'urls': ['<all_urls>']}, ['blocking', 'responseHeaders']);
 
-function fileSizeWrapper(item) {
-    return requests.find(request => request.url === item.url).size;
+function fileSizeWrapper(url) {
+    var request = webRequest.find(request => request.url === url);
+    if (request) {
+        return request.fileSize;
+    }
+    return -1;
 }
-// End of file size wrapper
+// End of downloadItem.fileSize wrapper
 
 browser.downloads.onCreated.addListener(async (item) => {
     if (aria2RPC.option.capture['mode'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
