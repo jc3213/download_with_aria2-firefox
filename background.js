@@ -110,7 +110,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
         });
         localStorage.clear();
     }
-    if (details.reason === 'update' && details.previousVersion === '2.6900') {
+    else if (details.reason === 'update' && details.previousVersion <= '2.7010') {
         browser.storage.local.clear();
         fetch('option.json').then(response => response.json()).then(json => browser.storage.local.set(json));
     }
