@@ -96,9 +96,10 @@ function appendTaskDetails(result) {
     var task = document.querySelector('#template').cloneNode(true);
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
+    task.addEventListener('mouseenter', (event) => browser.runtime.sendMessage({session: result.gid}));
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
-    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
-    task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
+    task.querySelector('#invest_btn').addEventListener('click', (event) => openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + result.gid));
+    task.querySelector('#retry_btn').addEventListener('click', (event) => removeAndRestartTask(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
 }
@@ -146,24 +147,9 @@ function removeTaskFromQueue(gid, status) {
     });
 }
 
-function openTaskMgrWindow(gid) {
-    if (window.taskManager) {
-        return;
-    }
-    browser.runtime.sendMessage({session: gid});
-    setTimeout(() => {
-        openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
-    }, 1000);
-    window.taskManager = gid;
-}
-
-function removeTaskAndRetry(gid) {
+function removeAndRestartTask(gid) {
     browser.runtime.sendMessage({
-        restart: [
-            {id: '', jsonrpc: 2, method: 'aria2.getFiles', params: [aria2RPC.option.jsonrpc['token'], gid]},
-            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], gid]},
-            {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.option.jsonrpc['token'], gid]}
-        ],
+        restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.option.jsonrpc['token'], gid]},
         purge: true
     }, response => {
         document.getElementById(gid).remove();

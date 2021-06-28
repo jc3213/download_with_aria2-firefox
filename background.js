@@ -33,11 +33,11 @@ function registerMessageService() {
             {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.option.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
             {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
-            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {},
-            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {}
+            {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]},
+            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]}
         ]).then(response => {
             var [version, globalOption, globalStat, active, waiting, stopped, result, option] = response;
-            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined, lastSessionResult: {result, option}};
+            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: '', lastSessionResult: {result, option}};
             browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }).catch(error => {
             aria2RPC = {...aria2RPC, error};
@@ -183,32 +183,32 @@ browser.downloads.onCreated.addListener(async (item) => {
     }
 });
 
-async function startDownload(session, options = {}) {
+async function startDownload(session, option = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
-        options['out'] = session.filename;
+        option['out'] = session.filename;
     }
-    if (!options['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
-        options['all-proxy'] = aria2RPC.option.proxy['uri'];
+    if (!option['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
+        option['all-proxy'] = aria2RPC.option.proxy['uri'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer, session.storeId);
+    option['header'] = await getCookiesFromReferer(session.referer, session.storeId);
     if (aria2RPC.option.folder['mode'] === '1' && session.folder) {
-        options['dir'] = session.folder;
+        option['dir'] = session.folder;
     }
     else if (aria2RPC.option.folder['mode'] === '2' && aria2RPC.option.folder['uri']) {
-        options['dir'] = aria2RPC.option.folder['uri'];
+        option['dir'] = aria2RPC.option.folder['uri'];
     }
-    downloadWithAria2(url, options);
+    downloadWithAria2(url, option);
 }
 
-function restartDownload(response) {
-    var [files, options] = response;
-    var url = files[0].uris.map(uri => uri.uri);
-    downloadWithAria2(url, options);
+function restartDownload() {
+    var {result, option} = aria2RPC.lastSessionResult;
+    var url = result.files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, option);
 };
 
-function downloadWithAria2(url, options) {
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, options]})
+function downloadWithAria2(url, option) {
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, option]})
         .then(response => showNotification(url.join('\n')))
         .catch(showNotification);
 }

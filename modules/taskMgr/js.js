@@ -1,10 +1,14 @@
-var gid = location.search.slice(1);
-var logic = 0;
-
 browser.runtime.sendMessage({jsonrpc: true}, response => {
     printTaskManager(response);
+    gid = aria2RPC.lastSessionResult.result.gid;
+    type = aria2RPC.lastSessionResult.result.bittorrent ? 'bt' : 'http';
+    document.querySelectorAll('[http], [bt]').forEach(field => {
+        field.style.display = field.hasAttribute(type) ? 'block' : 'none';
+    });
+    document.querySelectorAll('[task]').forEach(task => {
+        parseValueToOption(task, aria2RPC.lastSessionResult.option);
+    });
     feedEventHandler();
-    document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, aria2RPC.lastSessionResult.option));
 });
 browser.runtime.onMessage.addListener(printTaskManager);
 
@@ -13,11 +17,9 @@ function printTaskManager(response) {
     var {result} = aria2RPC.lastSessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
-        printTaskDetails('bt');
         result.files.forEach(file => printTaskFiles(file, document.querySelector('#bt')));
     }
     else {
-        printTaskDetails('http');
         result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#http')));
     }
     document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path ? result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) : result.files[0].uris[0].uri;
@@ -30,15 +32,6 @@ function printTaskManager(response) {
     document.querySelector('#max-download-limit').disabled = stopped;
     document.querySelector('#max-upload-limit').disabled = stopped ?? !result.bittorrent;
     document.querySelector('#all-proxy').disabled = stopped;
-}
-
-function printTaskDetails(type) {
-    if (logic === 0) {
-        document.querySelectorAll('[http], [bt]').forEach(option => {
-            option.style.display = option.hasAttribute(type) ? 'block' : 'none';
-        });
-        logic = 1;
-    }
 }
 
 function printTaskUris(uri, table) {
@@ -96,9 +89,7 @@ document.querySelectorAll('[swap]').forEach(swap => {
     });
 });
 
-document.querySelector('#name').addEventListener('click', (event) => {
-    browser.runtime.sendMessage({session: null});
-    parent.window.taskManager = null;
+document.querySelector('#name[button]').addEventListener('click', (event) => {
     frameElement.remove();
 });
 

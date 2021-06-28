@@ -1,10 +1,10 @@
 document.querySelector('#manager').style.display = location.search === '?popup' ? 'none' : 'block';
 
-browser.storage.local.get(null, result => {
-    aria2Option = result;
+browser.runtime.sendMessage({jsonrpc: true}, response => {
+    aria2RPC = response;
     document.querySelectorAll('input, select, textarea').forEach(field => {
         var root = field.getAttribute('root');
-        var tree = root ? aria2Option[root] : aria2Option;
+        var tree = root ? aria2RPC.option[root] : aria2RPC.option;
         var value = root ? tree[field.id] : tree[field.id];
         var token = field.getAttribute('token');
         var multi = field.getAttribute('multi');
@@ -12,14 +12,14 @@ browser.storage.local.get(null, result => {
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
                 token ? 'token:' + field.value : multi ? field.value * multi : field.value;
-            browser.storage.local.set(aria2Option);
+            browser.storage.local.set(aria2RPC.option);
         });
     });
     document.querySelectorAll('[gear]').forEach(gear => {
         var rule = gear.getAttribute('gear').split('&');
         var name = rule[0].split(','), term = rule[1];
         var id = name[0], root = name[1];
-        var tree = root ? aria2Option[root] : aria2Option;
+        var tree = root ? aria2RPC.option[root] : aria2RPC.option;
         var field = root ? '#' + id + '[root="' + root + '"]' : '#' + id;
         gear.style.display = term.includes(tree[id]) ? 'block' : 'none';
         document.querySelector(field).addEventListener('change', (event) => {
@@ -29,7 +29,7 @@ browser.storage.local.get(null, result => {
 });
 
 document.querySelector('#export').addEventListener('click', (event) => {
-    var blob = new Blob([JSON.stringify(aria2Option)], {type: 'application/json; charset=utf-8'});
+    var blob = new Blob([JSON.stringify(aria2RPC.option)], {type: 'application/json; charset=utf-8'});
     var saver = document.createElement('a');
     saver.href = URL.createObjectURL(blob);
     saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
