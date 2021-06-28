@@ -35,8 +35,7 @@ function registerMessageService() {
             {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
             {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]},
             {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]}
-        ]).then(response => {
-            var [version, globalOption, globalStat, active, waiting, stopped, result, option] = response;
+        ]).then(([version, globalOption, globalStat, active, waiting, stopped, result, option]) => {
             aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: '', lastSessionResult: {result, option}};
             browser.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }).catch(error => {
@@ -246,10 +245,8 @@ async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 
 
 function getHostnameFromUrl(url) {
     var host = url.split('/')[2];
-    if (host.includes(':')) {
-    	return host.slice(0, host.indexOf(':'))
- 	}
-    return host;
+    var index = host.indexOf(':');
+    return host.slice(0, index === -1 ? host.length + 1 : index);
 }
 
 function getFileNameFromUri(uri) {
