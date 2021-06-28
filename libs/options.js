@@ -2,7 +2,7 @@ function feedEventHandler() {
     document.querySelectorAll('[feed]').forEach(feed => {
         var field = feed.getAttribute('feed');
         var root = feed.getAttribute('root');
-        var tree = root ? aria2RPC.option[root] : aria2RPC.option;
+        var tree = root ? aria2RPC.options[root] : aria2RPC.options;
         feed.addEventListener('click', (event) => {
             document.getElementById(field).value = tree[feed.id];
         });

@@ -1,12 +1,12 @@
 browser.runtime.sendMessage({jsonrpc: true}, response => {
     printTaskManager(response);
-    gid = aria2RPC.lastSessionResult.result.gid;
-    type = aria2RPC.lastSessionResult.result.bittorrent ? 'bt' : 'http';
+    gid = aria2RPC.lastSession;
+    type = aria2RPC.sessionResult.bittorrent ? 'bt' : 'http';
     document.querySelectorAll('[http], [bt]').forEach(field => {
         field.style.display = field.hasAttribute(type) ? 'block' : 'none';
     });
     document.querySelectorAll('[task]').forEach(task => {
-        parseValueToOption(task, aria2RPC.lastSessionResult.option);
+        parseValueToOption(task, aria2RPC.sessionOption);
     });
     feedEventHandler();
 });
@@ -14,7 +14,7 @@ browser.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(response) {
     aria2RPC = response;
-    var {result} = aria2RPC.lastSessionResult;
+    var result = aria2RPC.sessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
         result.files.forEach(file => printTaskFiles(file, document.querySelector('#bt')));
@@ -94,7 +94,7 @@ document.querySelector('#name[button]').addEventListener('click', (event) => {
 });
 
 document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption('all-proxy', aria2RPC.option.proxy['uri']);
+    changeTaskOption('all-proxy', aria2RPC.options.proxy['uri']);
 });
 
 document.querySelector('#http').addEventListener('click', (event) => {
@@ -131,6 +131,6 @@ function changeTaskUris(changes) {
 }
 
 function changeTaskOption(name, value) {
-    aria2RPC.lastSessionResult.option[name] = value;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, aria2RPC.lastSessionResult.option]}});
+    aria2RPC.sessionOption[name] = value;
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.options.jsonrpc['token'], gid, aria2RPC.sessionOption]}});
 }

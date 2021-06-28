@@ -35,7 +35,7 @@ document.querySelectorAll('[tab]').forEach(tab => {
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     browser.runtime.sendMessage({
-        request: {id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.option.jsonrpc['token']]},
+        request: {id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.options.jsonrpc['token']]},
         purge: true
     }, response => {
         document.querySelector('[panel="stopped"]').innerHTML = '';
@@ -138,7 +138,7 @@ function removeTaskFromQueue(gid, status) {
     }
     var purge = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
     browser.runtime.sendMessage({
-        request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]},
+        request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]},
         purge
     }, response => {
         if (purge) {
@@ -149,7 +149,7 @@ function removeTaskFromQueue(gid, status) {
 
 function removeAndRestartTask(gid) {
     browser.runtime.sendMessage({
-        restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.option.jsonrpc['token'], gid]},
+        restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], gid]},
         purge: true
     }, response => {
         document.getElementById(gid).remove();
@@ -166,5 +166,5 @@ function pauseOrUnpauseTask(gid, status) {
     else {
         return;
     }
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]}});
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
 }

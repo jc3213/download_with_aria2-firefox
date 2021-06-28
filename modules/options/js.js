@@ -4,7 +4,7 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
     aria2RPC = response;
     document.querySelectorAll('input, select, textarea').forEach(field => {
         var root = field.getAttribute('root');
-        var tree = root ? aria2RPC.option[root] : aria2RPC.option;
+        var tree = root ? aria2RPC.options[root] : aria2RPC.options;
         var value = root ? tree[field.id] : tree[field.id];
         var token = field.getAttribute('token');
         var multi = field.getAttribute('multi');
@@ -12,14 +12,14 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
                 token ? 'token:' + field.value : multi ? field.value * multi : field.value;
-            browser.storage.local.set(aria2RPC.option);
+            browser.storage.local.set(aria2RPC.options);
         });
     });
     document.querySelectorAll('[gear]').forEach(gear => {
         var rule = gear.getAttribute('gear').split('&');
         var name = rule[0].split(','), term = rule[1];
         var id = name[0], root = name[1];
-        var tree = root ? aria2RPC.option[root] : aria2RPC.option;
+        var tree = root ? aria2RPC.options[root] : aria2RPC.options;
         var field = root ? '#' + id + '[root="' + root + '"]' : '#' + id;
         gear.style.display = term.includes(tree[id]) ? 'block' : 'none';
         document.querySelector(field).addEventListener('change', (event) => {
@@ -29,7 +29,7 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
 });
 
 document.querySelector('#export').addEventListener('click', (event) => {
-    var blob = new Blob([JSON.stringify(aria2RPC.option)], {type: 'application/json; charset=utf-8'});
+    var blob = new Blob([JSON.stringify(aria2RPC.options)], {type: 'application/json; charset=utf-8'});
     var saver = document.createElement('a');
     saver.href = URL.createObjectURL(blob);
     saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';

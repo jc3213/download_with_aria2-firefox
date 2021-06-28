@@ -13,5 +13,5 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
 
 document.addEventListener('change', (event) => {
     aria2RPC.globalOption[event.target.id] = event.target.value;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeGlobalOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.globalOption]}});
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeGlobalOption', params: [aria2RPC.options.jsonrpc['token'], aria2RPC.globalOption]}});
 });
