@@ -53,9 +53,9 @@ document.querySelector('#import').addEventListener('click', (event) => {
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    browser.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+    if (!aria2RPC.error) {
         openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + aria2RPC.version.version);
-    });
+    }
 });
 
 document.querySelector('#show_btn').addEventListener('click', (event) => {
