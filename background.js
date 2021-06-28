@@ -111,8 +111,8 @@ browser.runtime.onInstalled.addListener(async (details) => {
         localStorage.clear();
     }
     if (details.reason === 'update' && details.previousVersion === '2.6900') {
-        aria2RPC.option.jsonrpc['token'] = 'token:' + aria2RPC.option.jsonrpc['token'];
-        browser.storage.local.set(aria2RPC.option);
+        browser.storage.local.clear();
+        fetch('option.json').then(response => response.json()).then(json => browser.storage.local.set(json));
     }
 });
 
