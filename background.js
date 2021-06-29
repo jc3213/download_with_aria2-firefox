@@ -173,7 +173,7 @@ browser.downloads.onCreated.addListener(async (item) => {
             browser.downloads.erase({id: item.id}, () => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
             });
-        }, showNotification);
+        }).catch(error => showNotification(error.message.replace(/\d+\s/, '')));
     }
 });
 
