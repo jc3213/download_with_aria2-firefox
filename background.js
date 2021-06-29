@@ -165,7 +165,7 @@ browser.downloads.onCreated.addListener(async (item) => {
     var referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
     var hostname = getHostnameFromUrl(referer);
     var filename = getFileNameFromUri(item.filename);
-    var folder = filename.slice(0, item.filename.indexOf(filename));
+    var folder = item.filename.slice(0, item.filename.indexOf(filename));
     var storeId = tabs[0].cookieStoreId;
 
     if (captureFilterWorker(hostname, getFileExtension(filename), fileSizeWrapper(url))) {
