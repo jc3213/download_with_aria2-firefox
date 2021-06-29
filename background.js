@@ -213,7 +213,7 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
     if (aria2RPC.options.capture['mode'] === '2') {
         return true;
     }
-    if (aria2RPC.options.capure['resolve'].includes(hostname)) {
+    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
         return true;
     }
     if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
