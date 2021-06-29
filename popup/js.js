@@ -42,11 +42,10 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     });
 });
 
-browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
-browser.runtime.onMessage.addListener(printTaskManager);
+browser.runtime.connect().onMessage.addListener(printTaskManager);
 
-function printTaskManager(response) {
-    aria2RPC = response;
+function printTaskManager(message) {
+    aria2RPC = message;
     var {globalStat, active, waiting, stopped, error} = aria2RPC;
     if (globalStat) {
         document.querySelector('#active').innerText = globalStat.numActive;

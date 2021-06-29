@@ -10,10 +10,11 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
     });
     feedEventHandler();
 });
-browser.runtime.onMessage.addListener(printTaskManager);
 
-function printTaskManager(response) {
-    aria2RPC = response;
+browser.runtime.connect().onMessage.addListener(printTaskManager);
+
+function printTaskManager(message) {
+    aria2RPC = message;
     var result = aria2RPC.sessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
