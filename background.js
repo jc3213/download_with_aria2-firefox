@@ -240,7 +240,7 @@ async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 
 function getHostnameFromUrl(url) {
     var host = url.split('/')[2];
     var index = host.indexOf(':');
-    return host.slice(0, index === -1 ? host.length + 1 : index);
+    return host.slice(0, index === -1 ? host.length : index);
 }
 
 function getFileNameFromUri(uri) {
