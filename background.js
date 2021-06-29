@@ -109,8 +109,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
     }
 });
 
-browser.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, download, request, restart, session, purge} = message;
+browser.runtime.onMessage.addListener(({jsonrpc, download, request, restart, session, purge}, sender, response) => {
     if (jsonrpc) {
         response(aria2RPC);
     }
@@ -167,7 +166,7 @@ browser.downloads.onCreated.addListener(async (item) => {
     var folder = item.filename.slice(0, item.filename.indexOf(filename));
     var storeId = tabs[0].cookieStoreId;
 
-    if (captureFilterWorker(hostname, getFileExtension(filename), fileSizeWrapper(url))) {
+    if (captureDownload(hostname, getFileExtension(filename), fileSizeWrapper(url))) {
         browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
@@ -175,6 +174,25 @@ browser.downloads.onCreated.addListener(async (item) => {
         }).catch(error => showNotification(error.message.replace(/\d+\s/, '')));
     }
 });
+
+function captureDownload(hostname, fileExt, fileSize) {
+    if (aria2RPC.options.capture['reject'].includes(hostname)) {
+        return false;
+    }
+    if (aria2RPC.options.capture['mode'] === '2') {
+        return true;
+    }
+    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
+        return true;
+    }
+    if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
+        return true;
+    }
+    if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
+        return true;
+    }
+    return false;
+}
 
 async function startDownload({url, referer, hostname, filename, folder, storeId}, options = {}) {
     if (filename) {
@@ -203,25 +221,6 @@ function downloadWithAria2(url, options) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.options.jsonrpc['token'], url, options]})
         .then(response => showNotification(url[0]))
         .catch(showNotification);
-}
-
-function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (aria2RPC.options.capture['reject'].includes(hostname)) {
-        return false;
-    }
-    if (aria2RPC.options.capture['mode'] === '2') {
-        return true;
-    }
-    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
-        return true;
-    }
-    if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
-        return true;
-    }
-    if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
-        return true;
-    }
-    return false;
 }
 
 async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 'Cookie:') {
