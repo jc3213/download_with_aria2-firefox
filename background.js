@@ -1,9 +1,8 @@
 var aria2RPC = {};
 
 function aria2RPCRequest(request) {
-    var jsonrpc = aria2RPC.options.jsonrpc['uri'];
     var requestJSON = Array.isArray(request) ? request : [request];
-    return fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
+    return fetch(aria2RPC.options.jsonrpc['uri'], {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
         if (response.ok) {
             return response.json();
         }
@@ -22,9 +21,9 @@ function aria2RPCRequest(request) {
 }
 
 function registerMessageService() {
-    clearInterval(aria2RPC.keepAlive);
+    clearInterval(aria2RPC.connect);
     clearInterval(aria2RPC.message);
-    aria2RPC.keepAlive = setInterval(() => {
+    aria2RPC.connect = setInterval(() => {
         aria2RPCRequest([
             {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.options.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.options.jsonrpc['token']]},
@@ -40,7 +39,7 @@ function registerMessageService() {
         }).catch(error => {
             aria2RPC = {...aria2RPC, error};
             showNotification(error);
-            clearInterval(aria2RPC.keepAlive);
+            clearInterval(aria2RPC.connect);
         });
     }, 1000);
     aria2RPC.message = setInterval(() => {
