@@ -122,7 +122,7 @@ browser.runtime.onConnect.addListener(port => {
     });
 });
 
-browser.runtime.onMessage.addListener((({jsonrpc, session, purge, download, request, restart}, sender, sendResponse) => {
+browser.runtime.onMessage.addListener(({jsonrpc, session, purge, download, request, restart}, sender, sendResponse) => {
     if (jsonrpc) {
         sendResponse(aria2RPC);
     }
@@ -130,10 +130,8 @@ browser.runtime.onMessage.addListener((({jsonrpc, session, purge, download, requ
         aria2RPC.lastSession = session;
     }
     if (purge) {
-        aria2RPC.active = [];
-        aria2RPC.waiting = [];
-        aria2RPC.stopped = [];
-        sendResponse({});
+        delete aria2RPC.globalStat;
+        sendResponse(aria2RPC);
     }
     if (download) {
         startDownload(...download);
