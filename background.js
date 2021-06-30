@@ -1,4 +1,5 @@
 var aria2RPC = {};
+var aria2Port = {};
 
 function aria2RPCRequest(request) {
     var requestJSON = Array.isArray(request) ? request : [request];
@@ -22,6 +23,7 @@ function aria2RPCRequest(request) {
 
 function registerMessageService() {
     clearInterval(aria2RPC.connect);
+    clearInterval(aria2RPC.manager);
     aria2RPC.connect = setInterval(() => {
         aria2RPCRequest([
             {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.options.jsonrpc['token']]},
@@ -41,6 +43,14 @@ function registerMessageService() {
             clearInterval(aria2RPC.connect);
         });
     }, 1000);
+    aria2RPC.manager = setInterval(() => {
+        if (aria2Port['download-manager']) {
+            aria2Port['download-manager'].postMessage(aria2RPC);
+        }
+        if (aria2Port['task-manager']) {
+            aria2Port['task-manager'].postMessage(aria2RPC);
+        }        
+    }, aria2RPC.options.jsonrpc['refresh']);
 }
 
 browser.contextMenus.create({
@@ -106,35 +116,33 @@ browser.runtime.onInstalled.addListener(async (details) => {
 });
 
 browser.runtime.onConnect.addListener(port => {
-    port.postMessage(aria2RPC);
-    aria2RPC.message = setInterval(() => {
-        port.postMessage(aria2RPC);
-    }, aria2RPC.options.jsonrpc['refresh']);
-    port.onDisconnect.addListener(() => {
-        clearInterval(aria2RPC.message);
-    })
+    aria2Port[port.name] = port;
+    port.onDisconnect.addListener((port) => {
+        delete aria2Port[port.name];
+    });
 });
 
-browser.runtime.onMessage.addListener(({jsonrpc, download, request, restart, session, purge}, sender, response) => {
+browser.runtime.onMessage.addListener((({jsonrpc, session, purge, download, request, restart}, sender, sendResponse) => {
     if (jsonrpc) {
-        response(aria2RPC);
+        sendResponse(aria2RPC);
+    }
+    if (session) {
+        aria2RPC.lastSession = session;
+    }
+    if (purge) {
+        aria2RPC.active = [];
+        aria2RPC.waiting = [];
+        aria2RPC.stopped = [];
+        sendResponse({});
     }
     if (download) {
         startDownload(...download);
     }
     if (request) {
-        aria2RPCRequest(request);
-        response();
+        aria2RPCRequest(request).catch(error => console.log(error));
     }
     if (restart) {
-        aria2RPCRequest(restart).then(restartDownload);
-        response();
-    }
-    if (session !== undefined) {
-        aria2RPC.lastSession = session;
-    }
-    if (purge) {
-        aria2RPC.stopped = [];
+        aria2RPCRequest(restart).then(restartDownload);;
     }
 });
 

@@ -11,7 +11,7 @@ browser.runtime.sendMessage({jsonrpc: true}, response => {
     feedEventHandler();
 });
 
-browser.runtime.connect().onMessage.addListener(printTaskManager);
+browser.runtime.connect({name: 'task-manager'}).onMessage.addListener(printTaskManager);
 
 function printTaskManager(message) {
     aria2RPC = message;
@@ -70,7 +70,9 @@ function appendFileToTable(file, table) {
 }
 
 document.addEventListener('change', (event) => {
-    changeTaskOption(event.target.id, event.target.value);
+    if (event.target.id) {
+        changeTaskOption(event.target.id, event.target.value);
+    }
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -100,8 +102,7 @@ document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) =
 
 document.querySelector('#http').addEventListener('click', (event) => {
     if (event.ctrlKey) {
-        changeTaskUris({remove: event.target.innerText});
-        jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
+        changeTaskUri({remove: event.target.innerText});
     }
     else {
         navigator.clipboard.writeText(event.target.innerText);
@@ -109,26 +110,24 @@ document.querySelector('#http').addEventListener('click', (event) => {
 });
 
 document.querySelector('#source > span').addEventListener('click', (event) => {
-    changeTaskUris({add: document.querySelector('#source > input').value});
+    changeTaskUri({add: document.querySelector('#source > input').value});
     document.querySelector('#source > input').value = '';
 });
 
 document.querySelector('#bt').addEventListener('click', (event) => {
     if (event.target.className) {
-        var checked = [];
+        var checked = '';
         document.querySelectorAll('td:nth-child(1)').forEach(item => {
             if (item === event.target && item.className !== 'active' || item !== event.target && item.className === 'active') {
-                checked.push(item.innerText);
+                checked += ',' + item.innerText;
             }
         });
-        changeTaskOption('select-file', checked.join());
+        changeTaskOption('select-file', checked.slice(1));
     }
 });
 
-function changeTaskUris(changes) {
-    var add = changes.add ? [changes.add] : [];
-    var remove = changes.remove ? [changes.remove] : [];
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [gid, 1, remove, add]}});
+function changeTaskUri({add, remove}) {
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.options.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]}});
 }
 
 function changeTaskOption(name, value) {
