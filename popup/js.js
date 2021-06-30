@@ -39,18 +39,17 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 });
 
 document.querySelector('div.queue').addEventListener('click', (event) => {
-    var {gid, status} = window.aria2Session;
     if (event.target.id === 'remove_btn') {
-        removeTaskFromQueue(gid, status);
+        removeTaskFromQueue();
     }
     if (event.target.id === 'invest_btn') {
         openModuleWindow('taskMgr', '/modules/taskMgr/index.html');
     }
     if (event.target.id === 'retry_btn') {
-        removeAndRestartTask(gid);
+        removeAndRestartTask();
     }
     if (event.target.id === 'fancybar') {
-        pauseOrUnpauseTask(gid, status);
+        pauseOrUnpauseTask();
     }
 });
 
@@ -109,7 +108,8 @@ function appendTaskDetails(result) {
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.addEventListener('mouseenter', (event) => {
-        window.aria2Session = {gid: result.gid, status: result.status};
+        __gid = task.id;
+        __status = task.status;
         browser.runtime.sendMessage({session: result.gid});
     });
     return task;
@@ -142,22 +142,22 @@ function purgeTaskQueue(gid) {
     gid ? document.getElementById(gid).remove() : document.querySelector('[panel="stopped"]').innerHTML = '';
 }
 
-function removeTaskFromQueue(gid, status) {
-    var method = ['active', 'waiting', 'paused'].includes(status) ? 'aria2.forceRemove' :
-        ['complete', 'error', 'removed'].includes(status) ? 'aria2.removeDownloadResult' : null;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
-    if (['complete', 'error', 'paused', 'removed'].includes(status)) {
-        purgeTaskQueue(gid);
+function removeTaskFromQueue() {
+    var method = ['active', 'waiting', 'paused'].includes(__status) ? 'aria2.forceRemove' :
+        ['complete', 'error', 'removed'].includes(__status) ? 'aria2.removeDownloadResult' : null;
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    if (['complete', 'error', 'paused', 'removed'].includes(__status)) {
+        purgeTaskQueue(__gid);
     }
 }
 
-function removeAndRestartTask(gid) {
-    browser.runtime.sendMessage({restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], gid]}});
-    purgeTaskQueue(gid);
+function removeAndRestartTask() {
+    browser.runtime.sendMessage({restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    purgeTaskQueue(__gid);
 }
 
-function pauseOrUnpauseTask(gid, status) {
-    var method = ['active', 'waiting'].includes(status) ? 'aria2.pause' :
-        status === 'paused' ? 'aria2.unpause' : null;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
+function pauseOrUnpauseTask() {
+    var method = ['active', 'waiting'].includes(__status) ? 'aria2.pause' :
+        __status === 'paused' ? 'aria2.unpause' : null;
+    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
 }
