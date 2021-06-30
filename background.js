@@ -81,7 +81,7 @@ browser.storage.onChanged.addListener(changes => {
 
 browser.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
-browser.runtime.onInstalled.addListener(async (details) => {
+browser.runtime.onInstalled.addListener(async details => {
     if (details.reason === 'install') {
         var response = await fetch('options.json');
         var json = await response.json();
@@ -167,7 +167,7 @@ function fileSizeWrapper(url) {
 }
 // End of downloadItem.fileSize wrapper
 
-browser.downloads.onCreated.addListener(async (item) => {
+browser.downloads.onCreated.addListener(async item => {
     if (aria2RPC.options.capture['mode'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
     }
