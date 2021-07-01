@@ -162,7 +162,7 @@ browser.downloads.onCreated.addListener(async item => {
             browser.downloads.erase({id: item.id}).then(() => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
             });
-        }).catch(error => showNotification(error.message.replace(/\d+\s/, '')));
+        }).catch(error => showNotification('Download is already complete'));
     }
 });
 
