@@ -160,7 +160,7 @@ browser.downloads.onCreated.addListener(async item => {
     var request = await fetch(url, {method: 'HEAD'});
     var fileSize = request.headers.get('content-length');
 // See https://bugzilla.mozilla.org/show_bug.cgi?id=1666137 for more details
-    if (captureDownload(hostname, getFileExtension(filename), fileSize)) {
+    if (await captureDownload(hostname, getFileExtension(filename), fileSize)) {
         browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
