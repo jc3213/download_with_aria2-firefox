@@ -1,7 +1,6 @@
 document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
     var src = '/modules/' + id + '/index.html?popup';
-
     module.addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
             document.getElementById(id).remove();
@@ -138,14 +137,23 @@ function calcEstimatedTime(task, number) {
 }
 
 function purgeTaskQueue(gid) {
-    browser.runtime.sendMessage({purge: true}, printTaskManager);
-    gid ? document.getElementById(gid).remove() : document.querySelector('[panel="stopped"]').innerHTML = '';
+    if (gid) {
+        document.getElementById(gid).remove()
+    }
+    else {
+        document.querySelector('[panel="stopped"]').innerHTML = '';
+    }
+    if (aria2RPC.globalStat) {
+        browser.runtime.sendMessage({purge: true}, printTaskManager);
+    }
 }
 
 function removeTaskFromQueue() {
     var method = ['active', 'waiting', 'paused'].includes(__status) ? 'aria2.forceRemove' :
         ['complete', 'error', 'removed'].includes(__status) ? 'aria2.removeDownloadResult' : null;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    if (method) {
+        browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    }
     if (['complete', 'error', 'paused', 'removed'].includes(__status)) {
         purgeTaskQueue(__gid);
     }
@@ -159,5 +167,7 @@ function removeAndRestartTask() {
 function pauseOrUnpauseTask() {
     var method = ['active', 'waiting'].includes(__status) ? 'aria2.pause' :
         __status === 'paused' ? 'aria2.unpause' : null;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    if (method) {
+        browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+    }
 }
