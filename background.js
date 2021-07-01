@@ -156,19 +156,17 @@ browser.downloads.onCreated.addListener(async item => {
     var filename = getFileNameFromUri(item.filename);
     var folder = item.filename.slice(0, item.filename.indexOf(filename));
     var storeId = tabs[0].cookieStoreId;
-// Use asynchrounous Fetch API to resolve fileSize till Mozilla fixes downloadItem.fileSize
-    var fileSize = await fetch(url, {method: 'HEAD'}).then(response => response.headers.get('content-length'));
-// See https://bugzilla.mozilla.org/show_bug.cgi?id=1666137 for more details
-    if (await captureDownload(hostname, getFileExtension(filename), fileSize)) {
+
+    if (await captureDownload(hostname, getFileExtension(filename), url)) {
         browser.downloads.cancel(item.id).then(() => {
-            browser.downloads.erase({id: item.id}, () => {
+            browser.downloads.erase({id: item.id}).then(() => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
             });
         }).catch(error => showNotification(error.message.replace(/\d+\s/, '')));
     }
 });
 
-async function captureDownload(hostname, fileExt, fileSize) {
+async function captureDownload(hostname, fileExt, url) {
     if (aria2RPC.options.capture['reject'].includes(hostname)) {
         return false;
     }
@@ -181,6 +179,9 @@ async function captureDownload(hostname, fileExt, fileSize) {
     if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
         return true;
     }
+// Use asynchrounous Fetch API to resolve fileSize till Mozilla fixes downloadItem.fileSize
+    var fileSize = await fetch(url, {method: 'HEAD'}).then(response => response.headers.get('content-length'));
+// See https://bugzilla.mozilla.org/show_bug.cgi?id=1666137 for more details
     if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
         return true;
     }
