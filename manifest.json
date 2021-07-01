@@ -10,9 +10,7 @@
         "cookies",
         "notifications",
         "storage",
-        "<all_urls>",
-        "webRequest",
-        "webRequestBlocking"
+        "<all_urls>"
     ],
     "default_locale" : "en",
     "background": {
