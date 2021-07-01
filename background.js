@@ -144,27 +144,6 @@ browser.runtime.onMessage.addListener(({jsonrpc, session, purge, download, reque
     }
 });
 
-// Temporary till downloadItem.fileSize is fixed, see https://bugzilla.mozilla.org/show_bug.cgi?id=1666137
-var webRequest = [];
-browser.webRequest.onHeadersReceived.addListener((event) => {
-    var length = event.responseHeaders.find(item => item.name === 'content-length');
-    if (length) {
-        webRequest.push({url: event.url, fileSize: length.value});
-    }
-    if (webRequest.length > 50) {
-        webRequest.shift();
-    }
-}, {'urls': ['<all_urls>']}, ['blocking', 'responseHeaders']);
-
-function fileSizeWrapper(url) {
-    var request = webRequest.find(request => request.url === url);
-    if (request) {
-        return request.fileSize;
-    }
-    return -1;
-}
-// End of downloadItem.fileSize wrapper
-
 browser.downloads.onCreated.addListener(async item => {
     if (aria2RPC.options.capture['mode'] === '0' || item.url.startsWith('blob') || item.url.startsWith('data')) {
         return;
@@ -177,8 +156,11 @@ browser.downloads.onCreated.addListener(async item => {
     var filename = getFileNameFromUri(item.filename);
     var folder = item.filename.slice(0, item.filename.indexOf(filename));
     var storeId = tabs[0].cookieStoreId;
-
-    if (captureDownload(hostname, getFileExtension(filename), fileSizeWrapper(url))) {
+// Use asynchrounous Fetch API to resolve fileSize till Mozilla fixed downloadItem.fileSize
+    var request = await fetch(url, {method: 'HEAD'});
+    var fileSize = request.headers.get('content-length');
+// See https://bugzilla.mozilla.org/show_bug.cgi?id=1666137 for more details
+    if (captureDownload(hostname, getFileExtension(filename), fileSize)) {
         browser.downloads.cancel(item.id).then(() => {
             browser.downloads.erase({id: item.id}, () => {
                 startDownload({url, referer, hostname, filename, folder, storeId});
@@ -187,7 +169,7 @@ browser.downloads.onCreated.addListener(async item => {
     }
 });
 
-function captureDownload(hostname, fileExt, fileSize) {
+async function captureDownload(hostname, fileExt, fileSize) {
     if (aria2RPC.options.capture['reject'].includes(hostname)) {
         return false;
     }
