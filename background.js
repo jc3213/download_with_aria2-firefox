@@ -156,7 +156,7 @@ browser.downloads.onCreated.addListener(async item => {
     var filename = getFileNameFromUri(item.filename);
     var folder = item.filename.slice(0, item.filename.indexOf(filename));
     var storeId = tabs[0].cookieStoreId;
-// Use asynchrounous Fetch API to resolve fileSize till Mozilla fixed downloadItem.fileSize
+// Use asynchrounous Fetch API to resolve fileSize till Mozilla fixes downloadItem.fileSize
     var request = await fetch(url, {method: 'HEAD'});
     var fileSize = request.headers.get('content-length');
 // See https://bugzilla.mozilla.org/show_bug.cgi?id=1666137 for more details
