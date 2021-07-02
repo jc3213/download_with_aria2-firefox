@@ -69,10 +69,8 @@ function appendFileToTable(file, table) {
     return cell;
 }
 
-document.addEventListener('change', (event) => {
-    if (event.target.id) {
-        changeTaskOption(event.target.id, event.target.value);
-    }
+document.querySelector('[card].container').addEventListener('change', (event) => {
+    changeTaskOption(event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -117,9 +115,9 @@ document.querySelector('#source > span').addEventListener('click', (event) => {
 document.querySelector('#bt').addEventListener('click', (event) => {
     if (event.target.className) {
         var checked = '';
-        document.querySelectorAll('td:nth-child(1)').forEach(item => {
-            if (item === event.target && item.className !== 'active' || item !== event.target && item.className === 'active') {
-                checked += ',' + item.innerText;
+        document.querySelectorAll('td:nth-child(1)').forEach(file => {
+            if (file === event.target && file.className !== 'active' || file !== event.target && file.className === 'active') {
+                checked += ',' + file.innerText;
             }
         });
         changeTaskOption('select-file', checked.slice(1));
