@@ -37,20 +37,42 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     purgeTaskQueue();
 });
 
-document.querySelector('div.queue').addEventListener('click', (event) => {
+document.querySelector('div.queue').addEventListener('click', (event, method) => {
     if (event.target.id === 'remove_btn') {
-        removeTaskFromQueue();
+        method = ['active', 'waiting', 'paused'].includes(__status) ? 'aria2.forceRemove' :
+            ['complete', 'error', 'removed'].includes(__status) ? 'aria2.removeDownloadResult' : null;
+        if (['complete', 'error', 'paused', 'removed'].includes(__status)) {
+            purgeTaskQueue(__gid);
+        }
     }
     if (event.target.id === 'invest_btn') {
-        openModuleWindow('taskMgr', '/modules/taskMgr/index.html');
+        var timer = __gid === aria2RPC.lastSession ? 500 : 0;
+        setTimeout(() => openModuleWindow('taskMgr', '/modules/taskMgr/index.html'), timer);
     }
     if (event.target.id === 'retry_btn') {
-        removeAndRestartTask();
+        browser.runtime.sendMessage({restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], __gid]}});
+        purgeTaskQueue(__gid);
     }
     if (event.target.id === 'fancybar') {
-        pauseOrUnpauseTask();
+        method = ['active', 'waiting'].includes(__status) ? 'aria2.pause' :
+            __status === 'paused' ? 'aria2.unpause' : null;
+    }
+    if (method) {
+        browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
     }
 });
+
+function purgeTaskQueue(gid) {
+    if (gid) {
+        document.getElementById(gid).remove()
+    }
+    else {
+        document.querySelector('[panel="stopped"]').innerHTML = '';
+    }
+    if (aria2RPC.globalStat) {
+        browser.runtime.sendMessage({purge: true}, printTaskManager);
+    }
+}
 
 browser.runtime.sendMessage({jsonrpc: true}, printTaskManager);
 browser.runtime.connect({name: 'download-manager'}).onMessage.addListener(printTaskManager);
@@ -133,41 +155,5 @@ function calcEstimatedTime(task, number) {
         task.querySelector('#second').innerText = seconds;
         task.querySelector('#infinite').style.display = 'none';
         task.querySelector('#estimate').style.display = 'inline-block';
-    }
-}
-
-function purgeTaskQueue(gid) {
-    if (gid) {
-        document.getElementById(gid).remove()
-    }
-    else {
-        document.querySelector('[panel="stopped"]').innerHTML = '';
-    }
-    if (aria2RPC.globalStat) {
-        browser.runtime.sendMessage({purge: true}, printTaskManager);
-    }
-}
-
-function removeTaskFromQueue() {
-    var method = ['active', 'waiting', 'paused'].includes(__status) ? 'aria2.forceRemove' :
-        ['complete', 'error', 'removed'].includes(__status) ? 'aria2.removeDownloadResult' : null;
-    if (method) {
-        browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
-    }
-    if (['complete', 'error', 'paused', 'removed'].includes(__status)) {
-        purgeTaskQueue(__gid);
-    }
-}
-
-function removeAndRestartTask() {
-    browser.runtime.sendMessage({restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], __gid]}});
-    purgeTaskQueue(__gid);
-}
-
-function pauseOrUnpauseTask() {
-    var method = ['active', 'waiting'].includes(__status) ? 'aria2.pause' :
-        __status === 'paused' ? 'aria2.unpause' : null;
-    if (method) {
-        browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
     }
 }
