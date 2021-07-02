@@ -139,6 +139,7 @@ browser.runtime.onMessage.addListener(({jsonrpc, session, download, request, res
         aria2RPCRequest(restart).then(restartDownload);;
     }
     if (purge) {
+        aria2RPC.globalStat = undefined;
         aria2RPC.waiting = [];
         aria2RPC.stopped = [];
         sendResponse(aria2RPC);
