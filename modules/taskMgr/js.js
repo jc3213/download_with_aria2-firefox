@@ -1,38 +1,27 @@
-browser.runtime.sendMessage({jsonrpc: true}, response => {
-    printTaskManager(response);
-    gid = aria2RPC.lastSession;
-    type = aria2RPC.sessionResult.bittorrent ? 'bt' : 'http';
-    document.querySelectorAll('[http], [bt]').forEach(field => {
-        field.style.display = field.hasAttribute(type) ? 'block' : 'none';
-    });
-    document.querySelectorAll('[task]').forEach(task => {
-        parseValueToOption(task, aria2RPC.sessionOption);
-    });
-    feedEventHandler();
-});
+var gid = location.hash.slice(1);
+var type = location.search.slice(1);
 
-browser.runtime.connect({name: 'task-manager'}).onMessage.addListener(printTaskManager);
-
-function printTaskManager(message) {
-    aria2RPC = message;
-    var result = aria2RPC.sessionResult;
-    var stopped = ['complete', 'error', 'removed'].includes(result.status);
-    if (result.bittorrent) {
-        result.files.forEach(file => printTaskFiles(file, document.querySelector('#bt')));
-    }
-    else {
-        result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#http')));
-    }
-    document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path ? result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) : result.files[0].uris[0].uri;
-    document.querySelector('#name').className = result.status;
-    document.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
-    document.querySelector('#ratio').innerText = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
-    document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
-    document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
-    document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-    document.querySelector('#max-download-limit').disabled = stopped;
-    document.querySelector('#max-upload-limit').disabled = stopped ?? !result.bittorrent;
-    document.querySelector('#all-proxy').disabled = stopped;
+function aria2RPCClient() {
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.jsonrpc['token'], gid]},
+    result => {
+        var disabled = ['complete', 'error'].includes(result.status);
+        document.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
+        document.querySelector('#name').className = result.status;
+        document.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
+        document.querySelector('#ratio').innerText = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
+        document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
+        document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
+        document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
+        document.querySelector('#max-download-limit').disabled = disabled;
+        document.querySelector('#max-upload-limit').disabled = disabled || type === 'http';
+        document.querySelector('#all-proxy').disabled = disabled;
+        if (type === 'bt') {
+            result.files.forEach(file => printTaskFiles(file, document.querySelector('#files')));
+        }
+        if (type === 'http') {
+            result.files[0].uris.forEach(uri => printTaskUris(uri, document.querySelector('#uris')));
+        }
+    });
 }
 
 function printTaskUris(uri, table) {
@@ -69,8 +58,12 @@ function appendFileToTable(file, table) {
     return cell;
 }
 
+document.querySelectorAll('[http], [bt]').forEach(field => {
+    field.style.display = field.hasAttribute(type) ? 'block' : 'none';
+});
+
 document.querySelector('[card].container').addEventListener('change', (event) => {
-    changeTaskOption(event.target.id, event.target.value);
+    changeTaskOption(gid, event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -95,10 +88,10 @@ document.querySelector('#name[button]').addEventListener('click', (event) => {
 });
 
 document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption('all-proxy', aria2RPC.options.proxy['uri']);
+    changeTaskOption(gid, 'all-proxy', aria2RPC.proxy['uri']);
 });
 
-document.querySelector('#http').addEventListener('click', (event) => {
+document.querySelector('#uris').addEventListener('click', (event) => {
     if (event.ctrlKey) {
         changeTaskUri({remove: event.target.innerText});
     }
@@ -112,7 +105,7 @@ document.querySelector('#source > span').addEventListener('click', (event) => {
     document.querySelector('#source > input').value = '';
 });
 
-document.querySelector('#bt').addEventListener('click', (event) => {
+document.querySelector('#files').addEventListener('click', (event) => {
     if (event.target.className) {
         var checked = '';
         document.querySelectorAll('td:nth-child(1)').forEach(file => {
@@ -120,15 +113,17 @@ document.querySelector('#bt').addEventListener('click', (event) => {
                 checked += ',' + file.innerText;
             }
         });
-        changeTaskOption('select-file', checked.slice(1));
+        changeTaskOption(gid, 'select-file', checked.slice(1));
     }
 });
 
 function changeTaskUri({add, remove}) {
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.options.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]}});
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]});
 }
 
-function changeTaskOption(name, value) {
-    aria2RPC.sessionOption[name] = value;
-    browser.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.options.jsonrpc['token'], gid, aria2RPC.sessionOption]}});
-}
+aria2RPCLoader(() => {
+    printTaskOption(gid);
+    feedEventHandler();
+    aria2RPCClient();
+    aria2RPCKeepAlive();
+});

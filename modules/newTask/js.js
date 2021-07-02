@@ -1,9 +1,3 @@
-browser.runtime.sendMessage({jsonrpc: true}, response => {
-    aria2RPC = response;
-    feedEventHandler();
-    document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
-});
-
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#referer').value;
     var options = {};
@@ -30,9 +24,15 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
         }
     });
     parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
-    frameElement.remove();
+    frameElement.style.display = 'none';
+    setTimeout(() => frameElement.remove(), 500);
 });
 
 function submitNewDownload(session, options) {
-    browser.runtime.sendMessage({download: [session, options]});
+    downloadWithAria2(session, options);
 }
+
+aria2RPCLoader(() => {
+    printGlobalOption();
+    feedEventHandler();
+});
