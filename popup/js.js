@@ -25,8 +25,14 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 
 document.querySelector('#download_btn').addEventListener('click', (event) => {
     var module = document.querySelector('[module="download"]');
-    module.style.display = module.style.display === 'none' ? 'block' : 'none';
-    event.target.className = event.target.className === 'checked' ? '' : 'checked';
+    if (event.target.classList.contains('checked')) {
+        module.style.display = 'none';
+    }
+    else {
+        module.style.display = 'block';
+        aria2TaskOption();
+    }
+    event.target.classList.toggle('checked');
 });
 
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
@@ -79,7 +85,6 @@ document.querySelector('#options_btn').addEventListener('click', (event) => {
 aria2RPCLoader(() => {
     aria2RPCClient();
     aria2RPCKeepAlive();
-    aria2TaskOption();
 });
 
 function aria2TaskOption() {
