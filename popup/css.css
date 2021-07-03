@@ -6,22 +6,33 @@
     margin-right: 10px;
 }
 
-iframe {
+[module] {
     background-color: #FFF;
-    border: none;
+    margin: 8px;
     position: absolute;
-    width: 100%;
+    border: 0px;
+}
+
+[module="download"] {
+    top: 36px;
     left: 0px;
+    width: calc(100% - 15px);
+    height: calc(100% - 90px);
 }
 
-#newTask {
-    top: 40px;
-    height: calc(100% - 80px);
-}
-
-#options, #taskMgr {
-    top: 0px;
+[module="options"], [module="taskMgr"] {
+    top: -8px;
+    left: -8px;
+    width: 100%;
     height: calc(100% - 40px);
+}
+
+[card] {
+    overflow-y: auto;
+}
+
+[card] {
+    height: 360px;
 }
 
 .queue {
