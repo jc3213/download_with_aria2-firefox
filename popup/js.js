@@ -18,68 +18,23 @@ document.querySelectorAll('[tab]').forEach(tab => {
     });
 });
 
+document.querySelectorAll('[module]').forEach(module => {
+    var id = module.getAttribute('module');
+    var url = module.getAttribute('link') + '?popup';
+    module.addEventListener('click', (event) => {
+        if (event.target.classList.contains('checked')) {
+            document.getElementById(id).remove();
+        }
+        else {
+            openModuleWindow(id, url);
+        }
+        module.classList.toggle('checked');
+    });
+});
+
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.jsonrpc['token']]},
     result => document.querySelector('[panel="stopped"]').innerHTML = '');
-});
-
-document.querySelector('#download_btn').addEventListener('click', (event) => {
-    var module = document.querySelector('[module="download"]');
-    if (event.target.classList.contains('checked')) {
-        module.style.display = 'none';
-    }
-    else {
-        module.style.display = 'block';
-        aria2TaskOption();
-    }
-    event.target.classList.toggle('checked');
-});
-
-document.querySelector('#submit_btn').addEventListener('click', (event) => {
-    var referer = document.querySelector('#referer').value;
-    var options = {};
-    document.querySelectorAll('[local], [aria2]').forEach(field => {
-        options[field.id] = field.value;
-    });
-    document.querySelector('#entries').value.split('\n').forEach(result => {
-        try {
-            var session = JSON.parse(result);
-            if (Array.isArray(session)) {
-                if (typeof session[0] === 'string') {
-                    submitNewDownload({url: session, referer}, options);
-                }
-                else {
-                    session.forEach(task => submitNewDownload(referer ? {...task, referer} : task, options));
-                }
-            }
-            else {
-                submitNewDownload(referer ? {...session, referer} : session, options);
-            }
-        }
-        catch(error) {
-            result.split('\n').forEach(url => submitNewDownload({url, referer}, options));
-        }
-    });
-    document.querySelector('#download_btn').className = '';
-    document.querySelector('[module="download"]').style.display = 'none';
-});
-
-document.querySelector('[feed]').addEventListener('click', (event) => {
-    var name = event.target.getAttribute('local');
-    var root = event.target.getAttribute('root');
-    root ? {[root]: {[name] : value}} = aria2RPC : {[name] : value} = aria2RPC;
-    var feed = event.target.getAttribute('feed');
-    document.querySelector('[aria2="all-proxy"]').value = value;
-});
-
-document.querySelector('#options_btn').addEventListener('click', (event) => {
-    event.target.classList.toggle('checked');
-    if (event.target.className === 'checked') {
-        openModuleWindow('options', '/options/index.html?popup');
-    }
-    else {
-        document.querySelector('[module="options"]').remove();
-    }
 });
 
 aria2RPCLoader(() => {
@@ -87,25 +42,13 @@ aria2RPCLoader(() => {
     aria2RPCKeepAlive();
 });
 
-function aria2TaskOption() {
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.jsonrpc['token']]},
-    options => {
-        document.querySelectorAll('[aria2]').forEach(field => {
-            var name = field.getAttribute('aria2');
-            var calc = field.hasAttribute('calc') ? bytesToFileSize(options[name]) : null;
-            field.value = calc ? calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1) : options[name] ?? '';
-        });
-    });
-}
-
 function aria2RPCClient() {
     aria2RPCRequest([
-        {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.jsonrpc['token']]},
         {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.jsonrpc['token']]},
         {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.jsonrpc['token']]},
         {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.jsonrpc['token'], 0, 999]},
         {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.jsonrpc['token'], 0, 999]}
-    ], (options, global, active, waiting, stopped) => {
+    ], (global, active, waiting, stopped) => {
         document.querySelector('#active').innerText = global.numActive;
         document.querySelector('#waiting').innerText = global.numWaiting;
         document.querySelector('#stopped').innerText = global.numStopped;
@@ -180,10 +123,6 @@ function calcEstimatedTime(task, number) {
     }
 }
 
-function submitNewDownload(session, options) {
-    downloadWithAria2(session, options);
-}
-
 function removeTaskFromQueue(gid, status) {
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
@@ -203,7 +142,7 @@ function removeTaskFromQueue(gid, status) {
 }
 
 function openTaskMgrWindow(gid, type) {
-    openModuleWindow('taskMgr', 'manager/index.html?' + type+ '#' + gid);
+    openModuleWindow('taskMgr', 'task/index.html?' + type+ '#' + gid);
 }
 
 function removeTaskAndRetry(gid) {
@@ -228,11 +167,4 @@ function pauseOrUnpauseTask(gid, status) {
         return;
     }
     aria2RPCRequest({id: '', jsonrpc: 2, method, params: [aria2RPC.jsonrpc['token'], gid]});
-}
-
-function openModuleWindow(id, src) {
-    var iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.setAttribute('module', id);
-    document.body.appendChild(iframe);
 }

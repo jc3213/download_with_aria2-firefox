@@ -24,39 +24,15 @@ document.querySelector('#import').addEventListener('click', (event) => {
     });
 });
 
-document.querySelector('#show_btn').addEventListener('click', (event) => {
-    document.querySelector('#token').setAttribute('type', event.target.className === 'checked' ? 'password' : 'text');
-    event.target.classList.toggle('checked');
-});
-
-document.querySelector('#back_btn').addEventListener('click', (event) => {
-    document.querySelector('[module="local"]').style.display = 'block';
-    document.querySelector('[module="global"]').style.display = 'none';
-});
-
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    aria2RPCRequest([
-        {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.jsonrpc['token']]},
-        {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.jsonrpc['token']]}
-    ],
-    (version, options) => {
-        aria2Global = options;
-        document.querySelector('[module="local"]').style.display = 'none';
-        document.querySelector('[module="global"]').style.display = 'block';
-        document.querySelector('#version').innerText = version.version;
-        document.querySelectorAll('[aria2]').forEach(field => {
-            var name = field.getAttribute('aria2');
-            var calc = field.hasAttribute('calc') ? bytesToFileSize(aria2Global[name]) : null;
-            field.value = calc ? calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1) : aria2Global[name] ?? '';
-        });
-    },
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.jsonrpc['token']]},
+    version => openModuleWindow('aria2Opt', 'aria2/index.html?' + version.version),
     error => showNotification(error));
 });
 
-document.querySelector('[module="global"]').addEventListener('change', (event) => {
-    var name = event.target.getAttribute('aria2');
-    aria2Global[name] = event.target.value;
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeGlobalOption', params: [aria2RPC.jsonrpc['token'], aria2Global]});
+document.querySelector('#show_btn').addEventListener('click', (event) => {
+    document.querySelector('#token').setAttribute('type', event.target.className === 'checked' ? 'password' : 'text');
+    event.target.classList.toggle('checked');
 });
 
 aria2RPCLoader(() => {

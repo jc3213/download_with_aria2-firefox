@@ -6,35 +6,6 @@
     margin-right: 10px;
 }
 
-[module] {
-    background-color: #FFF;
-    margin: 8px;
-    position: absolute;
-    border: 0px;
-}
-
-[module="download"] {
-    top: 36px;
-    left: 0px;
-    width: calc(100% - 15px);
-    height: calc(100% - 90px);
-}
-
-[module="options"], [module="taskMgr"] {
-    top: -8px;
-    left: -8px;
-    width: 100%;
-    height: calc(100% - 40px);
-}
-
-[card] {
-    overflow-y: auto;
-}
-
-[card] {
-    height: 360px;
-}
-
 .queue {
     height: 410px;
     overflow-y: auto;
