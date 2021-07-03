@@ -20,7 +20,7 @@
                     <div class="title" i18n>task_download</div>
                     <label class="swap" style="display: none;">
                         <span class="suffix">B/s</span>
-                        <input id="max-download-limit" task calc type="text">
+                        <input task="max-download-limit" calc type="text">
                     </label>
                     <div id="download" swap="max-download-limit" class="active"></div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="title" i18n>task_upload</div>
                     <label class="swap" style="display: none;">
                         <span class="suffix">B/s</span>
-                        <input id="max-upload-limit" task calc type="text">
+                        <input task="max-upload-limit" calc type="text">
                     </label>
                     <div id="upload" swap="max-upload-limit" class="complete"></div>
                 </div>
@@ -36,15 +36,15 @@
             <div title="task_proxy_desc" i18n_title>
                 <div class="title" i18n>task_proxy</div>
                 <div class="extend">
-                    <input id="all-proxy" task type="url">
-                    <span id="uri" root="proxy" feed="all-proxy" button>📷</span>
+                    <input task="all-proxy" type="url">
+                    <span local="uri" root="proxy" feed="all-proxy" button>📷</span>
                 </div>
             </div>
             <div http class="double">
                 <div title="aria2_http_split_desc" i18n_title>
                     <div class="title" i18n>aria2_http_split</div>
                     <div>
-                        <input id="split" task type="number">
+                        <input task="split" type="number">
                     </div>
                     <span i18n>common_default</span>: <u><i>5</i></u>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="title" i18n>aria2_http_size</div>
                     <label>
                         <span class="suffix">B</span>
-                        <input id="min-split-size" task calc type="text">
+                        <input task="min-split-size" calc type="text">
                     </label>
                     <span i18n>common_default</span>: <u><i>20M</i></u>
                 </div>
@@ -61,14 +61,14 @@
                 <div title="aria2_bt_ratio_desc" i18n_title>
                     <div class="title" i18n>aria2_bt_ratio</div>
                     <div>
-                        <input id="seed-ratio" task type="text">
+                        <input task="seed-ratio" type="text">
                     </div>
                     <span i18n>common_default</span>: <u><i>1.0</i></u>
                 </div>
                 <div title="aria2_bt_seed_desc" i18n_title>
                     <div class="title" i18n>aria2_bt_seed</div>
                     <div>
-                        <input id="seed-time" task type="number">
+                        <input task="seed-time" type="number">
                     </div>
                     <span i18n>common_sample</span>: <u><i>30</i></u>
                 </div>
@@ -76,7 +76,7 @@
             <div bt title="aria2_bt_remove_desc" i18n_title>
                 <div class="title" i18n>aria2_bt_remove</div>
                 <div>
-                    <select id="bt-remove-unselected-file" task>
+                    <select task="bt-remove-unselected-file">
                         <option value="true">True</option>
                         <option value="false">False</option>
                     </select>

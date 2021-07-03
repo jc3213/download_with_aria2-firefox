@@ -12,9 +12,9 @@ function aria2RPCClient() {
         document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
         document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
         document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-        document.querySelector('#max-download-limit').disabled = disabled;
-        document.querySelector('#max-upload-limit').disabled = disabled || type === 'http';
-        document.querySelector('#all-proxy').disabled = disabled;
+        document.querySelector('[task="max-download-limit"]').disabled = disabled;
+        document.querySelector('[task="max-upload-limit"]').disabled = disabled || type === 'http';
+        document.querySelector('[task="all-proxy"]').disabled = disabled;
         if (type === 'bt') {
             result.files.forEach(file => printTaskFiles(file, document.querySelector('#files')));
         }
@@ -58,37 +58,44 @@ function appendFileToTable(file, table) {
     return cell;
 }
 
+document.querySelector('#name[button]').addEventListener('click', (event) => {
+    frameElement.remove();
+});
+
 document.querySelectorAll('[http], [bt]').forEach(field => {
     field.style.display = field.hasAttribute(type) ? 'block' : 'none';
 });
 
 document.querySelector('[card].container').addEventListener('change', (event) => {
-    changeTaskOption(event.target.id, event.target.value);
+    var name = event.target.getAttribute('task');
+    changeTaskOption(name, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
-    var input = document.getElementById(swap.getAttribute('swap'));
+    var name = swap.getAttribute('swap');
+    var field = document.querySelector('[task="' + name + '"]');
     swap.addEventListener('click', (event) => {
-        if (!input.disabled) {
+        if (!field.disabled) {
             swap.style.display = 'none';
-            input.parentNode.style.display = 'block';
-            input.focus();
+            field.parentNode.style.display = 'block';
+            field.focus();
         }
     });
-    input.addEventListener('keydown', (event) => {
+    field.addEventListener('keydown', (event) => {
         if (event.keyCode === 13) {
-            input.parentNode.style.display = 'none';
+            field.parentNode.style.display = 'none';
             swap.style.display = 'block';
         }
     });
 });
 
-document.querySelector('#name[button]').addEventListener('click', (event) => {
-    frameElement.remove();
-});
-
-document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption('all-proxy', aria2RPC.proxy['uri']);
+document.querySelector('[feed]').addEventListener('click', (event) => {
+    var name = event.target.getAttribute('local');
+    var root = event.target.getAttribute('root');
+    root ? {[root]: {[name] : value}} = aria2RPC : {[name] : value} = aria2RPC;
+    var feed = event.target.getAttribute('feed');
+    document.querySelector('[task="all-proxy"]').value = value;
+    changeTaskOption(name, value);
 });
 
 document.querySelector('#uris').addEventListener('click', (event) => {
@@ -118,17 +125,9 @@ document.querySelector('#files').addEventListener('click', (event) => {
 });
 
 aria2RPCLoader(() => {
-    printTaskOption(gid);
+    printTaskOption();
     aria2RPCClient();
     aria2RPCKeepAlive();
-    document.querySelectorAll('[feed]').forEach(feed => {
-        var field = feed.getAttribute('feed');
-        var root = feed.getAttribute('root');
-        var tree = root ? aria2RPC[root] : aria2RPC;
-        feed.addEventListener('click', (event) => {
-            document.getElementById(field).value = tree[feed.id];
-        });
-    });
 });
 
 function changeTaskUri({add, remove}) {
@@ -138,21 +137,21 @@ function changeTaskUri({add, remove}) {
 function printTaskOption() {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.jsonrpc['token'], gid]},
     options => {
-        document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
+        aria2Global = options;
+        document.querySelectorAll('[task]').forEach(field => {
+            var name = field.getAttribute('task');
+            if (field.hasAttribute('calc')) {
+                var calc = bytesToFileSize(options[name]);
+                field.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
+            }
+            else {
+                field.value = options[name] ?? '';
+            }
+        });
     });
 }
 
-function changeTaskOption(name, value, options = {}) {
-    options[name] = value;
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.jsonrpc['token'], gid, options]});
-}
-
-function parseValueToOption(field, options) {
-    if (field.hasAttribute('calc')) {
-        var calc = bytesToFileSize(options[field.id]);
-        field.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
-    }
-    else {
-        field.value = options[field.id] ?? '';
-    }
+function changeTaskOption(name, value) {
+    aria2Global[name] = value;
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.jsonrpc['token'], gid, aria2Global]});
 }

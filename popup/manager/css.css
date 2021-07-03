@@ -69,12 +69,8 @@ td {
     text-align: center;
 }
 
-#files #name {
-    width: calc(100% - 140px);
-}
-
 #files #size {
-    width: 70px;
+    width: 80px;
     text-align: center;
 }
 
