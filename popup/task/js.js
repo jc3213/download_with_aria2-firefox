@@ -76,8 +76,8 @@ document.querySelectorAll('[swap]').forEach(swap => {
     swap.addEventListener('click', (event) => {
         if (!field.disabled) {
             swap.style.display = 'none';
-            input.parentNode.style.display = 'block';
-            input.focus();
+            field.parentNode.style.display = 'block';
+            field.focus();
         }
     });
     field.addEventListener('keydown', (event) => {
