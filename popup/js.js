@@ -79,10 +79,10 @@ document.querySelector('#options_btn').addEventListener('click', (event) => {
 aria2RPCLoader(() => {
     aria2RPCClient();
     aria2RPCKeepAlive();
-    aria2RPCOption();
+    aria2TaskOption();
 });
 
-function aria2RPCOption() {
+function aria2TaskOption() {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.jsonrpc['token']]},
     options => {
         document.querySelectorAll('[aria2]').forEach(field => {

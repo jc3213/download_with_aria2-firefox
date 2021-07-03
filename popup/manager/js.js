@@ -125,16 +125,16 @@ document.querySelector('#files').addEventListener('click', (event) => {
 });
 
 aria2RPCLoader(() => {
-    printTaskOption();
     aria2RPCClient();
     aria2RPCKeepAlive();
+    aria2TaskOption();
 });
 
 function changeTaskUri({add, remove}) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]});
 }
 
-function printTaskOption() {
+function aria2TaskOption() {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.jsonrpc['token'], gid]},
     options => {
         aria2Global = options;
