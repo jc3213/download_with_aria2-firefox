@@ -1,6 +1,6 @@
 document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
-    var src = '/modules/' + id + '/index.html?popup';
+    var src = module.getAttribute('src') + '?popup';
     module.addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
             document.getElementById(id).remove();
