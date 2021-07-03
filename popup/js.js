@@ -168,3 +168,10 @@ function pauseOrUnpauseTask(gid, status) {
     }
     aria2RPCRequest({id: '', jsonrpc: 2, method, params: [aria2RPC.jsonrpc['token'], gid]});
 }
+
+function openModuleWindow(id, src) {
+    var iframe = document.createElement('iframe');
+    iframe.id = id;
+    iframe.src = src;
+    document.body.appendChild(iframe);
+}
