@@ -26,7 +26,7 @@ browser.storage.onChanged.addListener(changes => {
 
 function aria2RPCRequest(request, resolve, reject) {
     var requestJSON = Array.isArray(request) ? request : [request];
-    return fetch(aria2RPC.jsonrpc['uri'], {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
+    fetch(aria2RPC.jsonrpc['uri'], {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
         if (response.ok) {
             return response.json();
         }
