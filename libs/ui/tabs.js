@@ -1,14 +1,14 @@
 document.querySelectorAll('[tab]').forEach((tab, index) => {
     var name = tab.getAttribute('tab');
     if (index === 0) {
-        tab.className = 'checked';
+        tab.classList.add('checked');
         activeTab = name;
     }
     tab.addEventListener('click', (event) => {
-        if (tab.className !== 'checkd' && name !== activeTab) {
-            document.querySelector('[tab="' + name + '"]').className = 'checked';
+        if (!tab.classList.contains('checked')) {
+            document.querySelector('[tab="' + name + '"]').classList.add('checked');
             document.querySelector('[panel="' + name + '"]').style.display = 'block';
-            document.querySelector('[tab="' + activeTab + '"]').className = '';
+            document.querySelector('[tab="' + activeTab + '"]').classList.remove('checked');
             document.querySelector('[panel="' + activeTab + '"]').style.display = 'none';
             activeTab = name;
         }

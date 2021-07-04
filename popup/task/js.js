@@ -67,7 +67,7 @@ document.querySelectorAll('[http], [bt]').forEach(field => {
 });
 
 document.querySelector('[card].container').addEventListener('change', (event) => {
-    changeTaskOption(gid, event.target.id, event.target.value);
+    changeTaskOption(gid, event.target.getAttribute('task'), event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
