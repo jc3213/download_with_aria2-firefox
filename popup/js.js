@@ -151,8 +151,8 @@ function removeTaskAndRetry(gid) {
         {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.jsonrpc['token'], gid]},
         {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.jsonrpc['token'], gid]}
     ], (files, options) => {
-        downloadWithAria2({url: files[0].uris.map(uri => uri.uri)}, options);
-        document.getElementById(gid).remove();
+        aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.jsonrpc['token'], files[0].uris.map(uri => uri.uri), options]},
+        result => document.getElementById(gid).remove());
     });
 }
 

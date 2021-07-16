@@ -50,13 +50,13 @@ function aria2RPCRequest(request, resolve, reject) {
 
 async function downloadWithAria2({url, referer, hostname, filename}, options = {}) {
     var url = Array.isArray(url) ? url : [url];
+    options['header'] = await getCookiesFromReferer(referer);
     if (filename) {
         options['out'] = filename;
     }
     if (!options['all-proxy'] && aria2RPC.proxy['resolve'].includes(hostname)) {
         options['all-proxy'] = aria2RPC.proxy['uri'];
     }
-    options['header'] = await getCookiesFromReferer(referer);
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.jsonrpc['token'], url, options]},
     result => showNotification(url[0]), showNotification);
 }
