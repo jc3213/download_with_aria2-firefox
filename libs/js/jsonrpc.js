@@ -73,6 +73,7 @@ async function getHeaderForAria2(url, referer, storeId = 'firefox-default', resu
     cookies.forEach(cookie => {
         result += ' ' + cookie.name + '=' + cookie.value + ';';
     });
+    header.push(result);
     return header;
 }
 
