@@ -48,28 +48,31 @@ function aria2RPCRequest(request, resolve, reject) {
     });
 }
 
-async function downloadWithAria2({url, referer, hostname, filename}, options = {}) {
+async function downloadWithAria2({url, referer, hostname, filename, folder, storeId}, options = {}) {
     var url = Array.isArray(url) ? url : [url];
-    options['header'] = await getCookiesFromReferer(referer);
+    options['header'] = await getHeaderForAria2(url[0], referer, storeId);
     if (filename) {
         options['out'] = filename;
     }
     if (!options['all-proxy'] && aria2RPC.proxy['resolve'].includes(hostname)) {
         options['all-proxy'] = aria2RPC.proxy['uri'];
     }
+    if (aria2RPC.folder['mode'] === '1' && folder) {
+        options['dir'] = folder;
+    }
+    else if (aria2RPC.folder['mode'] === '2' && aria2RPC.folder['uri']) {
+        options['dir'] = aria2RPC.options.folder['uri'];
+    }
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.jsonrpc['token'], url, options]},
     result => showNotification(url[0]), showNotification);
 }
 
-async function getCookiesFromReferer(url, storeId = 'firefox-default', result = 'Cookie:') {
-    var header = ['User-Agent: ' + aria2RPC['useragent'], 'Connection: keep-alive'];
-    if (url) {
-        var cookies = await browser.cookies.getAll({url, storeId});
-        cookies.forEach(cookie => {
-            result += ' ' + cookie.name + '=' + cookie.value + ';';
-        });
-        header.push(result, 'Referer: ' + url);
-    }
+async function getHeaderForAria2(url, referer, storeId = 'firefox-default', result = 'Cookie:') {
+    var header = ['User-Agent: ' + aria2RPC['useragent'], 'Referer: ' + referer];
+    var cookies = await browser.cookies.getAll({url, storeId});
+    cookies.forEach(cookie => {
+        result += ' ' + cookie.name + '=' + cookie.value + ';';
+    });
     return header;
 }
 
