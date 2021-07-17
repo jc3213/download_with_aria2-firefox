@@ -54,11 +54,11 @@ aria2RPCLoader(() => {
         var rule = gear.getAttribute('gear').split('&');
         var gate = rule[0].split(','), term = rule[1];
         var name = gate[0], root = gate[1];
-        var tree = root ? aria2RPC[root] : aria2RPC;
+        root ? {[root]: {[name] : value}} = aria2RPC : {[name] : value} = aria2RPC;
         var field = root ? '[local="' + name + '"][root="' + root + '"]' : '[local="' + name + '"]';
-        gear.style.display = term.includes(tree[name]) ? 'block' : 'none';
+        gear.style.display = term.includes(value) ? 'block' : 'none';
         document.querySelector(field).addEventListener('change', (event) => {
-            gear.style.display = term.includes(tree[name]) ? 'block' : 'none';
+            gear.style.display = term.includes(event.target.value) ? 'block' : 'none';
         });
     });
 });
