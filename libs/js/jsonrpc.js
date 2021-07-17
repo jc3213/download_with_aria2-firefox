@@ -61,7 +61,7 @@ async function downloadWithAria2({url, referer, hostname, filename, folder, stor
         options['dir'] = folder;
     }
     else if (aria2RPC.folder['mode'] === '2' && aria2RPC.folder['uri']) {
-        options['dir'] = aria2RPC.options.folder['uri'];
+        options['dir'] = aria2RPC.folder['uri'];
     }
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.jsonrpc['token'], url, options]},
     result => showNotification(url[0]), showNotification);
