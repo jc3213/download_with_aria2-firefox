@@ -10,11 +10,9 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-browser.runtime.onInstalled.addListener(async details => {
+browser.runtime.onInstalled.addListener(details => {
     if (details.reason === 'install') {
-        var response = await fetch('options.json');
-        var json = await response.json();
-        browser.storage.local.set(json);
+        fetch('options.json').then(response => response.json()).then(json => chrome.storage.local.set(json));
     }
 });
 
